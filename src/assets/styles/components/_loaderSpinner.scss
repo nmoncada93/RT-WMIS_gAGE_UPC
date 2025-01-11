@@ -1,0 +1,63 @@
+.loading-text {
+  font-weight: bold;
+  font-style: italic;
+  font-size: $fontSizeH2;
+}
+
+.station-loading {
+  pointer-events: none; //Bloquea todos los eventos de clic
+  cursor: not-allowed;
+}
+
+.station-loading:hover {
+  background-color: inherit;
+}
+
+// INDEX REAL-TIME SPINNER CONTAINER
+#loadingMessageRTindex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-style: italic;
+  font-size: $fontSizeH2;
+  color: $spaceBlue;
+  margin-top: 40px;
+}
+
+// INDEX PAST RECORDS SPINNER CONTAINER
+#loadingMessagePRindex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-style: italic;
+  font-size: $fontSizeH2;
+  color: $spaceBlue;
+  margin-top: 40px;
+}
+
+.loading-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: $energicOrange;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-top: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

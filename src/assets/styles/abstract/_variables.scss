@@ -1,0 +1,36 @@
+//Main Colors
+$energicOrange: #ff6600;
+$pureWhite: #ffffff;
+$spaceBlack: #000000;
+$spaceBlue: #002366;
+
+//Font Family
+$fontFamilyH1: "Krona One", sans-serif;
+$fontFamilyH2: "Jockey One", sans-serif;
+$fontFamilyText: "Nunito", sans-serif;
+
+// Font sizes
+// To acomply WCAG SC 1.4.4: make sure that --> Max size <= 2.5*Minimum size
+$fontSizeH1: clamp(2rem, 1.2vw, 3rem); // 2.5rem Font size for H1 (~40px)
+//$fontSizeH2: 2.8rem; // 2.3rem Font size for H2 (~32px)
+$fontSizeH2: clamp(1.8rem, 1.2vw, 2.8rem); // 2.3rem Font size for H2 (~32px)
+//$fontSizeH3: 2.3rem; // 1.75rem Font size for H3 (~28px)
+$fontSizeH3: clamp(1.5rem, 1.2vw, 2.5rem);
+
+$fontsizeNav: 1.1vw;
+
+//$fontSizeText: 2rem; // Font size for main body text (~16px)
+$fontSizeText: clamp(1.5rem,
+    1.2vw,
+    2.8rem); // Font size for main body text (~16px)
+
+$fontSizeLogoTitle: clamp(1.3rem, 3vw, 8rem);
+$fontSizeLogoSubtitle: clamp(0.5rem, 1.5vw, 4rem);
+
+// Line-height
+$lineHeightText: 1.5; // Standard line-height for body text
+$lineHeightTitles: 1.2; // More compact line-height for headers
+
+// Letter-spacing
+$letterSpacingText: 0.02em; // Standard letter-spacing for body text
+$letterSpacingTitles: 0.05em; // Letter-spacing for headers

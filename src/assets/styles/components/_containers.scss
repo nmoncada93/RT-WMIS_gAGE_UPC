@@ -1,0 +1,97 @@
+.mainContainer {
+  min-height: 62vh;
+  text-align: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 11rem;
+  font-family: $fontFamilyText;
+  font-size: 1.4rem;
+}
+
+.boxContainer {
+  padding: 2%;
+  border-radius: 10px;
+  margin-bottom: 2%;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  &__img {
+    margin: auto;
+  }
+
+  &__p {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: $fontSizeH3;
+  }
+
+  &__titleH3 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+    padding: 0.5rem;
+    border: 2px solid $spaceBlue;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    font-size: 1.8rem;
+    width: 100%;
+    min-width: 150px;
+
+    &:hover,
+    &:focus {
+      background-color: $spaceBlue;
+      color: $pureWhite;
+      border: 2px solid $energicOrange;
+    }
+
+    &--index {
+      margin: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .boxContainer__titleH3 {
+    font-size: 1.2rem;
+    display: none;
+  }
+}
+
+#pastStationSelector {
+  display: none;
+}
+
+//Class for PAST INDEX OPTION SELECTOR
+.no-data {
+  color: red; // Resalta las opciones sin datos
+  pointer-events: none; // Desactiva el hover/clic en esas opciones
+}
+
+.selectorsContainer,
+.btnsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectorsContainer {
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 1030px) {
+  .selectorsContainer {
+    flex-direction: column;
+  }
+}
+
+.yearSection {
+  margin-bottom: 20px;
+}
+
+.publication {
+  margin: 10px 0;
+  width: 100%;
+}

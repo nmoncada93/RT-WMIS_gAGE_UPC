@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Real Time WorldWide Monitoring of Ionospheric Scillation" />
+    <meta name="author" content="Nicolas Orlando Moncada Herrera" />
+    <!--meta property="og:image" content="img/og-image.png" /-->
+    <meta property="og:title" content="RT-WMIS (Real Time WorldWide Monitoring of Ionospheric Scillation)" />
+    <!-- link rel="icon" href="img/favicon.png" type="image/x-icon" /-->
+    <link rel="stylesheet" type="text/css" href="./assets/styles/main.scss" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Krona+One&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet" />
+    <!-- Incluye el enlace de Font Awesome desde su CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!--FLAGS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.6.6/css/flag-icons.min.css" />
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/maps/world.js"></script>
+    <!-- do not remove this line! -->
+    <title>RT-WMIS: Network</title>
+</head>
+
+<body>
+    <include src="./views/header.html"></include>
+    <div class="menuOverlay"></div>
+
+    <main class="mainContainer">
+        <h1 class="titleH1">Real Time Global Observation Network</h1>
+
+        <div class="decorline decorline--body"></div>
+
+        <p class="normalText">
+            The Real Time Global Observation Network is based on GNSS
+            observation data collected via broadcasters from IGS, AUSCORS,
+            EUREF, IGN and RBMC networks. The sampling rate is 1hz and for a
+            ser of 47 currently available stations (including 3 collocated
+            pairs) mostly located in regions prone to scillation activity.
+        </p>
+
+        <div class="generalContainer">
+            <div class="boxContainer mapBox">
+                <h2 class="titleH2">MAP OF THE NETWORK</h2>
+                <div class="mapboxDiv">
+                    <iframe class="mapBoxIframe" src="./assets/images/mapNetwork.html" title="Network Chart"></iframe>
+                </div>
+            </div>
+
+            <div class="boxContainer mapBox tableResponsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Station ID</th>
+                            <th>Station Name</th>
+                            <th>Country</th>
+                            <th>Longitude</th>
+                            <th>Latitude</th>
+                            <th>Receiver Type</th>
+                            <th>Antenna - Radome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="trARUB">
+                            <td data-label="Station ID">1</td>
+                            <td data-label="Station Name">ARUB</td>
+                            <td data-label="Country">
+                                <span class="fi fi-au"></span>
+                                AUS
+                            </td>
+                            <td data-label="Longitude">125.9243575440</td>
+                            <td data-label="Latitude">-31.6369833130</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R3 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trASCG">
+                            <td data-label="Station ID">2</td>
+                            <td data-label="Station Name">ASCG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-sh"></span> SHN
+                            </td>
+                            <td data-label="Longitude">-14.3326646750</td>
+                            <td data-label="Latitude">-7.8639513670</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - NONE
+                            </td>
+                        </tr>
+
+                        <tr id="trBRUX">
+                            <td data-label="Station ID">3</td>
+                            <td data-label="Station Name">BRUX</td>
+                            <td data-label="Country">
+                                <span class="fi fi-be"></span> BEL
+                            </td>
+                            <td data-label="Longitude">4.3585669620</td>
+                            <td data-label="Latitude">50.6094465410</td>
+                            <td data-label="Receiver Type">
+                                SEPT POLARX5TR
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                JAVRINGANT_DM - NONE
+                            </td>
+                        </tr>
+
+                        <tr id="trCAS1">
+                            <td data-label="Station ID">4</td>
+                            <td data-label="Station Name">CAS1</td>
+                            <td data-label="Country">
+                                <span class="fi fi-aq"></span> ATA
+                            </td>
+                            <td data-label="Longitude">110.5197065940</td>
+                            <td data-label="Latitude">-66.1413206070</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R3 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trCHUR">
+                            <td data-label="Station ID">5</td>
+                            <td data-label="Station Name">CHUR</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ca"></span> CAN
+                            </td>
+                            <td data-label="Longitude">-94.0887328590</td>
+                            <td data-label="Latitude">58.5881580810</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                ASH701945E_M - NONE
+                            </td>
+                        </tr>
+                        <tr id="trCPVG">
+                            <td data-label="Station ID">6</td>
+                            <td data-label="Station Name">CPVG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-cv"></span> CPV
+                            </td>
+                            <td data-label="Longitude">-22.9349313860</td>
+                            <td data-label="Latitude">16.6262560260</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trDARW">
+                            <td data-label="Station ID">7</td>
+                            <td data-label="Station Name">DARW</td>
+                            <td data-label="Country">
+                                <span class="fi fi-au"></span> AUS
+                            </td>
+                            <td data-label="Longitude">131.1327445950</td>
+                            <td data-label="Latitude">-12.7605413350</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                JAVRINGANT_DM - NONE
+                            </td>
+                        </tr>
+                        <tr id="trDJIG">
+                            <td data-label="Station ID">8</td>
+                            <td data-label="Station Name">DJIG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-dj"></span> DJI
+                            </td>
+                            <td data-label="Longitude">42.8470670290</td>
+                            <td data-label="Latitude">11.4511810640</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trDUMG">
+                            <td data-label="Station ID">9</td>
+                            <td data-label="Station Name">DUMG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-aq"></span> ATA
+                            </td>
+                            <td data-label="Longitude">140.0021881420</td>
+                            <td data-label="Latitude">-66.5248913990</td>
+                            <td data-label="Receiver Type">LEICA GR50</td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R4 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trHOFN">
+                            <td data-label="Station ID">10</td>
+                            <td data-label="Station Name">HOFN</td>
+                            <td data-label="Country">
+                                <span class="fi fi-is"></span> ISL
+                            </td>
+                            <td data-label="Longitude">-15.1979158240</td>
+                            <td data-label="Latitude">64.1164605300</td>
+                            <td data-label="Receiver Type">LEICA GR50</td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R4 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trIQAL">
+                            <td data-label="Station ID">11</td>
+                            <td data-label="Station Name">IQAL</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ca"></span> CAN
+                            </td>
+                            <td data-label="Longitude">-68.5105018150</td>
+                            <td data-label="Latitude">63.6030186820</td>
+                            <td data-label="Receiver Type">
+                                SEPT POLARX5S
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TPSCR.G3 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trKIRU">
+                            <td data-label="Station ID">12</td>
+                            <td data-label="Station Name">KIRU</td>
+                            <td data-label="Country">
+                                <span class="fi fi-se"></span> SWE
+                            </td>
+                            <td data-label="Longitude">20.9684535800</td>
+                            <td data-label="Latitude">67.7226819200</td>
+                            <td data-label="Receiver Type">
+                                SEPT POLARX5TR
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                SEPCHOKE_B3E6 - SPKE
+                            </td>
+                        </tr>
+                        <tr id="trKOUG">
+                            <td data-label="Station ID">13</td>
+                            <td data-label="Station Name">KOUG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-gf"></span> GUF
+                            </td>
+                            <td data-label="Longitude">-52.6397505530</td>
+                            <td data-label="Latitude">5.0645195250</td>
+                            <td data-label="Receiver Type">
+                                SEPT POLARX5TR
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R3 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trMAC1">
+                            <td data-label="Station ID">14</td>
+                            <td data-label="Station Name">MAC1</td>
+                            <td data-label="Country">
+                                <span class="fi fi-au"></span> AUS
+                            </td>
+                            <td data-label="Longitude">158.9358291640</td>
+                            <td data-label="Latitude">-54.3173860620</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                JAVRINGANT_DM - SCIS
+                            </td>
+                        </tr>
+                        <tr id="trMAL2">
+                            <td data-label="Station ID">15</td>
+                            <td data-label="Station Name">MAL2</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ke"></span> KEN
+                            </td>
+                            <td data-label="Longitude">40.1941465600</td>
+                            <td data-label="Latitude">-2.9760323230</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R4 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trMAR7">
+                            <td data-label="Station ID">16</td>
+                            <td data-label="Station Name">MAR7</td>
+                            <td data-label="Country">
+                                <span class="fi fi-se"></span> SWE
+                            </td>
+                            <td data-label="Longitude">17.2584499800</td>
+                            <td data-label="Latitude">60.4301628590</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R3 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trMAS1">
+                            <td data-label="Station ID">17</td>
+                            <td data-label="Station Name">MAS1</td>
+                            <td data-label="Country">
+                                <span class="fi fi-es"></span> ESP
+                            </td>
+                            <td data-label="Longitude">-15.6332730330</td>
+                            <td data-label="Latitude">27.6054162420</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R4 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trMBAR">
+                            <td data-label="Station ID">18</td>
+                            <td data-label="Station Name">MBAR</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ug"></span> UGA
+                            </td>
+                            <td data-label="Longitude">30.7378793800</td>
+                            <td data-label="Latitude">-0.5974414520</td>
+                            <td data-label="Receiver Type">
+                                JAVAD TRE_3 DELTA
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                ASH701945B_M - SCIS
+                            </td>
+                        </tr>
+                        <tr id="trMETG">
+                            <td data-label="Station ID">19</td>
+                            <td data-label="Station Name">METG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-fi"></span> FIN
+                            </td>
+                            <td data-label="Longitude">24.3841779480</td>
+                            <td data-label="Latitude">60.0758613200</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - SCIS
+                            </td>
+                        </tr>
+                        <tr id="trNKLG">
+                            <td data-label="Station ID">20</td>
+                            <td data-label="Station Name">NKLG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ga"></span> GAB
+                            </td>
+                            <td data-label="Longitude">9.6721281490</td>
+                            <td data-label="Latitude">0.3515401500</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - SCIS
+                            </td>
+                        </tr>
+
+                        <tr id="trNYA2">
+                            <td data-label="Station ID">21</td>
+                            <td data-label="Station Name">NYA2</td>
+                            <td data-label="Country">
+                                <span class="fi fi-no"></span> NOR
+                            </td>
+                            <td data-label="Longitude">11.8586400310</td>
+                            <td data-label="Latitude">78.8575908330</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                JAVRINGANT_G5T - NONE
+                            </td>
+                        </tr>
+                        <tr id="trOHI3">
+                            <td data-label="Station ID">22</td>
+                            <td data-label="Station Name">OHI3</td>
+                            <td data-label="Country">
+                                <span class="fi fi-aq"></span> ATA
+                            </td>
+                            <td data-label="Longitude">-57.9013810660</td>
+                            <td data-label="Latitude">-63.1663853980</td>
+                            <td data-label="Receiver Type">LEICA GR50</td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R4 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trONS1">
+                            <td data-label="Station ID">23</td>
+                            <td data-label="Station Name">ONS1</td>
+                            <td data-label="Country">
+                                <span class="fi fi-se"></span> SWE
+                            </td>
+                            <td data-label="Longitude">11.9245458560</td>
+                            <td data-label="Latitude">57.2203997150</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R3 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trOUS2">
+                            <td data-label="Station ID">24</td>
+                            <td data-label="Station Name">OUS2</td>
+                            <td data-label="Country">
+                                <span class="fi fi-nz"></span> NZL
+                            </td>
+                            <td data-label="Longitude">170.5109258350</td>
+                            <td data-label="Latitude">-45.6771166160</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                SEPCHOKE_B3E6 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trPIMO">
+                            <td data-label="Station ID">25</td>
+                            <td data-label="Station Name">PIMO</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ph"></span> PHL
+                            </td>
+                            <td data-label="Longitude">121.0777276080</td>
+                            <td data-label="Latitude">14.5419117360</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                ASH701945C_M - NONE
+                            </td>
+                        </tr>
+                        <tr id="trPTGG">
+                            <td data-label="Station ID">26</td>
+                            <td data-label="Station Name">PTGG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ph"></span> PHL
+                            </td>
+                            <td data-label="Longitude">121.0412640560</td>
+                            <td data-label="Latitude">14.4421806120</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - SCIS
+                            </td>
+                        </tr>
+                        <tr id="trREYK">
+                            <td data-label="Station ID">27</td>
+                            <td data-label="Station Name">REYK</td>
+                            <td data-label="Country">
+                                <span class="fi fi-is"></span> ISL
+                            </td>
+                            <td data-label="Longitude">-21.9554891810</td>
+                            <td data-label="Latitude">63.9874183190</td>
+                            <td data-label="Receiver Type">LEICA GR50</td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R4 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trRGDG">
+                            <td data-label="Station ID">28</td>
+                            <td data-label="Station Name">RGDG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ar"></span> ARG
+                            </td>
+                            <td data-label="Longitude">-67.7515274420</td>
+                            <td data-label="Latitude">-53.6022075290</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - SCIS
+                            </td>
+                        </tr>
+                        <tr id="trSCTB">
+                            <td data-label="Station ID">29</td>
+                            <td data-label="Station Name">SCTB</td>
+                            <td data-label="Country">
+                                <span class="fi fi-aq"></span> ATA
+                            </td>
+                            <td data-label="Longitude">166.7580247310</td>
+                            <td data-label="Latitude">-77.7695524380</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM115000.00 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trSIN1">
+                            <td data-label="Station ID">30</td>
+                            <td data-label="Station Name">SIN1</td>
+                            <td data-label="Country">
+                                <span class="fi fi-sg"></span> SGP
+                            </td>
+                            <td data-label="Longitude">103.6794405410</td>
+                            <td data-label="Latitude">1.3339935900</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE NETR9
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R3 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trTBOB">
+                            <td data-label="Station ID">31</td>
+                            <td data-label="Station Name">TBOB</td>
+                            <td data-label="Country">
+                                <span class="fi fi-au"></span> AUS
+                            </td>
+                            <td data-label="Longitude">142.0574259440</td>
+                            <td data-label="Latitude">-29.2856785130</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                LEIAT504GG - SCIS
+                            </td>
+                        </tr>
+                        <tr id="trUCAL">
+                            <td data-label="Station ID">32</td>
+                            <td data-label="Station Name">UCAL</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ca"></span> CAN
+                            </td>
+                            <td data-label="Longitude">-114.1338517180</td>
+                            <td data-label="Latitude">50.8917691070</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE NETR9
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM57971.00 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trUNSA">
+                            <td data-label="Station ID">33</td>
+                            <td data-label="Station Name">UNSA</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ar"></span> ARG
+                            </td>
+                            <td data-label="Longitude">-65.4076431880</td>
+                            <td data-label="Latitude">-24.5815804340</td>
+                            <td data-label="Receiver Type">SEPT ASTERX4</td>
+                            <td data-label="Antenna - Radome">
+                                SEPCHOKE_B3E6 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trVARS">
+                            <td data-label="Station ID">34</td>
+                            <td data-label="Station Name">VARS</td>
+                            <td data-label="Country">
+                                <span class="fi fi-no"></span> NOR
+                            </td>
+                            <td data-label="Longitude">31.0312023100</td>
+                            <td data-label="Latitude">70.2141122840</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE NETR9
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - SCIS
+                            </td>
+                        </tr>
+                        <tr id="trWHIT">
+                            <td data-label="Station ID">35</td>
+                            <td data-label="Station Name">WHIT</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ca"></span> CAN
+                            </td>
+                            <td data-label="Longitude">-135.2221153970</td>
+                            <td data-label="Latitude">60.5861922690</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                AOAD/M_T - NONE
+                            </td>
+                        </tr>
+                        <tr id="trYELL">
+                            <td data-label="Station ID">36</td>
+                            <td data-label="Station Name">YELL</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ca"></span> CAN
+                            </td>
+                            <td data-label="Longitude">-114.4807068610</td>
+                            <td data-label="Latitude">62.3228950140</td>
+                            <td data-label="Receiver Type">
+                                JAVAD TRE_3N DELTA
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                AOAD/M_T - NONE
+                            </td>
+                        </tr>
+                        <tr id="trAMCR">
+                            <td data-label="Station ID">37</td>
+                            <td data-label="Station Name">AMCR</td>
+                            <td data-label="Country">
+                                <span class="fi fi-brRR"></span> BRA
+                            </td>
+                            <td data-label="Longitude">-63.1422042320</td>
+                            <td data-label="Latitude">-4.0585603370</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE NETR8
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trRNNA">
+                            <td data-label="Station ID">38</td>
+                            <td data-label="Station Name">RNNA</td>
+                            <td data-label="Country">
+                                <span class="fi fi-br"></span> BRA
+                            </td>
+                            <td data-label="Longitude">-35.2077087350</td>
+                            <td data-label="Latitude">-5.7973360660</td>
+                            <td data-label="Receiver Type">
+                                SEPT POLARX5S
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trANDA">
+                            <td data-label="Station ID">39</td>
+                            <td data-label="Station Name">ANDA</td>
+                            <td data-label="Country">
+                                <span class="fi fi-au"></span> AUS
+                            </td>
+                            <td data-label="Longitude">137.1601051350</td>
+                            <td data-label="Latitude">-30.2854142540</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R3 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trUTQI">
+                            <td data-label="Station ID">40</td>
+                            <td data-label="Station Name">UTQI</td>
+                            <td data-label="Country">
+                                <span class="fi fi-us"></span> USA
+                            </td>
+                            <td data-label="Longitude">-156.6150177710</td>
+                            <td data-label="Latitude">71.2056899590</td>
+                            <td data-label="Receiver Type">
+                                JAVAD TR_G3TH
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                JAV_GRANT-G3T - NONE
+                            </td>
+                        </tr>
+                        <tr id="trTILC">
+                            <td data-label="Station ID">41</td>
+                            <td data-label="Station Name">TILC</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ar"></span> ARG
+                            </td>
+                            <td data-label="Longitude">-65.3950716310</td>
+                            <td data-label="Latitude">-23.4364341260</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE NETR9
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM57971.00 - TZGD
+                            </td>
+                        </tr>
+                        <tr id="trDAV1">
+                            <td data-label="Station ID">42</td>
+                            <td data-label="Station Name">DAV1</td>
+                            <td data-label="Country">
+                                <span class="fi fi-aq"></span> ATA
+                            </td>
+                            <td data-label="Longitude">77.9726120810</td>
+                            <td data-label="Latitude">-68.4461494690</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R3 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trGLPS">
+                            <td data-label="Station ID">43</td>
+                            <td data-label="Station Name">GLPS</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ec"></span> ECU
+                            </td>
+                            <td data-label="Longitude">-90.3036648840</td>
+                            <td data-label="Latitude">-0.7380245070</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                ASH701945B_M - SCIT
+                            </td>
+                        </tr>
+                        <tr id="trKRGG">
+                            <td data-label="Station ID">44</td>
+                            <td data-label="Station Name">KRGG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-tf"></span> ATF
+                            </td>
+                            <td data-label="Longitude">70.2555063140</td>
+                            <td data-label="Latitude">-49.1612413560</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                LEIAR25.R4 - LEIT
+                            </td>
+                        </tr>
+                        <tr id="trMAYG">
+                            <td data-label="Station ID">45</td>
+                            <td data-label="Station Name">MAYG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-yt"></span> MYT
+                            </td>
+                            <td data-label="Longitude">45.2581557050</td>
+                            <td data-label="Latitude">-12.6992679020</td>
+                            <td data-label="Receiver Type">
+                                TRIMBLE ALLOY
+                            </td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trRIO2">
+                            <td data-label="Station ID">46</td>
+                            <td data-label="Station Name">RIO2</td>
+                            <td data-label="Country">
+                                <span class="fi fi-ar"></span> ARG
+                            </td>
+                            <td data-label="Longitude">-67.7511173110</td>
+                            <td data-label="Latitude">-53.6018393960</td>
+                            <td data-label="Receiver Type">SEPT ASTERX4</td>
+                            <td data-label="Antenna - Radome">
+                                SEPCHOKE_B3E6 - NONE
+                            </td>
+                        </tr>
+                        <tr id="trSEYG">
+                            <td data-label="Station ID">47</td>
+                            <td data-label="Station Name">SEYG</td>
+                            <td data-label="Country">
+                                <span class="fi fi-sc"></span> SYC
+                            </td>
+                            <td data-label="Longitude">55.5306325560</td>
+                            <td data-label="Latitude">-4.6475471080</td>
+                            <td data-label="Receiver Type">SEPT POLARX5</td>
+                            <td data-label="Antenna - Radome">
+                                TRM59800.00 - NONE
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <include src="./views/footer.html"></include>
+    <script type="module" src="./assets/scripts/main.js"></script>
+    <script type="module" src="./assets/scripts/networkStations/tableStations.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+.chartContainer {
+  width: 100%;
+  height: 40vh;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.chartIndex {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  margin: auto;
+}
+
+.chartPRContainer {
+  width: 100%;
+  height: 40vh;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.chartPRIndex {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  margin: auto;
+}
+
+//#pastChart {
+//width: 600px;
+//height: 400px;
+//margin: 20px auto;
+//border: 1px solid #ccc;
+//}
+
+/********************************************************
+*                                                       *
+*                 ESTILOS DEL CALENDARIO                 *
+*                                                       *
+********************************************************/
+
+.recordsBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__date {
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border: 2px solid $spaceBlue;
+    border-radius: 12px;
+    color: $spaceBlack;
+    font-size: 1.8rem;
+
+    //apariencia del calendario
+    &::-webkit-calendar-picker-indicator {
+      filter: invert(0.7) sepia(1) saturate(10) hue-rotate(180deg); //icono del calendario
+      cursor: pointer;
+    }
+
+    &::-moz-calendar-picker-indicator {
+      color: $spaceBlue;
+      cursor: pointer;
+    }
+
+    &:hover {
+      border-color: $energicOrange;
+      background-color: $spaceBlue;
+      color: $pureWhite;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $energicOrange;
+      background-color: $spaceBlue;
+      color: $pureWhite;
+    }
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .recordsBox__date {
+    font-size: 1.2rem;
+  }
+}

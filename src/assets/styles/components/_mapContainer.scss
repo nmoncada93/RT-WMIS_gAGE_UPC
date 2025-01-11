@@ -1,0 +1,31 @@
+.mapRTContainer {
+  display: none;
+  margin: 20px auto;
+  border-radius: 5px;
+  aspect-ratio: 2 / 1;
+}
+
+#sphiMapRender {
+  width: 100%;
+  height: auto;
+  display: block;
+  //margin-left: -50px;
+}
+
+#rotiMapRender {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.grid-cell {
+  stroke: rgba(211, 211, 211, 0.829);
+  stroke-width: 0.1;
+  stroke-dasharray: 2 2; // Lineas discontinuas
+}
+
+.marker {
+  fill: red;
+  stroke: black;
+  stroke-width: 0.5;
+}

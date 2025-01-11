@@ -1,0 +1,42 @@
+.bodyLanding {
+  background-color: $spaceBlack;
+}
+
+.landingBoxes {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  color: $pureWhite;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.landingBox {
+  border: 2px solid $pureWhite;
+  background-color: $spaceBlack;
+  border-radius: 1.2rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1) translateY(-10px); // Escala y mueve hacia arriba
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); // Añade una sombra suave
+  }
+
+  &__title {
+    font-size: 20px;
+    font-family: $fontFamilyH2;
+  }
+
+  &__description {
+    font-family: $fontFamilyText;
+    font-size: 1.6rem;
+    font-weight: 100;
+  }
+}

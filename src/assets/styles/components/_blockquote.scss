@@ -1,0 +1,23 @@
+.blockquote {
+    position: relative;
+    background: rgba(0, 35, 102, .2);
+    border-left: 5px solid $spaceBlue;
+    margin: 0;
+    padding: 30px;
+    border-radius: 5px;
+
+    &::before {
+      content: "“";
+      font-size: 60px;
+      color: $spaceBlue;
+      position: absolute;
+      top: 0;
+      left: 10px;
+    }
+
+    &__a {
+      color: $energicOrange;
+
+      &:hover { text-decoration: underline;}
+    }
+  }

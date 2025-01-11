@@ -1,0 +1,38 @@
+.logo {
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 0.8;
+    align-items: center;
+
+    &__a {
+        display: flex;
+        flex-direction: column;
+        white-space: nowrap;
+        text-align: left;
+        transition: color 0.6s ease, transform 0.5s ease, text-shadow 0.8s ease;
+
+        &:hover {
+            color: $energicOrange;
+            text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.7);
+        }
+    }
+
+    &__subtitle {
+        text-align: right;
+    }
+
+
+}
+
+@media (max-width: 768px) {
+    .logo {
+        &__a {
+            font-size: 3rem;
+        }
+
+        &__subtitle {
+            font-size: 1.4rem;
+        }
+    }
+}

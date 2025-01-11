@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Real Time WorldWide Monitoring of Ionospheric Scillation"
+        />
+        <meta name="author" content="Nicolas Orlando Moncada Herrera" />
+        <!--meta property="og:image" content="img/og-image.png" /-->
+        <meta
+            property="og:title"
+            content="RT-WMIS (Real Time WorldWide Monitoring of Ionospheric Scillation)"
+        />
+        <!-- link rel="icon" href="img/favicon.png" type="image/x-icon" /-->
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="./assets/styles/main.scss"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Krona+One&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+            rel="stylesheet"
+        />
+        <!-- Incluye el enlace de Font Awesome desde su CDN -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <!-- do not remove this line! -->
+        <title>RT-WMIS: Data Products</title>
+    </head>
+
+    <body>
+        <include src="./views/header.html"></include>
+        <div class="menuOverlay"></div>
+
+        <main class="mainContainer">
+            <h1 class="titleH1">RT-WMIS Data Access and Policy</h1>
+
+            <div class="decorline decorline--body"></div>
+
+            <div class="generalContainer">
+                <p class="normalText">
+                    Access important RT-WMIS data, understand usage policies,
+                    and explore available data formats and products.
+                </p>
+
+                <section class="dataAccess">
+                    <h2 class="titleH2">DATA ACCESS</h2>
+                    <div class="normalText dataAccessBox mb-0">
+                        <span>Access the RT-WMIS data directly:</span
+                        ><a
+                            href="https://server.gage.upc.edu/rtwmis/"
+                            target="_blank"
+                            class="dataLink"
+                            >Access RT-WMIS Data</a
+                        >
+                    </div>
+                    <p class="normalText mb-0 dataAccess__info">
+                        No username or password is required.
+                    </p>
+                </section>
+
+                <section class="dataPolicy boxContainer">
+                    <h2 class="titleH2">DATA POLICY</h2>
+                    <ul class="dataPolicy__ul normalText mb-0">
+                        <li class="dataPolicy__li">
+                            RT-WMIS data is available free of charge exclusively
+                            for informational, research, and educational
+                            purposes.
+                        </li>
+                        <li class="dataPolicy__li">
+                            Users intending to include RT-WMIS data in their
+                            publications are requested to notify
+                            <a href="mailto:info.gage@upc.edu" class="dataLink"
+                                >gAGE/UPC</a
+                            >.
+                        </li>
+                        <li class="dataPolicy__li">
+                            Commercial use of RT-WMIS data requires prior
+                            consultation with gAGE/UPC to establish licensing
+                            arrangements.
+                        </li>
+                        <li class="dataPolicy__li">
+                            Redistribution of RT-WMIS data without written
+                            consent is strictly prohibited.
+                        </li>
+                        <li class="dataPolicy__li">
+                            RT-WMIS data may contain errors, and gAGE/UPC
+                            disclaims liability for any damages arising from its
+                            use.
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="dataFormats boxContainer">
+                    <h2 class="titleH2">FORMATS OF PRODUCTS</h2>
+                    <p class="normalText">
+                        The main scintillation monitoring indices are:
+                    </p>
+                    <ul class="dataFormats__ul normalText">
+                        <li class="dataFormats__li">
+                            <span class="bold">ROTI L1:</span> ROTI for the L1
+                            signal, measured in TECU/min.
+                        </li>
+                        <li class="dataFormats__li">
+                            <span class="bold">ROTI GF:</span> ROTI for the
+                            Geometry-free combination, measured in TECU/min.
+                        </li>
+                        <li class="dataFormats__li">
+                            <span class="bold">S4 L1:</span> Amplitude
+                            scintillation index for the L1 signal.
+                        </li>
+                        <li class="dataFormats__li">
+                            <span class="bold">σφ L1:</span> Phase scintillation
+                            index for the L1 signal, measured in radians.
+                        </li>
+                        <li class="dataFormats__li">
+                            <span class="bold">σIF:</span> Phase scintillation
+                            index for the Ionosphere-free combination, measured
+                            in meters.
+                        </li>
+                    </ul>
+                    <p class="normalText">
+                        Additional data fields and indices include:
+                    </p>
+                    <p class="normalText">
+                        - Ndat values indicate the number of measurements used
+                        to calculate each index.<br />
+                        - S4 and ROTI calculations include second-frequency
+                        measurements (L2 from GPS, L5 from Galileo).<br />
+                        - Column 10 in <code>sphi.tmp</code> denotes the number
+                        of prefit measurements used by the Butterworth HPF.
+                    </p>
+                    <div class="tablesContainer">
+                        <div class="rotiTable">
+                            <h3 class="titleH3">Data Format - roti.tmp</h3>
+                            <table class="dataFormats__table">
+                                <thead>
+                                    <tr>
+                                        <th>Column No.</th>
+                                        <th>Field Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Seconds of day</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Station name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Satellite</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Elevation</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Azimuth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>ROTI L1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>ROTI GF</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>Ndat (roti L1)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>Ndat (roti GF)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>S4 L1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>S4 L2 or L5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>ROTI L2 or L5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="sphiTable">
+                            <h3 class="titleH3">Data Format - sphi.tmp</h3>
+                            <table class="dataFormats__table">
+                                <thead>
+                                    <tr>
+                                        <th>Column No.</th>
+                                        <th>Field Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Seconds of day</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Station name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Satellite</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Elevation</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Azimuth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>σφ L1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>σIF</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>Ndat (σφ L1)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>Ndat (σIF)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>Ndat (BTW HPF)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <include src="./views/footer.html"></include>
+        <script type="module" src="./assets/scripts/main.js"></script>
+    </body>
+</html>

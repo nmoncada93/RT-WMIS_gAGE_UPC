@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Real Time WorldWide Monitoring of Ionospheric Scillation"
+        />
+        <meta name="author" content="Nicolas Orlando Moncada Herrera" />
+        <!--meta property="og:image" content="img/og-image.png" /-->
+        <meta
+            property="og:title"
+            content="RT-WMIS (Real Time WorldWide Monitoring of Ionospheric Scillation)"
+        />
+        <!-- link rel="icon" href="img/favicon.png" type="image/x-icon" /-->
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="./assets/styles/main.scss"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Krona+One&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <!-- Incluye el enlace de Font Awesome desde su CDN -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <!--This library works from a CDN in the WorldWide Network but is posible to have the Script local in my server-->
+        <script
+            type="text/javascript"
+            src="https://assets.pyecharts.org/assets/v5/echarts.min.js"
+        ></script>
+
+        <!--ICONOS FONT AWESOME-->
+        <!-- do not remove this line! -->
+        <title>RT-WMIS: Monitoring</title>
+    </head>
+
+    <body>
+        <include src="./views/header.html"></include>
+        <div class="menuOverlay"></div>
+
+        <main class="mainContainer">
+            <h1 class="titleH1">Monitoring</h1>
+
+            <div class="decorline decorline--body"></div>
+
+            <div class="generalContainer">
+                <!------------------------- REAL-TIME INDEX ----------------------------------->
+                <div class="boxContainer">
+                    <h2 class="titleH2">REAL-TIME INDEX</h2>
+
+                    <label class="selectLabel" for="stationSelector"
+                        >Select station and index:</label
+                    >
+                    <div class="selectorsContainer">
+                        <select
+                            id="stationSelector"
+                            name="clock_outputs"
+                            required
+                            aria-required="true"
+                            aria-describedby="clock-help"
+                            class="boxContainer__titleH3 boxContainer__titleH3--index"
+                        >
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value=""
+                                disabled
+                                selected
+                            >
+                                Scroll down to select station
+                            </option>
+
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="AMCR"
+                                disabled
+                            >
+                                AMCR
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="ANDA"
+                                disabled
+                            >
+                                ANDA
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="ARUB"
+                                disabled
+                            >
+                                ARUB
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="ASCG"
+                                disabled
+                            >
+                                ASCG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="BRUX"
+                                disabled
+                            >
+                                BRUX
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="CHUR"
+                                disabled
+                            >
+                                CHUR
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="CPVG"
+                                disabled
+                            >
+                                CPVG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="DARW"
+                                disabled
+                            >
+                                DARW
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="DJIG"
+                                disabled
+                            >
+                                DJIG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="HOFN"
+                                disabled
+                            >
+                                HOFN
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="IQAL"
+                                disabled
+                            >
+                                IQAL
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="KIRU"
+                                disabled
+                            >
+                                KIRU
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="KOUG"
+                                disabled
+                            >
+                                KOUG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="KRGG"
+                                disabled
+                            >
+                                KRGG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="MBAR"
+                                disabled
+                            >
+                                MBAR
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="METG"
+                                disabled
+                            >
+                                METG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="NKLG"
+                                disabled
+                            >
+                                NKLG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="PIMO"
+                                disabled
+                            >
+                                PIMO
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="PTGG"
+                                disabled
+                            >
+                                PTGG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="REYK"
+                                disabled
+                            >
+                                REYK
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="RGDG"
+                                disabled
+                            >
+                                RGDG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="RNNA"
+                                disabled
+                            >
+                                RNNA
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="SCTB"
+                                disabled
+                            >
+                                SCTB
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="SEYG"
+                                disabled
+                            >
+                                SEYG
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="TBOB"
+                                disabled
+                            >
+                                TBOB
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="UNSA"
+                                disabled
+                            >
+                                UNSA
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="UTQI"
+                                disabled
+                            >
+                                UTQI
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="VARS"
+                                disabled
+                            >
+                                VARS
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="WHIT"
+                                disabled
+                            >
+                                WHIT
+                            </option>
+                            <option
+                                class="selectOption selectOption--disabled"
+                                value="YELL"
+                                disabled
+                            >
+                                YELL
+                            </option>
+                        </select>
+
+                        <div class="btnsContainer">
+                            <button
+                                id="s4Button"
+                                class="primaryBtn primaryRTBtn"
+                            >
+                                S4
+                            </button>
+                            <button
+                                id="rotiButton"
+                                class="primaryBtn primaryRTBtn"
+                            >
+                                ROTI L1
+                            </button>
+                            <button
+                                id="sphiButton"
+                                class="primaryBtn primaryRTBtn"
+                            >
+                                SigmaPhi
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="loadingMessageRTindex" style="display: none">
+                        <div class="loading-message">
+                            <span>Loading chart...</span>
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+
+                    <div class="chartContainer" id="indexRTContainer">
+                        <div class="chartIndex" id="chart"></div>
+                        <!--div class="chartIndex" id="chart"></!--div-->
+                    </div>
+
+                    <button
+                        class="secondaryBtn"
+                        id="closeChartButton"
+                        style="display: none"
+                    >
+                        RESET
+                    </button>
+                </div>
+
+                <!------------------------ REAL-TIME MAPS ------------------------------------>
+
+                <div class="boxContainer mapBox">
+                    <h2 class="titleH2">REAL TIME MAP</h2>
+                    <p class="boxContainer__p">
+                        Please select a map from the dropdown to view the chart.
+                    </p>
+
+                    <div class="selectorsContainer"></div>
+
+                    <button
+                        class="boxContainer__titleH3 mapBox__sphiH3"
+                        id="sphiMapBtn"
+                    >
+                        SigmaPhi<i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div id="sphiMapContainer" class="mapRTContainer">
+                        <svg id="sphiMapRender"></svg>
+                        <button class="secondaryBtn" id="closeSphiMapBtn">
+                            RESET
+                        </button>
+                    </div>
+
+                    <button
+                        class="boxContainer__titleH3 mapBox__rotilH3"
+                        id="rotiMapBtn"
+                    >
+                        ROTI L1<i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div id="rotiMapContainer" class="mapRTContainer">
+                        <svg id="rotiMapRender"></svg>
+                        <button class="secondaryBtn" id="closeRotiMapBtn">
+                            RESET
+                        </button>
+                    </div>
+
+                    <button
+                        class="boxContainer__titleH3 mapBox__rotilH3"
+                        id="s4MapBtn"
+                    >
+                        S4<i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div id="s4MapContainer" class="mapRTContainer">
+                        <svg id="s4MapRender"></svg>
+                        <button class="secondaryBtn" id="closeS4MapBtn">
+                            RESET
+                        </button>
+                    </div>
+                </div>
+
+                <!------------------------- PAST INDEX ---------------------------------------->
+                <div class="boxContainer recordsBox">
+                    <h2 class="titleH2">PAST INDEX</h2>
+                    <div class="selectorsContainer">
+                        <div class="btnsContainer">
+                            <input
+                                type="date"
+                                id="dateInput"
+                                class="recordsBox__date"
+                            />
+
+                            <select
+                                id="pastStationSelector"
+                                name="clock_outputs"
+                                required
+                                aria-required="true"
+                                aria-describedby="clock-help"
+                                class="boxContainer__titleH3 boxContainer__titleH3--index"
+                            >
+                                <option
+                                    class="selectOption selectOption--disabled"
+                                    value=""
+                                    disabled
+                                    selected
+                                >
+                                    Scroll down to select station
+                                </option>
+
+                                <option class="selectOption" value="AMCR">
+                                    AMCR
+                                </option>
+                                <option class="selectOption" value="ANDA">
+                                    ANDA
+                                </option>
+                                <option class="selectOption" value="ARUB">
+                                    ARUB
+                                </option>
+                                <option class="selectOption" value="ASCG">
+                                    ASCG
+                                </option>
+                                <option class="selectOption" value="BRUX">
+                                    BRUX
+                                </option>
+                                <option class="selectOption" value="CHUR">
+                                    CHUR
+                                </option>
+                                <option class="selectOption" value="CPVG">
+                                    CPVG
+                                </option>
+                                <option class="selectOption" value="DARW">
+                                    DARW
+                                </option>
+                                <option class="selectOption" value="DJIG">
+                                    DJIG
+                                </option>
+                                <option class="selectOption" value="HOFN">
+                                    HOFN
+                                </option>
+                                <option class="selectOption" value="IQAL">
+                                    IQAL
+                                </option>
+                                <option class="selectOption" value="KIRU">
+                                    KIRU
+                                </option>
+                                <option class="selectOption" value="KOUG">
+                                    KOUG
+                                </option>
+                                <option class="selectOption" value="KRGG">
+                                    KRGG
+                                </option>
+                                <option class="selectOption" value="MBAR">
+                                    MBAR
+                                </option>
+                                <option class="selectOption" value="METG">
+                                    METG
+                                </option>
+                                <option class="selectOption" value="NKLG">
+                                    NKLG
+                                </option>
+                                <option class="selectOption" value="PIMO">
+                                    PIMO
+                                </option>
+                                <option class="selectOption" value="PTGG">
+                                    PTGG
+                                </option>
+                                <option class="selectOption" value="REYK">
+                                    REYK
+                                </option>
+                                <option class="selectOption" value="RGDG">
+                                    RGDG
+                                </option>
+                                <option class="selectOption" value="RNNA">
+                                    RNNA
+                                </option>
+                                <option class="selectOption" value="SCTB">
+                                    SCTB
+                                </option>
+                                <option class="selectOption" value="SEYG">
+                                    SEYG
+                                </option>
+                                <option class="selectOption" value="TBOB">
+                                    TBOB
+                                </option>
+                                <option class="selectOption" value="UNSA">
+                                    UNSA
+                                </option>
+                                <option class="selectOption" value="UTQI">
+                                    UTQI
+                                </option>
+                                <option class="selectOption" value="VARS">
+                                    VARS
+                                </option>
+                                <option class="selectOption" value="WHIT">
+                                    WHIT
+                                </option>
+                                <option class="selectOption" value="YELL">
+                                    YELL
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="btnsContainer">
+                            <button
+                                class="primaryBtn primaryPRBtn"
+                                id="s4IndexPRBtn"
+                            >
+                                S4
+                            </button>
+                            <button
+                                class="primaryBtn primaryPRBtn"
+                                id="rotiIndexPRBtn"
+                            >
+                                ROTI L1
+                            </button>
+                            <button
+                                class="primaryBtn primaryPRBtn"
+                                id="sphiIndexPRBtn"
+                            >
+                                SigmaPhi
+                            </button>
+                        </div>
+                        <!--------------- selectorsContainer ------------------->
+                    </div>
+
+                    <div id="noDataMessagePRindex" style="display: none"></div>
+
+                    <div id="loadingMessagePRindex" style="display: none">
+                        <div class="loading-message">
+                            <span>Searching in database...</span>
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+
+                    <div class="chartPRContainer" id="indexPRContainer">
+                        <div class="chartPRIndex" id="pastChart"></div>
+                    </div>
+                </div>
+
+                <div class="boxContainer recordsBox">
+                    <h2 class="titleH2">PAST MAPS</h2>
+
+                    <div class="btnsContainer">
+                        <button class="primaryBtn">S4</button>
+                        <button class="primaryBtn">ROTI L1</button>
+                        <button class="primaryBtn">SigmaPhi</button>
+                    </div>
+                </div>
+                <!------------------------ PAST MAPS ----------------------------------------->
+            </div>
+        </main>
+
+        <include src="./views/footer.html"></include>
+
+        <!------------------------SCRIPTS REAL-TIME INDEX ----------------------------------------->
+        <script type="module" src="./assets/scripts/main.js"></script>
+        <script
+            type="module"
+            src="./assets/scripts/indexRT/indexRTController.js"
+        ></script>
+
+        <!------------------------SCRIPTS REAL-TIME MAPS (SPHI.dat)----------------------------------------->
+        <script src="./assets/scripts/libraries/d3.min.js"></script>
+        <script
+            type="module"
+            src="./assets/scripts/mapsRT/mapRTController.js"
+        ></script>
+        <script
+            type="module"
+            src="./assets/scripts/mapsRT/mapRTProjectionSphi.js"
+        ></script>
+        <!------------------------SCRIPTS REAL-TIME MAPS ROTI (ROTI.dat)----------------------------------------->
+
+        <script
+            type="module"
+            src="./assets/scripts/mapsRT/mapRTProjectionRoti.js"
+        ></script>
+
+        <!------------------------SCRIPTS REAL-TIME MAPS S4 (ROTI.dat)----------------------------------------->
+
+        <script
+            type="module"
+            src="./assets/scripts/mapsRT/mapRTProjectionS4.js"
+        ></script>
+
+        <!------------------------SCRIPTS PAST RECORDS INDEX ----------------------------------------->
+        <script
+            type="module"
+            src="./assets/scripts/indexPR/indexPRController.js"
+        ></script>
+    </body>
+</html>

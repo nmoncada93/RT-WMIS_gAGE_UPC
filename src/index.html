@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Real Time WorldWide Monitoring of Ionospheric Scillation" />
+    <meta name="author" content="Nicolas Orlando Moncada Herrera" />
+    <!--meta property="og:image" content="img/og-image.png" /-->
+    <meta property="og:title" content="RT-WMIS (Real Time WorldWide Monitoring of Ionospheric Scillation)" />
+    <!-- link rel="icon" href="img/favicon.png" type="image/x-icon" /-->
+    <link rel="stylesheet" type="text/css" href="./assets/styles/main.scss" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Krona+One&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet" />
+    <!-- Incluye el enlace de Font Awesome desde su CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- do not remove this line! -->
+    <title>RT-WMIS Project</title>
+</head>
+
+<body class="bodyContainer bodyLanding">
+    <script type="module" src="./assets/scripts/main.js"></script>
+    <include src="./views/header.html"></include>
+
+    <main class="mainContainer landingContainer">
+        <h1 class="titleH1 titleH1--landing">
+            RT-WMIS: Real Time WorldWide Monitoring of Ionospheric
+            Scintillation
+        </h1>
+
+        <div class="decorline decorline--body decorline--landing"></div>
+
+        <div class="landingBoxes">
+            <div class="landingBox">
+                <a href="./network.html" class="landingBox__a">
+                    <img src="./assets/images/network.png" alt="" />
+                    <h2 class="landingBox__title">NETWORK</h2>
+                    <p class="landingBox__description">
+                        Visualize the distribution of the global real-time
+                        network used in our study.
+                    </p>
+                </a>
+            </div>
+            <div class="landingBox">
+                <a href="./methodology.html">
+                    <img src="./assets/images/methodology.png" alt="" />
+                    <h2 class="landingBox__title">METHODOLOGY</h2>
+                    <p class="landingBox__description">
+                        Learn about the scintillation problem and our
+                        geodetic detrending methodology.
+                    </p>
+                </a>
+            </div>
+            <div class="landingBox">
+                <a href="./monitoring.html">
+                    <img src="./assets/images/monitoring.png" alt="" />
+                    <h2 class="landingBox__title">MONITORING</h2>
+                    <p class="landingBox__description">
+                        Access real-time monitoring results and browse our
+                        historical gallery of significant events.
+                    </p>
+                </a>
+            </div>
+            <div class="landingBox">
+                <a href="./data_products.html">
+                    <img src="./assets/images/dataProduct.png" alt="" />
+                    <h2 class="landingBox__title">DATA PRODUCTS</h2>
+                    <p class="landingBox__description">
+                        Directly access our data products via secure HTTPS
+                        links.
+                    </p>
+                </a>
+            </div>
+            <div class="landingBox">
+                <a href="./publications.html">
+                    <img src="./assets/images/publication.png" alt="" />
+                    <h2 class="landingBox__title">PUBLICATIONS</h2>
+                    <p class="landingBox__description">
+                        Explore relevant publications that utilize our
+                        products.
+                    </p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <include src="./views/footer.html"></include>
+</body>
+
+</html>

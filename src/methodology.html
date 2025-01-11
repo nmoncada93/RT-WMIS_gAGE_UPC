@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Real Time WorldWide Monitoring of Ionospheric Scillation" />
+    <meta name="author" content="Nicolas Orlando Moncada Herrera" />
+    <!--meta property="og:image" content="img/og-image.png" /-->
+    <meta property="og:title" content="RT-WMIS (Real Time WorldWide Monitoring of Ionospheric Scillation)" />
+    <!-- link rel="icon" href="img/favicon.png" type="image/x-icon" /-->
+    <link rel="stylesheet" type="text/css" href="./assets/styles/main.scss" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Krona+One&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet" />
+    <!-- Incluye el enlace de Font Awesome desde su CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- do not remove this line! -->
+    <title>RT-WMIS: Methodology</title>
+</head>
+
+<body>
+    <include src="./views/header.html"></include>
+    <div class="menuOverlay"></div>
+
+    <main class="mainContainer ">
+        <h1 class="titleH1">
+            Ionospheric Scillation Monitoring and Geodetic Detrending
+        </h1>
+
+        <div class="decorline decorline--body"></div>
+        <article class="boxContainer generalContainer">
+            <section>
+                <img src="./assets/images/methodologyDiagram.png"
+                    alt="diagram illustrating the main steps of the RT-WNIS implementation">
+                <h2 class="titleH2">Diagram Illustrating the Main Steps of the RT-WMIS Implementation</h2>
+                <p class="normalText">The approach followed to implement the RT-WMIS is based on modifying the
+                    algorithms used by the post-process geodetic detrending (GD) methodology (developed in [RD-1] and
+                    [RD-2]) to work according to a real-time (RT) processing of the input GNSS carrier-phase
+                    measurements and, eventually, of the precise RT corrections required to model and detrend those
+                    measurements.</p>
+                <p class="normalText">The outline of the different steps of the RT implementation can be seen in the
+                    figure above, which includes the following three steps:</p>
+            </section>
+            <section>
+                <h3 class="titleH3">Step 1: Data Collection</h3>
+                <p class="normalText">By means of some multi-stream client program, the RT 1-Hz data streams received
+                    from previously selected broadcasters (using an NTRIP transport protocol) are collected into RINEX
+                    format observation files. The preferred choice to do this conversion was the BKG NTRIP Client (BNC)
+                    software. Moreover, the data from precise receiver coordinates, satellite orbits and clocks and from
+                    zenith tropospheric delay (ZTD) corrections are also collected from some RT parallel processing or
+                    download from some service provider in the case of the precise coordinates of receivers and
+                    satellites.</p>
+            </section>
+            <section>
+                <h3 class="titleH3">Step 2: Pre-Processing</h3>
+                <p class="normalText">This is the main part of the processing. The raw carrier phase and code
+                    pseudorange measurements from two different frequencies in the RINEX files are revised to check for
+                    shifts in the time stamps due to millisecond corrections and any other anomalies in the input data.
+                    In this step, a rough cycle-slip (CS) detector is used at the beginning to specifically remove large
+                    discontinuities producing big jumps in the carrier-phase signals, which cannot be modelled by a
+                    small number of integer cycles of the GNSS signal. Finally, the output is converted to a standard
+                    text file.</p>
+            </section>
+            <section>
+                <h3 class="titleH3">Step 3: Detrending and Scintillation Index Calculation</h3>
+                <p class="normalText">From this text file, the code and carrier-phases are detrended in parallel,
+                    removing on one side the non-dispersive terms and known effects on the signals by means of precise
+                    geodetic products or by using standard model equations. Moreover, the clock fluctuations from the
+                    receiver are derived from a specific processing based on the GD method [RD-2]. After the detrending,
+                    one obtains the prefit residuals of uncombined GNSS signals only affected by the ionospheric delay
+                    and the carrier phase ambiguity.</p>
+                <p class="normalText">After this detrending of the GNSS measurements, the RT-WMIS algorithm will proceed
+                    with the detection and correction of the elemental CSs not previously detected. This procedure is
+                    aimed at deriving the exact integer number of cycles that each individual GNSS signal changes as a
+                    consequence of a CS producing a small jump (of only a few cycles) in the detrended observables.
+                    Then, the individual arcs of continuous carrier-phase measurements from a single signal, free of
+                    CSs, will be identified and numbered. In this way, the final consolidated continuous arcs of
+                    measurements are free of any CS that could contaminate the calculation of scintillation parameters,
+                    which would give rise to artificial fluctuations not related with real ionospheric variability.</p>
+                <p class="normalText">Using the consolidated arcs of detrended measurements, the last step of the
+                    RT-WMIS implementation is to calculate the amplitude scintillation index (<b>S4</b>) and the rate of
+                    total electron content index (<b>ROTI</b>). Additionally, after applying a 6th-order Butterworth
+                    high-pass filter (HPF) with a cut-off frequency of 0.1 Hz to the detrended L1-frequency carrier
+                    phase, the corresponding phase scintillation index is calculated.</p>
+            </section>
+            <section>
+                <h2 class="titleH2">References</h2>
+                <div class="references">
+                    <div class="publication normalText">
+                        <blockquote class="blockquote">
+                            Juan, J.M., Aragon-Angel, A., Sanz J., González-Casado G., Rovira-Garcia A. (2017)
+                            <a class="blockquote__a" href="https://server.gage.upc.edu/papers/2017/JOGE2017.pdf">"A
+                                method for scintillation characterization using geodetic receivers operating at 1
+                                Hz"</a>
+                            <i>Journal of Geodesy</i>, November 2017, Volume 91, Issue 11, pp 1383–1397.
+                            <a class="blockquote__a" href="https://doi.org/10.1007/s00190-017-1031-0"
+                                target="_blank">DOI</a>
+                        </blockquote>
+                    </div>
+
+                    <div class="publication normalText">
+                        <blockquote class="blockquote">
+                            Nguyen VK, Rovira-Garcia A, Juan JM, Sanz J, González-Casado G, La‐The V, Tung TH (2019)
+                            <a class="blockquote__a" href="https://server.gage.upc.edu/papers/2019/JOGE2019.pdf">
+                                "Measuring phase scintillation at different frequencies with conventional GNSS receivers
+                                operating at 1 Hz"</a>
+                            Journal of Geodesy 93(10):1985-2001.
+                            <a class="blockquote__a" href="https://doi.org/10.1007/s00190-019-01297-z"
+                                target="_blank">DOI</a>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="publication normalText">
+                    <blockquote class="blockquote textNormal">
+                        Yin Y, González-Casado G, Aragon-Angel A, Juan JM, Sanz J, Rovira-Garcia A (2024)
+                        <a href="https://ieeexplore.ieee.org/document/10731936?source=authoralert" target="_blank"
+                            class="blockquote__a"> "Advantages of Computing ROTI From Single-Frequency L1 Carrier-Phase
+                            Measurements of Geodetic Receivers Operating at 1 Hz"</a>
+                        IEEE Transaction on Geoscience and Remote Sensing</i> vol. 62, pp. 1-10, 2024,
+                        <a class="blockquote__a" href="https://doi.org/10.1109/TGRS.2024.3485496"
+                            target="_blank">DOI</a>
+                    </blockquote>
+                </div>
+            </section>
+
+        </article>
+    </main>
+
+    <include src="./views/footer.html"></include>
+    <script type="module" src="./assets/scripts/main.js"></script>
+</body>
+
+</html>
