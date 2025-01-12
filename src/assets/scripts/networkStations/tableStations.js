@@ -1,7 +1,7 @@
 
 async function fetchData() {
   try {
-      const response = await fetch('http://127.0.0.1:5000/api/network-stations');
+      const response = await fetch('http://192.168.0.16:5000/api/network-stations');
 
       if (!response.ok) {
           throw new Error('No data available in the UPC server');

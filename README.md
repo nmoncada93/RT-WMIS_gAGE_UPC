@@ -7,6 +7,8 @@
 
 `npm install`
 
+`cd backend`
+
 `python -m venv venv`
 
   ## Windows
@@ -20,9 +22,7 @@
 `pip install -r requirements.txt`
 
   ## Run Back-End:
-  `cd backend`
   `python -m flask run`
-
 
   Ctrl + Shift + P --> select: Python: Select Interpreter (Windows)
   Cmd  + Shift + P --> select: Python: Select Interpreter (MAC)
@@ -43,6 +43,14 @@
   `nohup gunicorn -w 3 -b 0.0.0.0:5000 app:app &`
 
 http://localhost:5000
+
+# LINUX UBUNTU CONFIG
+
+Terminal:
+`hostname -I`
+
+`sudo ufw allow 5000
+sudo ufw reload`
 
 
 
