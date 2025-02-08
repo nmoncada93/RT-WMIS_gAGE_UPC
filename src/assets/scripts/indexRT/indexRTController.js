@@ -13,7 +13,7 @@ let fetchInterval = null;
 
 // [B] Obtiene datos de sphi.tmp ==================================================
 async function fetchSphiData() {
-  const url = `http://127.0.0.1:5000/api/indexRT/read-sphi`;
+  const url = `http://gage1.upc.edu/api/indexRT/read-sphi`;
   console.log("Fetch Request Enviada a Sphi");
   toggleLoadingText(true);
 
@@ -41,7 +41,7 @@ async function fetchSphiData() {
 // [C] Obtiene datos de roti.tmp ===================================================
 async function fetchRotiData() {
 
-  const url = `http://127.0.0.1:5000/api/indexRT/read-roti`;
+  const url = `http://gage1.upc.edu/api/indexRT/read-roti`;
   try {
     const response = await fetch(url);
     if (!response.ok) {

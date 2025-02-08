@@ -8,7 +8,7 @@ async function fetchRawSphiData() {
 
   isFetching.sphi = true; // Activa el flag
   try {
-    const response = await fetch(`http://127.0.0.1:5000/api/mapsRT/read-igp-sphi`);
+    const response = await fetch(`http://gage1.upc.edu/api/mapsRT/read-igp-sphi`);
     if (!response.ok) {
       throw new Error(`Error HTTP para SPHI: ${response.status}`);
     }
@@ -27,7 +27,7 @@ async function fetchRawRotiData() {
 
   isFetching.roti = true; // Activa el flag
   try {
-    const response = await fetch(`http://127.0.0.1:5000/api/mapsRT/read-igp-roti`);
+    const response = await fetch(`http://gage1.upc.edu/api/mapsRT/read-igp-roti`);
     if (!response.ok) {
       throw new Error(`Error HTTP para ROTI: ${response.status}`);
     }
@@ -46,7 +46,7 @@ async function fetchRawS4Data() {
 
   isFetching.s4 = true; // Activa el flag
   try {
-    const response = await fetch(`http://127.0.0.1:5000/api/mapsRT/read-igp-roti`);
+    const response = await fetch(`http://gage1.upc.edu/api/mapsRT/read-igp-roti`);
     if (!response.ok) {
       throw new Error(`Error HTTP para S4: ${response.status}`);
     }

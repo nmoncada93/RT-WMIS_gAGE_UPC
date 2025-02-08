@@ -1,6 +1,6 @@
 # Install RT-WMIS PROJECT
 
-`git clone https://github.com/nmoncada93/TFM_RT-WMIS_WebSite.git`
+`git clone https://github.com/nmoncada93/RT-WMIS_gAGE_UPC.git`
 
 `cd RT-WMIS-WEB-PROJECT`
 
@@ -31,6 +31,7 @@
 
 # Production Deployment
 
+## Gunicorn
 `pip install gunicorn`
 
   ## Workers:
@@ -44,14 +45,46 @@
 
 http://localhost:5000
 
-# LINUX UBUNTU CONFIG
+  ## LINUX UBUNTU CONFIG
 
-Terminal:
-`hostname -I`
+  Terminal:
+  `hostname -I`
 
-`sudo ufw allow 5000
-sudo ufw reload`
+  `sudo ufw allow 5000
+  sudo ufw reload`
 
+  ## Nginx
+
+  `sudo apt update`
+  `sudo apt install nginx`
+
+  `cd /etc/nginx/sites-available`
+
+  `sudo nano flask_project` :
+
+
+  server {
+    listen 80;
+    server_name TU_IP_PUBLICA;  # Cambia TU_IP_PUBLICA por tu IP pública o dominio
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;  # Redirige al backend en Gunicorn
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # Opcional: Configuración para manejar errores de backend
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+}
+
+
+`sudo systemctl status nginx`
+
+`sudo systemctl start nginx`
 
 
 
