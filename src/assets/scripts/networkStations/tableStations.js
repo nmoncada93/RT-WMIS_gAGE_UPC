@@ -1,17 +1,16 @@
-
 async function fetchData() {
   try {
-      //const response = await fetch('http://127.0.0.1:5000/api/network-stations');
-      const response = await fetch('http://gage1.upc.edu/api/network-stations');
+    const response = await fetch("http://127.0.0.1:5000/api/network-stations");
+    //const response = await fetch('http://gage1.upc.edu/api/network-stations');
 
-      if (!response.ok) {
-          throw new Error('No data available in the UPC server');
-      }
+    if (!response.ok) {
+      throw new Error("No data available in the UPC server");
+    }
 
-      const data = await response.json();
-      updateStationStatus(data.content);
+    const data = await response.json();
+    updateStationStatus(data.content);
   } catch (error) {
-      console.error('Connection problem', error);
+    console.error("Connection problem", error);
   }
 }
 
@@ -24,14 +23,14 @@ function updateStationStatus(content) {
   let match;
 
   while ((match = stationRegex.exec(content)) !== null) {
-      const stationName = match[1];
-      const status = match[2];
+    const stationName = match[1];
+    const status = match[2];
 
-      const rowId = `tr${stationName}`;
-      const row = document.getElementById(rowId);
+    const rowId = `tr${stationName}`;
+    const row = document.getElementById(rowId);
 
-      if (row) {
-          row.style.color = (status === "NOT available") ? 'red' : '';
-      }
+    if (row) {
+      row.style.color = status === "NOT available" ? "red" : "";
+    }
   }
 }

@@ -8,7 +8,9 @@ async function fetchRawSphiData() {
 
   isFetching.sphi = true; // Activa el flag
   try {
-    const response = await fetch(`http://gage1.upc.edu/api/mapsRT/read-igp-sphi`);
+    const response = await fetch(
+      `http://127.0.0.1:5000/api/mapsRT/read-igp-sphi`
+    );
     if (!response.ok) {
       throw new Error(`Error HTTP para SPHI: ${response.status}`);
     }
@@ -27,7 +29,9 @@ async function fetchRawRotiData() {
 
   isFetching.roti = true; // Activa el flag
   try {
-    const response = await fetch(`http://gage1.upc.edu/api/mapsRT/read-igp-roti`);
+    const response = await fetch(
+      `http://127.0.0.1:5000/api/mapsRT/read-igp-roti`
+    );
     if (!response.ok) {
       throw new Error(`Error HTTP para ROTI: ${response.status}`);
     }
@@ -46,7 +50,9 @@ async function fetchRawS4Data() {
 
   isFetching.s4 = true; // Activa el flag
   try {
-    const response = await fetch(`http://127.0.0.1:5000/api/mapsRT/read-igp-roti`);
+    const response = await fetch(
+      `http://127.0.0.1:5000/api/mapsRT/read-igp-roti`
+    );
     if (!response.ok) {
       throw new Error(`Error HTTP para S4: ${response.status}`);
     }
@@ -59,8 +65,8 @@ async function fetchRawS4Data() {
 // [B] Funcion para filtrar y estructurar los datos ========================================
 // [B.1] Filtro para SPHI
 function filterSphiData(rawData) {
-  const latestTime = Math.max(...rawData.map(group => group.TIME));
-  const latestGroup = rawData.find(group => group.TIME === latestTime);
+  const latestTime = Math.max(...rawData.map((group) => group.TIME));
+  const latestGroup = rawData.find((group) => group.TIME === latestTime);
 
   if (!latestGroup) {
     console.error("No se encontró bloque de datos TIME para SPHI...");
@@ -71,20 +77,20 @@ function filterSphiData(rawData) {
     {
       TIME: latestGroup.TIME,
       data: latestGroup.data
-        .map(cell => ({
+        .map((cell) => ({
           Longitude: cell.Longitude ?? null,
           Latitude: cell.Latitude ?? null,
           mean_sphi: cell.mean_sphi ?? null,
         }))
-        .filter(cell => cell.Longitude !== null && cell.Latitude !== null),
+        .filter((cell) => cell.Longitude !== null && cell.Latitude !== null),
     },
   ];
 }
 
 // [B.2] Filtro para ROTI
 function filterRotiData(rawData) {
-  const latestTime = Math.max(...rawData.map(group => group.TIME));
-  const latestGroup = rawData.find(group => group.TIME === latestTime);
+  const latestTime = Math.max(...rawData.map((group) => group.TIME));
+  const latestGroup = rawData.find((group) => group.TIME === latestTime);
 
   if (!latestGroup) {
     console.error("No se encontró bloque de datos TIME para ROTI...");
@@ -95,20 +101,20 @@ function filterRotiData(rawData) {
     {
       TIME: latestGroup.TIME,
       data: latestGroup.data
-        .map(cell => ({
+        .map((cell) => ({
           Longitude: cell.Longitude ?? null,
           Latitude: cell.Latitude ?? null,
           mean_roti: cell.mean_roti ?? null,
         }))
-        .filter(cell => cell.Longitude !== null && cell.Latitude !== null),
+        .filter((cell) => cell.Longitude !== null && cell.Latitude !== null),
     },
   ];
 }
 
 // [B.3] Filtro para S4
 function filterS4Data(rawData) {
-  const latestTime = Math.max(...rawData.map(group => group.TIME));
-  const latestGroup = rawData.find(group => group.TIME === latestTime);
+  const latestTime = Math.max(...rawData.map((group) => group.TIME));
+  const latestGroup = rawData.find((group) => group.TIME === latestTime);
 
   if (!latestGroup) {
     console.error("No se encontró bloque de datos TIME para S4...");
@@ -119,19 +125,19 @@ function filterS4Data(rawData) {
     {
       TIME: latestGroup.TIME,
       data: latestGroup.data
-        .map(cell => ({
+        .map((cell) => ({
           Longitude: cell.Longitude ?? null,
           Latitude: cell.Latitude ?? null,
           mean_s4: cell.mean_s4 ?? null,
         }))
-        .filter(cell => cell.Longitude !== null && cell.Latitude !== null),
+        .filter((cell) => cell.Longitude !== null && cell.Latitude !== null),
     },
   ];
 }
 
 // [C] Funcion principal para obtener y procesar los datos ======================================
 // [C.1] Para SPHI
-  export async function fetchIgpSphiData() {
+export async function fetchIgpSphiData() {
   try {
     const rawData = await fetchRawSphiData();
     if (!rawData) return null;
@@ -172,4 +178,3 @@ const isFetching = {
   roti: false,
   s4: false,
 };
-

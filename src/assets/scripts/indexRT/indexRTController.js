@@ -1,9 +1,9 @@
-import { renderChart } from './indexRTChart.js';
+import { renderChart } from "./indexRTChart.js";
 
 // [A] Variables Globales =========================================================
 let realTimeData = {
-  sphi: null,  // Almacena el JSON de sphi.tmp
-  roti: null   // Almacena el JSON de roti.tmp
+  sphi: null, // Almacena el JSON de sphi.tmp
+  roti: null, // Almacena el JSON de roti.tmp
 };
 let activeIndex = null;
 let selectedStation = "";
@@ -13,7 +13,7 @@ let fetchInterval = null;
 
 // [B] Obtiene datos de sphi.tmp ==================================================
 async function fetchSphiData() {
-  const url = `http://gage1.upc.edu/api/indexRT/read-sphi`;
+  const url = `http://127.0.0.1:5000/api/indexRT/read-sphi`;
   console.log("Fetch Request Enviada a Sphi");
   toggleLoadingText(true);
 
@@ -30,18 +30,17 @@ async function fetchSphiData() {
     console.log("Actualizando selector de estaciones desde Fetch de SPHI");
     toggleLoadingText(false);
     return data;
-  }
-
-  catch (error) {
+  } catch (error) {
     console.error("Error during sphi.tmp request:", error);
-    handleNoData("No data available for the selected date. Please try again later or choose another date!");
+    handleNoData(
+      "No data available for the selected date. Please try again later or choose another date!"
+    );
   }
 }
 
 // [C] Obtiene datos de roti.tmp ===================================================
 async function fetchRotiData() {
-
-  const url = `http://gage1.upc.edu/api/indexRT/read-roti`;
+  const url = `http://127.0.0.1:5000/api/indexRT/read-roti`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -54,11 +53,11 @@ async function fetchRotiData() {
 
     showIndexButtons();
     return data;
-  }
-
-  catch (error) {
+  } catch (error) {
     console.error("Error during roti.tmp request:", error);
-    handleNoData("No data available for the selected date. Please try again later or choose another date!");
+    handleNoData(
+      "No data available for the selected date. Please try again later or choose another date!"
+    );
   }
 }
 
@@ -72,40 +71,40 @@ function detectSelectedStation() {
 // [E] Actualiza estaciones en el selector ===========================================
 function updateStationSelector(data) {
   const stationSelector = document.getElementById("stationSelector");
-  const availableStations = data.map(item => item[1]);  // Lista de estaciones disponibles
+  const availableStations = data.map((item) => item[1]); // Lista de estaciones disponibles
 
-  Array.from(stationSelector.options).forEach(option => {
-    const isAvailable = availableStations.includes(option.value);  // Verifica
+  Array.from(stationSelector.options).forEach((option) => {
+    const isAvailable = availableStations.includes(option.value); // Verifica
     option.disabled = !isAvailable;
-    option.classList.toggle('selectOption--disabled', !isAvailable);
+    option.classList.toggle("selectOption--disabled", !isAvailable);
 
-    option.style.color = isAvailable ? 'white' : 'red';
+    option.style.color = isAvailable ? "white" : "red";
   });
 }
 
 // [F] Marca boton activo y desactiva el resto ============================================
 function setActiveButton(button) {
   const buttons = document.querySelectorAll(".primaryRTBtn");
-  buttons.forEach(btn => btn.classList.remove("active-button"));
+  buttons.forEach((btn) => btn.classList.remove("active-button"));
   button.classList.add("active-button");
 }
 
 // [G] Muestra botones INDEX solo si hay estación seleccionada y datos cargados ============
 function showIndexButtons() {
-  const buttons = document.querySelectorAll('.primaryRTBtn');
+  const buttons = document.querySelectorAll(".primaryRTBtn");
   const s4Button = document.getElementById("s4Button");
   const rotiButton = document.getElementById("rotiButton");
 
   if (selectedStation) {
     // Muestra SPHI solo si sphi.tmp esta cargado
-    buttons.forEach(btn => {
+    buttons.forEach((btn) => {
       if (btn.id === "sphiButton") {
-        btn.style.display = realTimeData.sphi ? 'inline-block' : 'none';
+        btn.style.display = realTimeData.sphi ? "inline-block" : "none";
       }
     });
 
     // Muestra S4 y ROTI solo si roti.tmp está cargado
-    const showRotiButtons = realTimeData.roti ? 'inline-block' : 'none';
+    const showRotiButtons = realTimeData.roti ? "inline-block" : "none";
     s4Button.style.display = showRotiButtons;
     rotiButton.style.display = showRotiButtons;
   }
@@ -118,9 +117,9 @@ async function checkAndUpdateData() {
   let newData;
 
   // Realiza fetch dependiendo del índice activo
-  if (activeIndex === 'sphi') {
+  if (activeIndex === "sphi") {
     newData = await fetchSphiData();
-  } else if (activeIndex === 'roti' || activeIndex === 's4') {
+  } else if (activeIndex === "roti" || activeIndex === "s4") {
     newData = await fetchRotiData();
   } else {
     console.log("No active index to fetch data.");
@@ -134,13 +133,13 @@ async function checkAndUpdateData() {
 
     if (lastDataHash !== newHash) {
       // Actualiza la data correspondiente
-      if (activeIndex === 'sphi') {
+      if (activeIndex === "sphi") {
         realTimeData.sphi = newData;
       } else {
         realTimeData.roti = newData;
       }
 
-      lastDataHash = newHash;  // Guarda el nuevo hash
+      lastDataHash = newHash; // Guarda el nuevo hash
       console.log("Data updated - Changes detected.");
 
       // Re-renderiza el grafico SOLO si hay datos nuevos
@@ -175,7 +174,9 @@ function stopAutoFetch() {
 // [K] Texto de carga selector de estacion ====================================================
 function toggleLoadingText(isLoading) {
   const stationSelector = document.getElementById("stationSelector");
-  const defaultOption = stationSelector.querySelector('.selectOption--disabled');
+  const defaultOption = stationSelector.querySelector(
+    ".selectOption--disabled"
+  );
 
   if (isLoading) {
     defaultOption.textContent = "Loading stations...";
@@ -187,7 +188,7 @@ function toggleLoadingText(isLoading) {
 // [L] Muestra/oculta boton Reset ==========================================================
 function toggleResetButton(show) {
   const resetButton = document.getElementById("closeChartButton");
-  resetButton.style.display = show ? 'inline-block' : 'none';
+  resetButton.style.display = show ? "inline-block" : "none";
 }
 
 // [M] Detiene fetch, oculta grafico ========================================================
@@ -195,7 +196,7 @@ function resetChart() {
   stopAutoFetch();
   const chartContainer = document.getElementById("indexRTContainer");
   if (chartContainer) {
-    chartContainer.style.display = 'none';
+    chartContainer.style.display = "none";
     console.log("RESET: Fetch detenido y gráfico oculto.");
   } else {
     console.warn("El contenedor del gráfico no existe.");
@@ -206,44 +207,45 @@ function resetChart() {
   stationSelector.selectedIndex = 0;
 
   // Oculta botones de índice
-  const indexButtons = document.querySelectorAll('.primaryRTBtn');
-  indexButtons.forEach(btn => {
-    btn.style.display = 'none';
-    btn.classList.remove('active-button');
+  const indexButtons = document.querySelectorAll(".primaryRTBtn");
+  indexButtons.forEach((btn) => {
+    btn.style.display = "none";
+    btn.classList.remove("active-button");
   });
-
 }
 
 //=======================================================================================
 //==============================  LISTENERS =============================================
 //=======================================================================================
 
-
 // [N] Captura estacion renderizasi hay índice activo ==========================================
-document.getElementById("stationSelector").addEventListener("change", function () {
-  detectSelectedStation();
-  showIndexButtons();
-  if (activeIndex) {
-    const dataToRender = activeIndex === 's4' ? realTimeData['roti'] : realTimeData[activeIndex];
-    if (dataToRender) {
-      console.log ("[I] Intentando renderizar");
+document
+  .getElementById("stationSelector")
+  .addEventListener("change", function () {
+    detectSelectedStation();
+    showIndexButtons();
+    if (activeIndex) {
+      const dataToRender =
+        activeIndex === "s4" ? realTimeData["roti"] : realTimeData[activeIndex];
+      if (dataToRender) {
+        console.log("[I] Intentando renderizar");
 
-      renderChart(dataToRender, selectedStation, activeIndex);
-      toggleResetButton(true);
+        renderChart(dataToRender, selectedStation, activeIndex);
+        toggleResetButton(true);
+      }
     }
-  }
-});
+  });
 
 // [M1] Render Chart for SPHI Index ============================================================
 document.getElementById("sphiButton").addEventListener("click", function () {
   stopAutoFetch();
   if (realTimeData.sphi && selectedStation) {
-    activeIndex = 'sphi';
-    document.getElementById("indexRTContainer").style.display = 'flex';
-    renderChart(realTimeData.sphi, selectedStation, 'sphi');
+    activeIndex = "sphi";
+    document.getElementById("indexRTContainer").style.display = "flex";
+    renderChart(realTimeData.sphi, selectedStation, "sphi");
     setActiveButton(this);
     startAutoFetch();
-    document.getElementById("closeChartButton").style.display = 'inline-block';
+    document.getElementById("closeChartButton").style.display = "inline-block";
   } else {
     console.log("Selecciona una estación antes de generar el gráfico.");
   }
@@ -253,12 +255,12 @@ document.getElementById("sphiButton").addEventListener("click", function () {
 document.getElementById("rotiButton").addEventListener("click", function () {
   stopAutoFetch();
   if (realTimeData.roti && selectedStation) {
-    activeIndex = 'roti';
-    document.getElementById("indexRTContainer").style.display = 'flex';
-    renderChart(realTimeData.roti, selectedStation, 'roti');
+    activeIndex = "roti";
+    document.getElementById("indexRTContainer").style.display = "flex";
+    renderChart(realTimeData.roti, selectedStation, "roti");
     setActiveButton(this);
     startAutoFetch();
-    document.getElementById("closeChartButton").style.display = 'inline-block';
+    document.getElementById("closeChartButton").style.display = "inline-block";
   } else {
     console.log("Selecciona una estación antes de generar el gráfico.");
   }
@@ -268,23 +270,25 @@ document.getElementById("rotiButton").addEventListener("click", function () {
 document.getElementById("s4Button").addEventListener("click", function () {
   stopAutoFetch();
   if (realTimeData.roti && selectedStation) {
-    activeIndex = 's4';
-    document.getElementById("indexRTContainer").style.display = 'flex';
-    renderChart(realTimeData.roti, selectedStation, 's4');
+    activeIndex = "s4";
+    document.getElementById("indexRTContainer").style.display = "flex";
+    renderChart(realTimeData.roti, selectedStation, "s4");
     setActiveButton(this);
     startAutoFetch();
-    document.getElementById("closeChartButton").style.display = 'inline-block';
+    document.getElementById("closeChartButton").style.display = "inline-block";
   } else {
     console.log("Selecciona una estación antes de generar el gráfico.");
   }
 });
 
 // [O] Evento para ejecutar el fetch ============================================================
-document.getElementById("stationSelector").addEventListener("focus", function () {
-  console.log("Evento FOCUS del selector de estaciones");
-  fetchSphiData();
-  fetchRotiData();
-});
+document
+  .getElementById("stationSelector")
+  .addEventListener("focus", function () {
+    console.log("Evento FOCUS del selector de estaciones");
+    fetchSphiData();
+    fetchRotiData();
+  });
 
 const resetButton = document.getElementById("closeChartButton");
 if (resetButton) {
@@ -295,4 +299,3 @@ if (resetButton) {
 } else {
   console.warn("El botón de reset no existe en el DOM.");
 }
-
