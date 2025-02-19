@@ -1,4 +1,4 @@
-// [A] Pinta cuadricula ========================================================
+// [A] Paints grid cells on the map ===========================================
 function paintGrid(gridData, dynamicData, svg) {
   svg
     .selectAll(".grid-cell")
@@ -11,15 +11,15 @@ function paintGrid(gridData, dynamicData, svg) {
     .attr("height", (d) => d.height)
     .style("fill", (d) => {
       const match = findMatchingCell(dynamicData, d);
-      return match ? getColor(match.mean_roti) : "none";
+      return match ? getColor(match.mean_sphi) : "none";
     })
-    .style("stroke", "lightgray") // Bordes cuadricula
+    .style("stroke", "lightgray") // Grid cell borders
     .style("stroke-width", 0.3);
 }
 
-// [B] Busca coincidencia de datos =============================================
+// [B] Finds matching data for a grid cell ===================================
 function findMatchingCell(dynamicData, gridCell) {
-  const tolerance = 0.01; // Tolerancia
+  const tolerance = 0.01; // Tolerance for matching coordinates
   return dynamicData
     .flatMap((group) => group.data)
     .find(
@@ -29,23 +29,20 @@ function findMatchingCell(dynamicData, gridCell) {
     );
 }
 
-// [C] Genera colores según los valores =========================================
+// [C] Generates color based on SPHI values ==================================
 function getColor(value) {
-  if (value === null || value === 0) return "transparent"; // No pinta
-  if (value < 0.5) return "#0837d0"; // Azul oscuro
-  if (value < 1) return "#40E0D0"; // Turquesa
-  if (value < 1.5) return "#00FF00"; // Verde
-  if (value < 2) return "#FFFF00"; // Amarillo
-  if (value < 2.5) return "#FFA500"; // Naranja
-  return "#bc0000"; // Rojo oscuro
+  if (value === null || value === 0) return "transparent"; // No color
+  if (value < 0.5) return "#0837d0"; // Dark blue
+  if (value < 1) return "#40E0D0"; // Turquoise
+  if (value < 1.5) return "#00FF00"; // Green
+  if (value < 2) return "#FFFF00"; // Yellow
+  if (value < 2.5) return "#FFA500"; // Orange
+  return "#bc0000"; // Dark red
 }
 
-//-----------------------------------VISUAL ELEMENTS -----------------------------------
-//--------------------------------------------------------------------------------------
-
-// [D] Dibuja reglas de coordenadas ============================================
+// [D] Draws coordinate axes on the map ======================================
 function coordinateAxes(projection, svg, step = 10) {
-  // [D.1] Dibujar líneas de latitud (horizontales)
+  // [D.1] Draw latitude lines (horizontal)
   for (let lat = -90; lat <= 90; lat += step) {
     const startPoint = projection([-180, lat]);
     const endPoint = projection([180, lat]);
@@ -59,7 +56,7 @@ function coordinateAxes(projection, svg, step = 10) {
         .attr("stroke-width", 0.5)
         .attr("fill", "none");
 
-      // Etiquetas en los lados izquierdo y derecho
+      // Add labels on the left and right sides
       svg
         .append("text")
         .attr("x", startPoint[0] - 15)
@@ -80,9 +77,8 @@ function coordinateAxes(projection, svg, step = 10) {
     }
   }
 
-  // [D.2] Dibujar líneas de longitud (verticales)
+  // [D.2] Draw longitude lines (vertical)
   for (let lon = -180; lon <= 180; lon += 20) {
-    // Cambiado step a 20 grados
     const startPoint = projection([lon, 90]);
     const endPoint = projection([lon, -90]);
 
@@ -95,7 +91,7 @@ function coordinateAxes(projection, svg, step = 10) {
         .attr("stroke-width", 0.5)
         .attr("fill", "none");
 
-      // Etiquetas en la parte superior
+      // Add labels at the top and bottom
       svg
         .append("text")
         .attr("x", startPoint[0])
@@ -105,7 +101,6 @@ function coordinateAxes(projection, svg, step = 10) {
         .attr("text-anchor", "middle")
         .text(`${lon}°`);
 
-      // Etiquetas en la parte inferior
       svg
         .append("text")
         .attr("x", endPoint[0])
@@ -118,9 +113,9 @@ function coordinateAxes(projection, svg, step = 10) {
   }
 }
 
-// [E] Dibuja etiquetas de ejes ===========================================
+// [E] Draws axis labels ====================================================
 function drawAxisLabels(svg, width, height) {
-  // Etiqueta para el eje Y (Latitude)
+  // Label for Y-axis (Latitude)
   svg
     .append("text")
     .attr("x", -height / 2)
@@ -131,24 +126,24 @@ function drawAxisLabels(svg, width, height) {
     .attr("text-anchor", "middle")
     .text("Latitude");
 
-  // Etiqueta para el eje X (Longitude)
+  // Label for X-axis (Longitude)
   svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", height + 1)
+    .attr("y", height + 30)
     .attr("fill", "black")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
-    .text("Longitude"); // Texto para el eje X
+    .text("Longitude");
 }
 
-// [F] Dibuja barra de colores ==============================================
+// [F] Draws a color bar ====================================================
 function drawColorBar(svg, width, height) {
-  const barWidth = width - 200; // Ancho de la barra de colores
-  const barHeight = 15; // Altura de la barra de colores
-  const barPadding = 15; // Separación entre el mapa y la barra
+  const barWidth = width - 200; // Width of the color bar
+  const barHeight = 15; // Height of the color bar
+  const barPadding = 15; // Space between the map and the bar
 
-  // Contenedor para la barra
+  // Container for the color bar
   const barGroup = svg
     .append("g")
     .attr(
@@ -156,56 +151,52 @@ function drawColorBar(svg, width, height) {
       `translate(${(width - barWidth) / 2}, ${height + barPadding})`
     );
 
-  // Gradiente de colores
+  // Color gradient
   const gradient = svg
     .append("defs")
     .append("linearGradient")
-    .attr("id", "colorBarGradientRoti")
+    .attr("id", "colorBarGradient")
     .attr("x1", "0%")
     .attr("y1", "0%")
     .attr("x2", "100%")
     .attr("y2", "0%");
 
-  gradient.append("stop").attr("offset", "0%").attr("stop-color", "#0837d0"); // Azul oscuro
-  gradient.append("stop").attr("offset", "16.6%").attr("stop-color", "#40E0D0"); // Turquesa
-  gradient.append("stop").attr("offset", "33.2%").attr("stop-color", "#00FF00"); // Verde
-  gradient.append("stop").attr("offset", "49.8%").attr("stop-color", "#FFFF00"); // Amarillo
-  gradient.append("stop").attr("offset", "66.4%").attr("stop-color", "#FFA500"); // Naranja
-  gradient.append("stop").attr("offset", "83%").attr("stop-color", "#bc0000"); // Rojo oscuro
-  gradient.append("stop").attr("offset", "100%").attr("stop-color", "#bc0000"); // Rojo oscuro
+  gradient.append("stop").attr("offset", "0%").attr("stop-color", "#0837d0"); // Dark blue
+  gradient.append("stop").attr("offset", "16.6%").attr("stop-color", "#40E0D0"); // Turquoise
+  gradient.append("stop").attr("offset", "33.2%").attr("stop-color", "#00FF00"); // Green
+  gradient.append("stop").attr("offset", "49.8%").attr("stop-color", "#FFFF00"); // Yellow
+  gradient.append("stop").attr("offset", "66.4%").attr("stop-color", "#FFA500"); // Orange
+  gradient.append("stop").attr("offset", "100%").attr("stop-color", "#bc0000"); // Dark red
 
-  // Leyenda
+  // Color bar legend
   barGroup
     .append("rect")
     .attr("width", barWidth)
     .attr("height", barHeight)
-    .style("fill", "url(#colorBarGradientRoti)");
+    .style("fill", "url(#colorBarGradient)");
 
-  // Etiquetas numericas debajo de la barra
-  const axisScale = d3
-    .scaleLinear()
-    .domain([0, 3]) // Ajustar según rango de valores de ROTI
-    .range([0, barWidth]);
+  // Numerical labels below the bar
+  const axisScale = d3.scaleLinear().domain([0, 3]).range([0, barWidth]);
 
   const axis = d3
     .axisBottom(axisScale)
-    .ticks(6) // Incrementos de 0.5
-    .tickFormat(d3.format(".1f")); // Formato con un decimal
+    .ticks(6) // Increments of 0.5
+    .tickFormat(d3.format(".1f")); // One decimal format
 
   barGroup
     .append("g")
     .attr("transform", `translate(0, ${barHeight})`)
     .call(axis);
 
-  // Texto informativo debajo de la barra
+  // Informational text below the bar
   barGroup
     .append("text")
-    .attr("x", barWidth / 2) // Centrado horizontalmente
-    .attr("y", barHeight + 35) // Espaciado debajo de la barra
+    .attr("x", barWidth / 2) // Horizontally centered
+    .attr("y", barHeight + 35) // Space below the bar
     .attr("fill", "black")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
-    .text("Color Scale (ROTI in TECU/min)"); // Texto descriptivo
+    .text("Color Scale (SPHI in TECU/min)");
 }
 
 export {

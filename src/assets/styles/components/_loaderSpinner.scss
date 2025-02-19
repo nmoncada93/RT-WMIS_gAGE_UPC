@@ -37,6 +37,18 @@
   margin-top: 40px;
 }
 
+// MAPS PAST RECORDS SPINNER CONTAINER
+#loadingMessagePRMaps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-style: italic;
+  font-size: $fontSizeH2;
+  color: $spaceBlue;
+  margin-top: 40px;
+}
+
 .loading-message {
   display: flex;
   flex-direction: column;

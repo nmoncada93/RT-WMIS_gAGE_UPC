@@ -547,8 +547,36 @@
                     </div>
                 </div>
 
-                <div class="boxContainer recordsBox">
+                <!------------------------ PAST MAPS ----------------------------------------->
+                <div class="boxContainer mapBox">
                     <h2 class="titleH2">PAST MAPS</h2>
+
+                    <input
+                        type="date"
+                        id="dateInputMaps"
+                        class="recordsBox__date"
+                    />
+
+                    <div id="loadingMessagePRMaps" style="display: none">
+                        <div class="loading-message">
+                            <span>Searching in database...</span>
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="boxContainer__titleH3 mapBox__sphiH3"
+                        id="sphiMapPRBtn"
+                    >
+                        SigmaPhi<i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div id="sphiMapPRContainer" class="mapRTContainer">
+                        <svg id="sphiMapPRRender"></svg>
+                        <button class="secondaryBtn" id="closeSphiMapPRBtn">
+                            RESET
+                        </button>
+                    </div>
 
                     <div class="btnsContainer">
                         <button class="primaryBtn">S4</button>
@@ -556,7 +584,6 @@
                         <button class="primaryBtn">SigmaPhi</button>
                     </div>
                 </div>
-                <!------------------------ PAST MAPS ----------------------------------------->
             </div>
         </main>
 
@@ -597,6 +624,17 @@
         <script
             type="module"
             src="./assets/scripts/indexPR/indexPRController.js"
+        ></script>
+
+        <!------------------------SCRIPTS PAST RECORDS MAPS ----------------------------------------->
+        <script
+            type="module"
+            src="./assets/scripts/mapsPR/mapsPRController.js"
+        ></script>
+
+        <script
+            type="module"
+            src="./assets/scripts/mapsPR/mapPRProjectionSphi.js"
         ></script>
     </body>
 </html>
