@@ -30,13 +30,23 @@ function findMatchingCell(dynamicData, gridCell) {
 }
 
 // [C] Genera colores según los valores =========================================
-function getColor(value) {
+/*function getColor(value) {
   if (value === null || value === 0) return "transparent"; // No pinta
   if (value < 0.5) return "#0837d0"; // Azul oscuro
   if (value < 1) return "#40E0D0"; // Turquesa
   if (value < 1.5) return "#00FF00"; // Verde
   if (value < 2) return "#FFFF00"; // Amarillo
   if (value < 2.5) return "#FFA500"; // Naranja
+  return "#bc0000"; // Rojo oscuro
+}*/
+
+function getColor(value) {
+  if (value === null || value === 0) return "transparent"; // No pinta
+  if (value < 0.04) return "#0837d0"; // Azul oscuro
+  if (value < 0.08) return "#40E0D0"; // Turquesa
+  if (value < 0.12) return "#00FF00"; // Verde
+  if (value < 0.16) return "#FFFF00"; // Amarillo
+  if (value < 0.2) return "#FFA500"; // Naranja
   return "#bc0000"; // Rojo oscuro
 }
 
@@ -182,12 +192,14 @@ function drawColorBar(svg, width, height) {
     .style("fill", "url(#colorBarGradient)");
 
   // Etiquetas numericas debajo de la barra
-  const axisScale = d3.scaleLinear().domain([0, 3]).range([0, barWidth]);
+  //const axisScale = d3.scaleLinear().domain([0, 3]).range([0, barWidth]);
+  const axisScale = d3.scaleLinear().domain([0, 0.2]).range([0, barWidth]);
 
   const axis = d3
     .axisBottom(axisScale)
-    .ticks(6) // Incrementos de 0.5
-    .tickFormat(d3.format(".1f")); // Formato con un decimal
+    .ticks(5) // Incrementos de 0.5
+    //.tickValues([0, 0.05, 0.10, 0.15, 0.2]) // Valores fijos
+    .tickFormat(d3.format(".2f")); // Formato con un decimal
 
   barGroup
     .append("g")
@@ -202,7 +214,7 @@ function drawColorBar(svg, width, height) {
     .attr("fill", "black")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
-    .text("Color Scale (SPHI in TECU/min)");
+    .text("Color Scale (SPHI in Radian)");
 }
 
 export {
