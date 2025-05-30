@@ -27,6 +27,15 @@
     background-color: $spaceBlue;
     color: $pureWhite;
   }
+
+  &--disabled {
+    background-color: #e0e0e0;
+    color: #888;
+    border-color: #bbb;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
 }
 
 @media screen and (max-width: 620px) {
@@ -70,4 +79,49 @@
   color: red;
   pointer-events: none; /* Evita cualquier interacción */
   cursor: not-allowed; /* Muestra un icono de prohibido */
+}
+
+
+.tertiaryBtn {
+  border: 2px solid $spaceBlue;
+  border-radius: 12px;
+  padding: 5px 20px;
+  min-width: 50px;
+  color: $spaceBlue;
+  white-space: nowrap;
+
+  &:hover,
+  &:active,
+  &:focus,
+  &.active-button {
+    background-color: $spaceBlue;
+    color: $pureWhite;
+  }
+
+    &--disabled {
+    background-color: #e0e0e0;
+    color: #888;
+    border-color: #bbb;
+    cursor: not-allowed;
+    pointer-events: none; // Evita cualquier evento click
+  }
+
+}
+
+.quaternaryBtn {
+  border: 2px solid $spaceBlue;
+  border-radius: 12px;
+  padding: 5px 20px;
+  min-width: 50px;
+  color: $spaceBlue;
+  white-space: nowrap;
+  display: inline-block;
+  margin: 0 auto;
+
+  &:hover,
+  &:focus {
+    background-color: $spaceBlue;
+    color: $pureWhite;
+  }
+
 }

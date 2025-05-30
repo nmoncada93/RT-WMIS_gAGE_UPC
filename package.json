@@ -4,7 +4,7 @@
   "private": true,
   "description": "Boilerplate for Advanced HTML/CSS Tools UOC students",
   "scripts": {
-    "parcel:serve": "parcel src/index.html -p 8123 --target web --open --no-cache",
+    "parcel:serve": "parcel src/index.html -p 8123 --target web --no-cache",
     "parcel:build": "parcel build src/index.html --target web --no-source-maps --no-cache",
     "clean": "rimraf dist .cache .cache-loader .parcel-cache",
     "dev": "npm-run-all clean parcel:serve",
