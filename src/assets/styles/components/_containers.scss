@@ -105,12 +105,17 @@
 }
 
 .hourButtonsContainer {
+  display: none; // Oculto por defecto
+}
+
+.hourButtonsContainer.hourButtonsContainer--visible {
   border: 2px solid red;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
+
 
 .minutesButtonsContainer {
   border: 2px solid blue;
@@ -128,3 +133,6 @@
   align-items: center;
   gap: 1rem;
 }
+
+
+

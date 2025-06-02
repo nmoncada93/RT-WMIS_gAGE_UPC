@@ -1,10 +1,16 @@
 import { getSelectedMapDate } from "./mapsPRCalendar.js";
+//import { resetMap } from "./mapPRProjectionSphi.js";
+
 
 // [A] Variables Globales ============================================
 let mapsPRData = {
   igp_sphi: null, // Almacena el JSON de igp_sphi.dat.xz
   igp_roti: null, // Almacena el JSON de igp_roti.dat.xz
 };
+
+const sphiMapBtn = document.getElementById("sphiMapPRBtn");
+sphiMapBtn.classList.add("boxContainer__titleH3--disabled"); // 🔒 Por defecto desactivado
+document.getElementById("hourButtonsPR").classList.remove("hourButtonsContainer--visible");
 
 // [B] Manejo de Fetch Flags =========================================
 const isFetching = {
@@ -103,7 +109,10 @@ export async function fetchIgpSphiData(year, doy) {
   try {
     const rawData = await fetchRawIgpSphiData(year, doy);
 
-    if (!rawData) {
+
+
+    const hasUsefulData = Array.isArray(rawData) && rawData.some(group => Array.isArray(group.data) && group.data.length > 0);
+    if (!rawData || !hasUsefulData) {
       // Si no hay datos, limpia la estructura y actualiza botones
       mapsPRData.igp_sphi_byHourBlock = {};
       hourBtnAvailability();
@@ -114,10 +123,13 @@ export async function fetchIgpSphiData(year, doy) {
 
     const filteredData = filterSphiData(rawData);
     mapsPRData.igp_sphi = filteredData;
+    sphiMapBtn.classList.remove("boxContainer__titleH3--disabled");
 
     // Paso 2: Agrupar y guardar en nueva variable
     mapsPRData.igp_sphi_byHourBlock = groupByHourAndBlock(filteredData);
     console.log("Agrupado por hora y bloque (step 2):", mapsPRData.igp_sphi_byHourBlock);
+
+
 
     hourBtnAvailability();
     hourDropdownAvailability();
@@ -133,20 +145,24 @@ export async function fetchIgpSphiData(year, doy) {
       resumen[h]++;
     });
 
+
     console.log("Bloques por hora:", resumen);
     console.log("Data from igp_sphi.dat.xz filtered and stored.");
+
     return filteredData;
+
   } catch (error) {
     console.error("Error al obtener o procesar los datos SPHI:", error.message);
     // Si hay error, limpia la estructura y actualiza botones
     mapsPRData.igp_sphi_byHourBlock = {};
     hourBtnAvailability();
     hourDropdownAvailability();
+    document.getElementById("hourButtonsPR").classList.remove("hourButtonsContainer--visible");
+
 
     handlerSpinner(false);
   }
 }
-
 
 // [] Update hour button availability ====================================================
 function hourBtnAvailability() {
@@ -189,6 +205,7 @@ function hourDropdownAvailability() {
 document
   .getElementById("dateInputMaps")
   .addEventListener("change", async function () {
+    //clearSvgMapOnly(); // 🧹 Limpia visualización anterior
     const { year, doy } = getSelectedMapDate(this.value);
     console.log(
       "Fecha seleccionada:",
@@ -198,6 +215,8 @@ document
       "Día del año (DoY):",
       doy
     );
+
+    window.dispatchEvent(new Event("cleanMapPR"));
 
     handlerSpinner(true);
     await fetchIgpSphiData(year, doy);
@@ -209,7 +228,6 @@ export function getSphiBlockByHourAndMinute(hour, blockIdx) {
   if (!mapsPRData.igp_sphi_byHourBlock) return null;
   return mapsPRData.igp_sphi_byHourBlock[hour]?.[blockIdx] ?? null;
 }
-
 
 //=======================================================Poner en un Script generico
 // [Y] === Poblar selector de horas (0 a 23) ===========================

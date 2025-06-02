@@ -7,6 +7,12 @@
   display: none;
 }
 
+#hourSelectPR {
+
+  display:inline;
+
+}
+
 @media screen and (max-width: 620px) {
   .primaryBtn,
   .secondaryBtn {
@@ -125,3 +131,4 @@
   }
 
 }
+
