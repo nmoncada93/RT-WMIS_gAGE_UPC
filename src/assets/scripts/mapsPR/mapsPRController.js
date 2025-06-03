@@ -318,6 +318,68 @@ document.getElementById("hourSelectPR").addEventListener("change", function () {
 */
 
 
+// [AUTO-PLAY] ================================================================
+// [A] Variables de estado del reproductor
+let isAutoPlaying = false;
+let autoPlayIntervalId = null;
+let autoPlayIndex = 0;
+let activeHourButtons = [];
+
+// [B] Inicia la reproducción automática de botones
+function startAutoPlay() {
+  const playButton = document.getElementById("autoPlayHoursBtn");
+
+  // [B.1] Obtener botones activos (sin clase de deshabilitado)
+  activeHourButtons = Array.from(document.querySelectorAll("#hourButtonsPR .tertiaryBtn"))
+    .filter(btn => !btn.classList.contains("tertiaryBtn--disabled"))
+    .sort((a, b) => parseInt(a.dataset.hour, 10) - parseInt(b.dataset.hour, 10)); // Orden creciente
+
+  if (activeHourButtons.length === 0) {
+    console.warn("No hay botones de hora habilitados.");
+    return;
+  }
+
+  // [B.2] Preparar estado
+  isAutoPlaying = true;
+  autoPlayIndex = 0;
+  playButton.textContent = "⏸️";
+  playButton.classList.add("playing");
+
+  // [B.3] Simular clic cada segundo (ajustable)
+  autoPlayIntervalId = setInterval(() => {
+    if (autoPlayIndex >= activeHourButtons.length) {
+      stopAutoPlay(); // Fin automático
+      return;
+    }
+
+    activeHourButtons[autoPlayIndex].click();
+    autoPlayIndex++;
+  }, 1250);
+}
+
+// [C] Detener la reproducción automática
+function stopAutoPlay() {
+  const playButton = document.getElementById("autoPlayHoursBtn");
+  clearInterval(autoPlayIntervalId);
+  autoPlayIntervalId = null;
+  isAutoPlaying = false;
+  autoPlayIndex = 0;
+  playButton.textContent = "▶️";
+  playButton.classList.remove("playing");
+}
+
+// [D] Alternar entre iniciar y detener
+function toggleAutoPlay() {
+  if (isAutoPlaying) {
+    stopAutoPlay();
+  } else {
+    startAutoPlay();
+  }
+}
+
+// [E] Asociar evento al botón de reproducción
+document.getElementById("autoPlayHoursBtn").addEventListener("click", toggleAutoPlay);
+
 
 
 
