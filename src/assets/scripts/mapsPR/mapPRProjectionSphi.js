@@ -171,7 +171,7 @@ function resetMap() {
 
 // [H] Limpia todo el mapa ---------------------------------------------------
 function cleanMap() {
-  svg.selectAll("*").remove();
+  svg.selectAll(".grid-cell").remove();
 }
 
 

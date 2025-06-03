@@ -19,11 +19,32 @@ const isFetching = {
 };
 
 // [C] Mostrar/ocultar spinner de carga ==============================
-function handlerSpinner(show) {
+/*function handlerSpinner(show) {
   const spinner = document.getElementById("loadingMessagePRMaps"); // ID del spinner
   spinner.style.display = show ? "flex" : "none";
   console.log(show ? "Spinner mostrado" : "Spinner oculto");
+}*/
+
+function handlerSpinner(show) {
+  const spinner = document.getElementById("loadingMessagePRMaps");
+  const map = document.getElementById("sphiMapPRContainer");
+
+  if (show) {
+    // Ocultamos el mapa y recordamos si estaba visible
+    map.dataset.wasVisible = map.style.display === "block";
+    map.style.display = "none";
+    spinner.style.display = "flex";
+  } else {
+    spinner.style.display = "none";
+
+    // Solo mostramos el mapa si estaba visible antes
+    if (map.dataset.wasVisible === "true") {
+      map.style.display = "block";
+    }
+    delete map.dataset.wasVisible;
+  }
 }
+
 
 // [D] Obtiene datos históricos de igp_sphi.dat.xz ====================
 async function fetchRawIgpSphiData(year, doy) {
@@ -108,16 +129,13 @@ function groupByHourAndBlock(filteredData) {
 export async function fetchIgpSphiData(year, doy) {
   try {
     const rawData = await fetchRawIgpSphiData(year, doy);
-
-
-
     const hasUsefulData = Array.isArray(rawData) && rawData.some(group => Array.isArray(group.data) && group.data.length > 0);
+    
     if (!rawData || !hasUsefulData) {
       // Si no hay datos, limpia la estructura y actualiza botones
       mapsPRData.igp_sphi_byHourBlock = {};
       hourBtnAvailability();
       hourDropdownAvailability();
-
       return null;
     }
 
@@ -129,11 +147,8 @@ export async function fetchIgpSphiData(year, doy) {
     mapsPRData.igp_sphi_byHourBlock = groupByHourAndBlock(filteredData);
     console.log("Agrupado por hora y bloque (step 2):", mapsPRData.igp_sphi_byHourBlock);
 
-
-
     hourBtnAvailability();
     hourDropdownAvailability();
-
 
     // Después de mapsPRData.igp_sphi = filteredData;
     const bloques = mapsPRData.igp_sphi;
@@ -145,9 +160,12 @@ export async function fetchIgpSphiData(year, doy) {
       resumen[h]++;
     });
 
-
     console.log("Bloques por hora:", resumen);
     console.log("Data from igp_sphi.dat.xz filtered and stored.");
+
+    // [G.1] Actualiza estado visual del selector de minutos
+    const selectedHour = parseInt(document.getElementById("hourSelectPR").value, 10);
+    //minuteDropdownAvailability(selectedHour);
 
     return filteredData;
 
@@ -158,8 +176,6 @@ export async function fetchIgpSphiData(year, doy) {
     hourBtnAvailability();
     hourDropdownAvailability();
     document.getElementById("hourButtonsPR").classList.remove("hourButtonsContainer--visible");
-
-
     handlerSpinner(false);
   }
 }
@@ -180,6 +196,7 @@ function hourBtnAvailability() {
   });
 }
 
+
 // [] Update hour button availability ====================================================
 function hourDropdownAvailability() {
 
@@ -195,11 +212,29 @@ function hourDropdownAvailability() {
     const hasData = (byHourBlock[h] || []).some(b => b && b.data && b.data.length > 0);
     if (!hasData) {
       option.disabled = true;
-      option.classList.add("hourSelectPR__option--disabled");
+      //option.classList.add("hourSelectPR__option--disabled");
+      option.classList.add("selectOption--disabled");
     }
     hourSelect.appendChild(option);
   }
 }
+
+
+function clearHourAndMinuteSelections() {
+  // 1. Desactivar todos los botones de hora
+  document.querySelectorAll('.tertiaryBtn.active-button').forEach(btn => {
+    btn.classList.remove('active-button');
+  });
+
+  // 2. Reiniciar selector desplegable de hora (móvil)
+  const hourSelect = document.getElementById("hourSelectPR");
+  hourSelect.selectedIndex = 0;
+
+  // 3. Reiniciar selector de bloque de minutos
+  const blockSelect = document.getElementById("blockSelectPR");
+  blockSelect.selectedIndex = 0;
+}
+
 
 // [H] Captura fecha y obtiene datos ==================================
 document
@@ -217,6 +252,7 @@ document
     );
 
     window.dispatchEvent(new Event("cleanMapPR"));
+    clearHourAndMinuteSelections(); // ← limpia selección de hora y minutos
 
     handlerSpinner(true);
     await fetchIgpSphiData(year, doy);
@@ -229,7 +265,17 @@ export function getSphiBlockByHourAndMinute(hour, blockIdx) {
   return mapsPRData.igp_sphi_byHourBlock[hour]?.[blockIdx] ?? null;
 }
 
-//=======================================================Poner en un Script generico
+document.getElementById('blockPrevBtn').addEventListener('mousedown', function(e) {
+  e.preventDefault(); // Previene que quede enfocado
+  this.blur();
+});
+
+document.getElementById('blockNextBtn').addEventListener('mousedown', function(e) {
+  e.preventDefault();
+  this.blur();
+});
+
+/*//=======================================================Poner en un Script generico
 // [Y] === Poblar selector de horas (0 a 23) ===========================
 const hourSelect = document.getElementById("hourSelectPR");
 for (let h = 0; h < 24; h++) {
@@ -238,44 +284,38 @@ for (let h = 0; h < 24; h++) {
   option.textContent = h.toString().padStart(2, "0") + ":00";
   hourSelect.appendChild(option);
 }
+  */
 
-
-// [Y.2] === Desactiva bloques sin datos en el selector de minutos =============
+/*
+// [Y.2] === Desactiva bloques sin datos en el selector de minutos ============
 function minuteDropdownAvailability(selectedHour) {
   const blockSelect = document.getElementById("blockSelectPR");
   const byHourBlock = mapsPRData.igp_sphi_byHourBlock;
 
-  // Recorre cada opción del selector de minutos
   for (let i = 0; i < blockSelect.options.length; i++) {
     const option = blockSelect.options[i];
+
+    // Limpia todo siempre antes de aplicar nuevos estilos
+    option.classList.remove("selectOption--disabled");
+    option.disabled = false;
+
     const block = byHourBlock[selectedHour]?.[i];
-
     const hasData = block && block.data && block.data.length > 0;
-    if (!hasData) {
-      option.classList.add("no-data");
-      option.disabled = true;
-    } else {
-        option.classList.remove("no-data");
-        option.disabled = false;
-}
-  }
-}
 
-// [Y.3] === Listener para actualizar los minutos disponibles cuando cambia la hora
+    if (!hasData) {
+      option.disabled = true;
+      option.classList.add("selectOption--disabled");
+    }
+  }
+}*/
+
+
+/*// [Y.3] === Listener para actualizar los minutos disponibles cuando cambia la hora
 document.getElementById("hourSelectPR").addEventListener("change", function () {
   const selectedHour = parseInt(this.value, 10);
-  minuteDropdownAvailability(selectedHour);
+  //minuteDropdownAvailability(selectedHour);
 });
-
-
-document.getElementById('blockPrevBtn').addEventListener('mousedown', function(e) {
-  e.preventDefault(); // Previene que quede enfocado
-  this.blur();
-});
-document.getElementById('blockNextBtn').addEventListener('mousedown', function(e) {
-  e.preventDefault();
-  this.blur();
-});
+*/
 
 
 
@@ -285,6 +325,8 @@ document.getElementById('blockNextBtn').addEventListener('mousedown', function(e
 
 
 
+
+//======================================================== antiguo =============================================
 /*
 import { getSelectedMapDate } from "./mapsPRCalendar.js";
 

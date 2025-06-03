@@ -35,9 +35,11 @@
   }
 
   &--disabled {
-    background-color: #e0e0e0;
-    color: #888;
-    border-color: #bbb;
+    //background-color: #e0e0e0;
+
+    //color: #888;
+    color: red;
+    //border-color: #bbb;
     cursor: not-allowed;
     pointer-events: none;
   }
@@ -113,6 +115,7 @@
   }
 
 }
+
 
 .quaternaryBtn {
   border: 2px solid $spaceBlue;
