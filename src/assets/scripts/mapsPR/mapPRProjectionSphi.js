@@ -103,13 +103,16 @@ function updateMapForSelection() {
 
   // [NEW] Mostrar mensaje debajo del mapa
   const msgDiv = document.getElementById("mapMessagePR");
+  const selectedDate = document.getElementById("dateInputMaps").value;
   const horaTxt = selectedHour.toString().padStart(2, "0");
   const minTxt = (selectedBlock * 10).toString().padStart(2, "0");
+
   if (blockData && blockData.data && blockData.data.length > 0) {
-      msgDiv.textContent = `Displaying: ${horaTxt}:${minTxt} UTC`;
+    msgDiv.textContent = `Displaying: ${selectedDate} at ${horaTxt}:${minTxt} UTC`;
   } else {
-      msgDiv.textContent = `Data not available for ${horaTxt}:${minTxt} UTC.`;
+    msgDiv.textContent = `Data not available for ${selectedDate} at ${horaTxt}:${minTxt} UTC.`;
   }
+
 }
 
 // [F] Inicializa mapa con datos y listeners ------------------------------
@@ -234,7 +237,7 @@ blockNextBtn.addEventListener("click", () => {
   }
 });
 
-
+window.updateMapForSelection = updateMapForSelection;
 
 
 

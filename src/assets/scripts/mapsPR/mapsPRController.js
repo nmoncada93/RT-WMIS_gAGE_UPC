@@ -18,13 +18,6 @@ const isFetching = {
   igp_roti: false,
 };
 
-// [C] Mostrar/ocultar spinner de carga ==============================
-/*function handlerSpinner(show) {
-  const spinner = document.getElementById("loadingMessagePRMaps"); // ID del spinner
-  spinner.style.display = show ? "flex" : "none";
-  console.log(show ? "Spinner mostrado" : "Spinner oculto");
-}*/
-
 function handlerSpinner(show) {
   const spinner = document.getElementById("loadingMessagePRMaps");
   const map = document.getElementById("sphiMapPRContainer");
@@ -180,6 +173,7 @@ export async function fetchIgpSphiData(year, doy) {
   }
 }
 
+
 // [] Update hour button availability ====================================================
 function hourBtnAvailability() {
   const byHourBlock = mapsPRData.igp_sphi_byHourBlock;
@@ -197,6 +191,83 @@ function hourBtnAvailability() {
 }
 
 
+/*
+// [] Update hour button availability ====================================================
+function hourDropdownAvailability() {
+  const byHourBlock = mapsPRData.igp_sphi_byHourBlock;
+  const hourSelect = document.getElementById("hourSelectPR");
+  const blockSelect = document.getElementById("blockSelectPR");
+
+  // Limpia primero el selector de horas
+  hourSelect.innerHTML = "";
+
+  let firstValidHour = null;
+
+  for (let h = 0; h < 24; h++) {
+    const option = document.createElement("option");
+    option.value = h;
+    option.textContent = `${h}h`;
+
+    const hasData = (byHourBlock[h] || []).some(
+      (b) => b && b.data && b.data.length > 0
+    );
+
+    if (!hasData) {
+      option.disabled = true;
+      option.classList.add("selectOption--disabled");
+    } else if (firstValidHour === null) {
+      firstValidHour = h;
+    }
+
+    hourSelect.appendChild(option);
+  }
+
+  // Selecciona la primera hora con datos
+  if (firstValidHour !== null) {
+    hourSelect.value = firstValidHour;
+
+    // 🆕 Recorre los bloques de esa hora y selecciona el primer minuto válido
+    const blocks = byHourBlock[firstValidHour];
+    for (let i = 0; i < blocks.length; i++) {
+      if (blocks[i] && blocks[i].data && blocks[i].data.length > 0) {
+        blockSelect.value = i.toString();
+        break;
+      }
+    }
+  }
+}
+*/
+
+/*
+// [] Update hour button availability ====================================================
+function hourDropdownAvailability() {
+  const byHourBlock = mapsPRData.igp_sphi_byHourBlock;
+  const hourSelect = document.getElementById("hourSelectPR");
+  const blockSelect = document.getElementById("blockSelectPR");
+
+  // Limpia primero el selector de horas
+  hourSelect.innerHTML = "";
+
+  for (let h = 0; h < 24; h++) {
+    const option = document.createElement("option");
+    option.value = h;
+    option.textContent = `${h}h`;
+
+    const hasData = (byHourBlock[h] || []).some(
+      (b) => b && b.data && b.data.length > 0
+    );
+
+    if (!hasData) {
+      option.disabled = true;
+      option.classList.add("selectOption--disabled");
+    }
+
+    hourSelect.appendChild(option);
+  }
+}
+*/
+
+
 // [] Update hour button availability ====================================================
 function hourDropdownAvailability() {
 
@@ -207,7 +278,8 @@ function hourDropdownAvailability() {
   for (let h = 0; h < 24; h++) {
     const option = document.createElement("option");
     option.value = h;
-    option.textContent = h.toString().padStart(2, "0") + ":00";
+    //option.textContent = h.toString().padStart(2, "0") + ":00";
+    option.textContent = `${h}h`;
     // Checkea si hay datos en esa hora
     const hasData = (byHourBlock[h] || []).some(b => b && b.data && b.data.length > 0);
     if (!hasData) {
@@ -259,6 +331,14 @@ document
     handlerSpinner(false);
   });
 
+/*
+// [J.2] Listener para el <select> de minutos manualmente seleccionado
+document.getElementById("blockSelectPR").addEventListener("change", () => {
+  console.log("Cambio manual de minutos");
+  window.updateMapForSelection(); // Llama a la función global del mapa
+});
+*/
+
 // [Z] Getter para obtener el bloque filtrado por hora y bloque de 10 minutos
 export function getSphiBlockByHourAndMinute(hour, blockIdx) {
   if (!mapsPRData.igp_sphi_byHourBlock) return null;
@@ -274,48 +354,6 @@ document.getElementById('blockNextBtn').addEventListener('mousedown', function(e
   e.preventDefault();
   this.blur();
 });
-
-/*//=======================================================Poner en un Script generico
-// [Y] === Poblar selector de horas (0 a 23) ===========================
-const hourSelect = document.getElementById("hourSelectPR");
-for (let h = 0; h < 24; h++) {
-  const option = document.createElement("option");
-  option.value = h;
-  option.textContent = h.toString().padStart(2, "0") + ":00";
-  hourSelect.appendChild(option);
-}
-  */
-
-/*
-// [Y.2] === Desactiva bloques sin datos en el selector de minutos ============
-function minuteDropdownAvailability(selectedHour) {
-  const blockSelect = document.getElementById("blockSelectPR");
-  const byHourBlock = mapsPRData.igp_sphi_byHourBlock;
-
-  for (let i = 0; i < blockSelect.options.length; i++) {
-    const option = blockSelect.options[i];
-
-    // Limpia todo siempre antes de aplicar nuevos estilos
-    option.classList.remove("selectOption--disabled");
-    option.disabled = false;
-
-    const block = byHourBlock[selectedHour]?.[i];
-    const hasData = block && block.data && block.data.length > 0;
-
-    if (!hasData) {
-      option.disabled = true;
-      option.classList.add("selectOption--disabled");
-    }
-  }
-}*/
-
-
-/*// [Y.3] === Listener para actualizar los minutos disponibles cuando cambia la hora
-document.getElementById("hourSelectPR").addEventListener("change", function () {
-  const selectedHour = parseInt(this.value, 10);
-  //minuteDropdownAvailability(selectedHour);
-});
-*/
 
 
 // [AUTO-PLAY] ================================================================
@@ -354,7 +392,7 @@ function startAutoPlay() {
 
     activeHourButtons[autoPlayIndex].click();
     autoPlayIndex++;
-  }, 1250);
+  }, 1150);
 }
 
 // [C] Detener la reproducción automática
@@ -377,14 +415,8 @@ function toggleAutoPlay() {
   }
 }
 
-// [E] Asociar evento al botón de reproducción
+// [AUTO-PLAY INIT] Listener del botón
 document.getElementById("autoPlayHoursBtn").addEventListener("click", toggleAutoPlay);
-
-
-
-
-
-
 
 
 

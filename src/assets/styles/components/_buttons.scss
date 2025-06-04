@@ -7,22 +7,17 @@
   display: none;
 }
 
-#hourSelectPR {
-
-  display:inline;
-
-}
-
 @media screen and (max-width: 620px) {
   .primaryBtn,
-  .secondaryBtn {
+  .secondaryBtn,
+  .tertiaryBtn {
     font-size: 1.2rem;
   }
 }
 
 .primaryBtn {
   border: 2px solid $spaceBlue;
-  min-width: 150px;
+  min-width: 100px;
   color: $spaceBlue;
   white-space: nowrap;
 
@@ -58,7 +53,7 @@
   margin-top: 0.1rem;
   margin-bottom: 1rem;
   text-align: center;
-  width: 250px;
+  min-width: 100px;
   color: $spaceBlue;
 
   &:hover,
@@ -116,7 +111,6 @@
 
 }
 
-
 .quaternaryBtn {
   border: 2px solid $spaceBlue;
   border-radius: 12px;
@@ -126,12 +120,64 @@
   white-space: nowrap;
   display: inline-block;
   margin: 0 auto;
+  //font-size: 2.4rem;
 
   &:hover,
   &:focus {
     background-color: $spaceBlue;
     color: $pureWhite;
   }
-
 }
 
+.minuteSelectorPR {
+    display: inline-flex;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 5px 20px;
+    font-size: 1.2rem;
+    border: 2px solid $spaceBlue;
+    min-width: 100px;
+    color: $spaceBlue;
+    white-space: nowrap;
+
+  &:hover,
+  &:focus {
+    background-color: $spaceBlue;
+    color: $pureWhite;
+  }
+}
+
+.hourSelectorPR {
+  display: none;
+
+  @media screen and (max-width: 800px) {
+    display: inline;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 5px 20px;
+    font-size: 1.4rem;
+    border: 2px solid $spaceBlue;
+    min-width: 100px;
+    color: $spaceBlue;
+    white-space: nowrap;
+    text-align: center;
+    text-align-last: center;
+
+    &:hover,
+    &:active,
+    &:focus,
+    &.active-button {
+      background-color: $spaceBlue;
+      color: $pureWhite;
+    }
+  }
+}
+
+
+.mapMessagePR {
+  //margin-top:1em; 
+  font-size: 2.4rem;
+  //min-height:2em; 
+  font-weight:600; 
+  color: $spaceBlue;
+}

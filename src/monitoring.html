@@ -573,10 +573,24 @@
 
 
                 <div id="hourButtonsPR" class="hourButtonsContainer">
-                <label for="hourSelectPR">To display data please select a time</label>
-                    <select class="primaryBtn" id="hourSelectPR">
-                        <!-- Deployable Button for selecting hours -->
-                    </select>
+                    <label class="selectLabel" for="hourSelectPR">To display data please select a time</label>
+                        <button
+                            id="autoPlayHoursBtn"
+                            class="quaternaryBtn"
+                            title="Automatic playback of available hours"
+                        >
+                            ▶️
+                        </button>
+                        
+                        <div class="hourSelector">
+                            <select class="hourSelectorPR" id="hourSelectPR">
+                            <!-- Deployable Button for selecting hours -->
+                            </select>
+                        </div>
+
+
+                                    <!-- Botón de reproducción automática -->
+
                     <!-- Primera fila: 0 - 11 -->
                     <div class="hourRow">
                         <button class="tertiaryBtn" data-hour="0">00h</button>
@@ -622,21 +636,6 @@
                     </div>        
                 </div>
 
-                <!-- Botón de reproducción automática -->
-<div style="margin-bottom: 1em;">
-  <button
-    id="autoPlayHoursBtn"
-    class="replayBtn"
-    title="Reproducir automáticamente las horas disponibles"
-    style="font-size: 1.1em; padding: 0.4em 0.8em;"
-  >
-    ▶️
-  </button>
-</div>
-
-
-
-
                 <div id="loadingMessagePRMaps" style="display: none">
                     <div class="loading-message">
                         <span>Searching in database...</span>
@@ -645,7 +644,7 @@
                 </div>
 
                 <div id="sphiMapPRContainer" class="mapRTContainer">
-                                    <div id="mapMessagePR" style="margin-top:1em; min-height:2em; font-weight:500; color:#333;"></div>
+                    <div id="mapMessagePR"></div>
                     <svg id="sphiMapPRRender"></svg>
                     <button class="secondaryBtn" id="closeSphiMapPRBtn">
                         CLOSE
@@ -696,16 +695,16 @@
         ></script>
 
         <!------------------------SCRIPTS PAST RECORDS MAPS ----------------------------------------->
+    
         <script
             type="module"
             src="./assets/scripts/mapsPR/mapsPRController.js"
         ></script>
 
-                <script
+        <script
             type="module"
             src="./assets/scripts/mapsPR/mapPRProjectionSphi.js"
         ></script>
-
 
 
 
