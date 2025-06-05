@@ -173,11 +173,14 @@
   }
 }
 
-
 .mapMessagePR {
   //margin-top:1em; 
-  font-size: 2.4rem;
+  font-size: 1.8rem;
   //min-height:2em; 
   font-weight:600; 
   color: $spaceBlue;
+
+  @media screen and (max-width: 800px) {
+    font-size: 1.2rem;
+  }
 }

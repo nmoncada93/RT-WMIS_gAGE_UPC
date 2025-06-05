@@ -172,6 +172,7 @@ function resetMap() {
   }
 }
 
+
 // [H] Limpia todo el mapa ---------------------------------------------------
 function cleanMap() {
   svg.selectAll(".grid-cell").remove();
@@ -186,12 +187,14 @@ function markActiveHourButton(hour) {
   });
 }
 
+
 // [G] Detiene el mapa histórico al pulsar el botón "Reset" ------------------
 document
   .getElementById("closeSphiMapPRBtn")
   .addEventListener("click", () => {
     resetMap();
   });
+
 
 // Cuando otro script lanza el evento personalizado
 window.addEventListener("cleanMapPR", () => {
