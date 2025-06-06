@@ -32,13 +32,17 @@ function findMatchingCell(dynamicData, gridCell) {
 // [C] Generates color based on SPHI values ==================================
 function getColor(value) {
   if (value === null || value === 0) return "transparent"; // No color
-  if (value < 0.5) return "#0837d0"; // Dark blue
-  if (value < 1) return "#40E0D0"; // Turquoise
-  if (value < 1.5) return "#00FF00"; // Green
-  if (value < 2) return "#FFFF00"; // Yellow
-  if (value < 2.5) return "#FFA500"; // Orange
+  if (value < 0.04) return "#0837d0"; // Dark blue
+  if (value < 0.08) return "#40E0D0"; // Turquoise
+  if (value < 0.12) return "#00FF00"; // Green
+  if (value < 0.16) return "#FFFF00"; // Yellow
+  if (value < 0.2) return "#FFA500"; // Orange
   return "#bc0000"; // Dark red
 }
+
+//-----------------------------------VISUAL ELEMENTS -----------------------------------
+//--------------------------------------------------------------------------------------
+
 
 // [D] Draws coordinate axes on the map ======================================
 function coordinateAxes(projection, svg, step = 10) {
@@ -130,7 +134,7 @@ function drawAxisLabels(svg, width, height) {
   svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", height + 30)
+    .attr("y", height + 1)
     .attr("fill", "black")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
@@ -161,12 +165,13 @@ function drawColorBar(svg, width, height) {
     .attr("x2", "100%")
     .attr("y2", "0%");
 
-  gradient.append("stop").attr("offset", "0%").attr("stop-color", "#0837d0"); // Dark blue
-  gradient.append("stop").attr("offset", "16.6%").attr("stop-color", "#40E0D0"); // Turquoise
-  gradient.append("stop").attr("offset", "33.2%").attr("stop-color", "#00FF00"); // Green
-  gradient.append("stop").attr("offset", "49.8%").attr("stop-color", "#FFFF00"); // Yellow
-  gradient.append("stop").attr("offset", "66.4%").attr("stop-color", "#FFA500"); // Orange
-  gradient.append("stop").attr("offset", "100%").attr("stop-color", "#bc0000"); // Dark red
+  gradient.append("stop").attr("offset", "0%").attr("stop-color", "#0837d0"); // Azul oscuro
+  gradient.append("stop").attr("offset", "16.6%").attr("stop-color", "#40E0D0"); // Turquesa
+  gradient.append("stop").attr("offset", "33.2%").attr("stop-color", "#00FF00"); // Verde
+  gradient.append("stop").attr("offset", "49.8%").attr("stop-color", "#FFFF00"); // Amarillo
+  gradient.append("stop").attr("offset", "66.4%").attr("stop-color", "#FFA500"); // Naranja
+  gradient.append("stop").attr("offset", "83%").attr("stop-color", "#bc0000"); // Rojo oscuro
+  gradient.append("stop").attr("offset", "100%").attr("stop-color", "#bc0000"); // Rojo oscuro
 
   // Color bar legend
   barGroup
@@ -176,12 +181,13 @@ function drawColorBar(svg, width, height) {
     .style("fill", "url(#colorBarGradient)");
 
   // Numerical labels below the bar
-  const axisScale = d3.scaleLinear().domain([0, 3]).range([0, barWidth]);
+  //const axisScale = d3.scaleLinear().domain([0, 3]).range([0, barWidth]);
+  const axisScale = d3.scaleLinear().domain([0, 0.2]).range([0, barWidth]);
 
   const axis = d3
     .axisBottom(axisScale)
-    .ticks(6) // Increments of 0.5
-    .tickFormat(d3.format(".1f")); // One decimal format
+    .ticks(5) // Increments of 0.5
+    .tickFormat(d3.format(".2f")); // One decimal format
 
   barGroup
     .append("g")

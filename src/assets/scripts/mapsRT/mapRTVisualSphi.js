@@ -42,12 +42,12 @@ function findMatchingCell(dynamicData, gridCell) {
 
 function getColor(value) {
   if (value === null || value === 0) return "transparent"; // No pinta
-  if (value < 0.04) return "#0837d0"; // Azul oscuro
-  if (value < 0.08) return "#40E0D0"; // Turquesa
-  if (value < 0.12) return "#00FF00"; // Verde
-  if (value < 0.16) return "#FFFF00"; // Amarillo
-  if (value < 0.2) return "#FFA500"; // Naranja
-  return "#bc0000"; // Rojo oscuro
+  if (value < 0.04) return "#0837d0"; // Dark blue
+  if (value < 0.08) return "#40E0D0"; // Turquoise
+  if (value < 0.12) return "#00FF00"; // Green
+  if (value < 0.16) return "#FFFF00"; // Yellow
+  if (value < 0.2) return "#FFA500"; // Orange
+  return "#bc0000"; // Dark red
 }
 
 //-----------------------------------VISUAL ELEMENTS -----------------------------------
