@@ -57,7 +57,7 @@ async function fetchRawIgpSphiData(year, doy) {
   }
 }
 
-// [C.1] Obtain historical data from igp_roti.dat.xz ====================
+/*// [C.1] Obtain historical data from igp_roti.dat.xz ====================
 async function fetchRawIgpRotiData(year, doy) {
   if (isFetching.igp_roti) {
     console.warn("Solicitud ROTI en proceso. Evitando solapamiento.");
@@ -78,7 +78,7 @@ async function fetchRawIgpRotiData(year, doy) {
   } finally {
     isFetching.igp_roti = false; // Desactivate the flag
   }
-}
+}*/
 
 // [D] Filter data for SPHI =====================================
 function filterSphiData(rawData) {

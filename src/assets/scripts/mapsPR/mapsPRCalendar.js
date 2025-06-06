@@ -1,3 +1,42 @@
+// [A] Function to get year and day-of-year (DoY) from a date string ============
+export function getSelectedMapDate(dateString) {
+  const selectedDate = new Date(dateString);
+  const year = selectedDate.getFullYear();
+  const startOfYear = new Date(year, 0, 0);
+  const diff = selectedDate - startOfYear;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const doy = Math.floor(diff / oneDay);
+  return { year, doy };
+}
+
+
+// [B] Coordinates the data fetch for SPHI only ===============================================
+export function processMapIndexDataSphi(year, doy, fetchIgpSphiData) {
+  fetchIgpSphiData(year, doy)
+    .then(() => {
+      console.log("igp_sphi.dat.xz file was successfully obtained");
+    })
+    .catch((error) => {
+      console.error("Error in SPHI data collection process:", error);
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* // FETCH ROTI + SPHI DATA ====================================================================================
+=================================================================================================================
+
+
 // [A] Función para obtener el año y el día del año (DoY) a partir de una fecha ================
 export function getSelectedMapDate(dateString) {
   const selectedDate = new Date(dateString);
@@ -30,3 +69,4 @@ export function processMapIndexData(
       console.error("Error in data collection process:", error);
     });
 }
+*/
