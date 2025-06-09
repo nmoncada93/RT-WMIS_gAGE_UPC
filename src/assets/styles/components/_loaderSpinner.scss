@@ -49,6 +49,28 @@
   margin-top: 40px;
 }
 
+#loadingMessagePRMapsRoti {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-style: italic;
+  font-size: $fontSizeH2;
+  color: $spaceBlue;
+  margin-top: 40px;
+}
+
+#loadingMessagePRMapsS4 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-style: italic;
+  font-size: $fontSizeH2;
+  color: $spaceBlue;
+  margin-top: 40px;
+}
+
 .loading-message {
   display: flex;
   flex-direction: column;
