@@ -20,9 +20,11 @@ $fontSizeH3: clamp(1.5rem, 1.2vw, 2.5rem);
 $fontsizeNav: 1.1vw;
 
 //$fontSizeText: 2rem; // Font size for main body text (~16px)
-$fontSizeText: clamp(1.5rem,
-    1.2vw,
-    2.8rem); // Font size for main body text (~16px)
+$fontSizeText: clamp(
+  1.5rem,
+  1.2vw,
+  2.8rem
+); // Font size for main body text (~16px)
 
 $fontSizeLogoTitle: clamp(1.3rem, 3vw, 8rem);
 $fontSizeLogoSubtitle: clamp(0.5rem, 1.5vw, 4rem);

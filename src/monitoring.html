@@ -20,12 +20,7 @@
             type="text/css"
             href="./assets/styles/main.scss"
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Krona+One&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
-            rel="stylesheet"
-        />
+
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -554,95 +549,164 @@
                 <div class="boxContainer mapBox">
                     <h2 class="titleH2">PAST MAPS</h2>
 
-                <div class="btnsContainer">
-                    <input
-                        type="date"
-                        id="dateInputMaps"
-                        class="recordsBox__date"
-                    />
-                </div>
+                    <div class="btnsContainer">
+                        <input
+                            type="date"
+                            id="dateInputMaps"
+                            class="recordsBox__date"
+                        />
+                    </div>
 
-                <div class="btnsContainer">
-                    <button
-                        class="boxContainer__titleH3"
-                        id="sphiMapPRBtn"
-                    >
-                        SigmaPhi<i class="fa-solid fa-chevron-down"></i>
-                    </button>
-                </div>
+                    <div class="btnsContainer">
+                        <button class="boxContainer__titleH3" id="sphiMapPRBtn">
+                            SigmaPhi<i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
 
+                    <div id="hourButtonsPR" class="hourButtonsContainer">
+                        <label for="hourSelectPR">Hour UTC (00:00):</label>
+                        <select
+                            class="primaryBtn"
+                            id="hourSelectPR"
+                            style="display: inline"
+                        >
+                            <!-- Deployable Button for selecting hours -->
+                        </select>
+                        <!-- Primera fila: 0 - 11 -->
+                        <div class="hourRow">
+                            <button class="tertiaryBtn" data-hour="0">
+                                00h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="1">
+                                01h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="2">
+                                02h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="3">
+                                03h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="4">
+                                04h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="5">
+                                05h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="6">
+                                06h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="7">
+                                07h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="8">
+                                08h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="9">
+                                09h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="10">
+                                10h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="11">
+                                11h
+                            </button>
+                        </div>
+                        <!-- Segunda fila: 12 - 23 -->
+                        <div class="hourRow">
+                            <button class="tertiaryBtn" data-hour="12">
+                                12h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="13">
+                                13h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="14">
+                                14h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="15">
+                                15h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="16">
+                                16h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="17">
+                                17h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="18">
+                                18h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="19">
+                                19h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="20">
+                                20h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="21">
+                                21h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="22">
+                                22h
+                            </button>
+                            <button class="tertiaryBtn" data-hour="23">
+                                23h
+                            </button>
+                        </div>
+                    </div>
 
-                <div id="hourButtonsPR" class="hourButtonsContainer">
-      <label for="hourSelectPR">Hour UTC (00:00):</label>
-  <select class="primaryBtn" id="hourSelectPR" style="display: inline;">
-    <!-- Deployable Button for selecting hours -->
-  </select>
-  <!-- Primera fila: 0 - 11 -->
-  <div class="hourRow">
-    <button class="tertiaryBtn" data-hour="0">00h</button>
-    <button class="tertiaryBtn" data-hour="1">01h</button>
-    <button class="tertiaryBtn" data-hour="2">02h</button>
-    <button class="tertiaryBtn" data-hour="3">03h</button>
-    <button class="tertiaryBtn" data-hour="4">04h</button>
-    <button class="tertiaryBtn" data-hour="5">05h</button>
-    <button class="tertiaryBtn" data-hour="6">06h</button>
-    <button class="tertiaryBtn" data-hour="7">07h</button>
-    <button class="tertiaryBtn" data-hour="8">08h</button>
-    <button class="tertiaryBtn" data-hour="9">09h</button>
-    <button class="tertiaryBtn" data-hour="10">10h</button>
-    <button class="tertiaryBtn" data-hour="11">11h</button>
-  </div>
-  <!-- Segunda fila: 12 - 23 -->
-  <div class="hourRow">
-    <button class="tertiaryBtn" data-hour="12">12h</button>
-    <button class="tertiaryBtn" data-hour="13">13h</button>
-    <button class="tertiaryBtn" data-hour="14">14h</button>
-    <button class="tertiaryBtn" data-hour="15">15h</button>
-    <button class="tertiaryBtn" data-hour="16">16h</button>
-    <button class="tertiaryBtn" data-hour="17">17h</button>
-    <button class="tertiaryBtn" data-hour="18">18h</button>
-    <button class="tertiaryBtn" data-hour="19">19h</button>
-    <button class="tertiaryBtn" data-hour="20">20h</button>
-    <button class="tertiaryBtn" data-hour="21">21h</button>
-    <button class="tertiaryBtn" data-hour="22">22h</button>
-    <button class="tertiaryBtn" data-hour="23">23h</button>
-  </div>
-</div>
-
-
-                        <div id="loadingMessagePRMaps" style="display: none">
+                    <div id="loadingMessagePRMaps" style="display: none">
                         <div class="loading-message">
                             <span>Searching in database...</span>
                             <div class="spinner"></div>
                         </div>
                     </div>
 
-
-
-<button id="blockPrevBtn" class="quaternaryBtn" type="button" style="margin-right: 0.5em;">&larr;</button>
-<select class="primaryBtn" id="blockSelectPR" style="display: inline;">
-  <option value="0">00 min</option>
-  <option value="1">10 min</option>
-  <option value="2">20 min</option>
-  <option value="3">30 min</option>
-  <option value="4">40 min</option>
-  <option value="5">50 min</option>
-</select>
-<button id="blockNextBtn" class="quaternaryBtn" type="button" style="margin-left: 0.5em;">&rarr;</button>
-
+                    <button
+                        id="blockPrevBtn"
+                        class="quaternaryBtn"
+                        type="button"
+                        style="margin-right: 0.5em"
+                    >
+                        &larr;
+                    </button>
+                    <select
+                        class="primaryBtn"
+                        id="blockSelectPR"
+                        style="display: inline"
+                    >
+                        <option value="0">00 min</option>
+                        <option value="1">10 min</option>
+                        <option value="2">20 min</option>
+                        <option value="3">30 min</option>
+                        <option value="4">40 min</option>
+                        <option value="5">50 min</option>
+                    </select>
+                    <button
+                        id="blockNextBtn"
+                        class="quaternaryBtn"
+                        type="button"
+                        style="margin-left: 0.5em"
+                    >
+                        &rarr;
+                    </button>
 
                     <div id="sphiMapPRContainer" class="mapRTContainer">
                         <svg id="sphiMapPRRender"></svg>
 
-                        <div id="mapMessagePR" style="margin-top:1em; min-height:2em; font-weight:500; color:#333;"></div>
-
+                        <div
+                            id="mapMessagePR"
+                            style="
+                                margin-top: 1em;
+                                min-height: 2em;
+                                font-weight: 500;
+                                color: #333;
+                            "
+                        ></div>
 
                         <button class="secondaryBtn" id="closeSphiMapPRBtn">
                             RESET
                         </button>
                     </div>
 
-<!--label for="blockSelectPR" style="margin-left: 1em;">Select 10 minute interval:</label>
+                    <!--label for="blockSelectPR" style="margin-left: 1em;">Select 10 minute interval:</label>
 <div class="minutesButtonsContainer" id="mapControlsPR" style="margin-bottom: 1em;">
   <button id="blockPrevBtn" class="quaternaryBtn" type="button" style="margin-right: 0.5em;">&larr;</button>
   <select class="primaryBtn" id="blockSelectPR" style="display: inline;">
@@ -651,12 +715,7 @@
   <button id="blockNextBtn" class="quaternaryBtn" type="button" style="margin-left: 0.5em;">&rarr;</button>
 </div-->
 
-
-    <!-- NUEVO DESPLEGABLE -->
-
-
-
-
+                    <!-- NUEVO DESPLEGABLE -->
                 </div>
             </div>
         </main>
@@ -710,8 +769,5 @@
             type="module"
             src="./assets/scripts/mapsPR/mapPRProjectionSphi.js"
         ></script>
-
-
-
     </body>
 </html>
