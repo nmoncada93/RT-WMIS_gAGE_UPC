@@ -1,4 +1,3 @@
-// mapsPRControllerRoti.js
 import { getSelectedMapDate } from "./mapsPRCalendar.js";
 
 // [A] Global Variables  ============================================
@@ -84,7 +83,7 @@ function groupByHourAndBlock(filteredData) {
   return byHourBlock;
 }
 
-// [F] Main function ============================================
+// [F] Main function for ROTI ============================================
 export async function fetchIgpRotiData(year, doy) {
   try {
     const rawData = await fetchRawIgpRotiData(year, doy);
@@ -101,13 +100,28 @@ export async function fetchIgpRotiData(year, doy) {
     mapsPRData.igp_roti = filteredData;
     rotiMapBtn.classList.remove("boxContainer__titleH3--disabled");
 
+    // Group and save in new variable
     mapsPRData.igp_roti_byHourBlock = groupByHourAndBlock(filteredData);
     hourBtnAvailability();
     hourDropdownAvailability();
 
+        // Count blocks by hour
+    const bloques = mapsPRData.igp_roti;
+    const resumen = {};
+
+    bloques.forEach(b => {
+      const h = Math.floor(b.TIME / 3600);
+      if (!resumen[h]) resumen[h] = 0;
+      resumen[h]++;
+    });
+
+    //console.log("Bloques por hora:", resumen);
+    console.log("Data from igp_sphi.dat.xz filtered and stored.");
+
     return filteredData;
   } catch (error) {
     console.error("Error obtaining or processing ROTI data:", error.message);
+    // if there is an error, clear the structure and update buttons
     mapsPRData.igp_roti_byHourBlock = {};
     hourBtnAvailability();
     hourDropdownAvailability();
@@ -122,8 +136,13 @@ function hourBtnAvailability() {
   document.querySelectorAll('#hourButtonsPRRoti button.tertiaryBtn').forEach((btn) => {
     const hour = parseInt(btn.getAttribute('data-hour'), 10);
     const hasData = (byHourBlock[hour] || []).some(b => b && b.data && b.data.length > 0);
-    btn.classList.toggle('tertiaryBtn--disabled', !hasData);
-    btn.disabled = !hasData;
+    if (!hasData) {
+      btn.classList.add('tertiaryBtn--disabled');
+      btn.disabled = true; // Opcional, útil para accesibilidad
+    } else {
+      btn.classList.remove('tertiaryBtn--disabled');
+      btn.disabled = false;
+    }
   });
 }
 
@@ -135,10 +154,14 @@ function hourDropdownAvailability() {
   for (let h = 0; h < 24; h++) {
     const option = document.createElement("option");
     option.value = h;
+    //option.textContent = h.toString().padStart(2, "0") + ":00";
     option.textContent = `${h}h`;
+    // Check if there is data in that hour
     const hasData = (byHourBlock[h] || []).some(b => b && b.data && b.data.length > 0);
-    option.disabled = !hasData;
-    if (!hasData) option.classList.add("selectOption--disabled");
+    if (!hasData) {
+      option.disabled = true;
+      option.classList.add("selectOption--disabled");
+    }
     hourSelect.appendChild(option);
   }
 }
@@ -155,6 +178,14 @@ function clearHourAndMinuteSelections() {
 // [J] On date change ===========================================
 document.getElementById("dateInputMapsRoti").addEventListener("change", async function () {
   const { year, doy } = getSelectedMapDate(this.value);
+  console.log(
+    "Selected Date:",
+    this.value,
+    "Year:",
+    year,
+    "Day of Year (DoY):",
+    doy
+  );
   window.dispatchEvent(new Event("cleanMapPR"));
   clearHourAndMinuteSelections();
   handlerSpinner(true);
@@ -162,16 +193,19 @@ document.getElementById("dateInputMapsRoti").addEventListener("change", async fu
   handlerSpinner(false);
 });
 
+/*
 // [K] Button blur fix ==========================================
 document.getElementById('blockPrevBtnRoti').addEventListener('mousedown', function(e) {
   e.preventDefault();
   this.blur();
 });
 
+// [L.1] Update hour button availability ====================================================
 document.getElementById('blockNextBtnRoti').addEventListener('mousedown', function(e) {
   e.preventDefault();
   this.blur();
 });
+*/
 
 // [Z] Getter for filtered block by hour and 10-minute block ====
 export function getRotiBlockByHourAndMinute(hour, blockIdx) {
@@ -179,6 +213,8 @@ export function getRotiBlockByHourAndMinute(hour, blockIdx) {
   return mapsPRData.igp_roti_byHourBlock[hour]?.[blockIdx] ?? null;
 }
 
+
+/*
 // [AUTO-PLAY] ==================================================
 
 // [A] Player state variables
@@ -191,6 +227,7 @@ let activeHourButtons = [];
 function startAutoPlay() {
   const playButton = document.getElementById("autoPlayHoursBtnRoti");
 
+// [B.1] Get active hour buttons (those not disabled)
   activeHourButtons = Array.from(document.querySelectorAll("#hourButtonsPRRoti .tertiaryBtn"))
     .filter(btn => !btn.classList.contains("tertiaryBtn--disabled"))
     .sort((a, b) => parseInt(a.dataset.hour, 10) - parseInt(b.dataset.hour, 10));
@@ -200,11 +237,13 @@ function startAutoPlay() {
     return;
   }
 
+  // [B.2] Prepare state and UI
   isAutoPlaying = true;
   autoPlayIndex = 0;
   playButton.textContent = "⏸️";
   playButton.classList.add("playing");
 
+  // [B.3] Simulate one click every second (adjustable)
   autoPlayIntervalId = setInterval(() => {
     if (autoPlayIndex >= activeHourButtons.length) {
       stopAutoPlay();
@@ -237,3 +276,4 @@ function toggleAutoPlay() {
 }
 
 document.getElementById("autoPlayHoursBtnRoti").addEventListener("click", toggleAutoPlay);
+*/

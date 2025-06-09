@@ -1,4 +1,3 @@
-// File: mapPRControllerS4.js
 import { getSelectedMapDateS4 } from "./mapsPRCalendarS4.js";
 
 // [A] Global Variables  ============================================
@@ -113,7 +112,7 @@ export async function fetchIgpS4Data(year, doy) {
   }
 }
 
-// [G] UI Helpers ==========================================================
+// [G] Update hour buttons =====================================
 function hourBtnAvailability() {
   const byHourBlock = mapsPRDataS4.igp_s4_byHourBlock;
   document.querySelectorAll('#hourButtonsPRS4 button.tertiaryBtn').forEach((btn) => {
@@ -124,6 +123,7 @@ function hourBtnAvailability() {
   });
 }
 
+// [H] Update dropdown hours ===================================
 function hourDropdownAvailability() {
   const byHourBlock = mapsPRDataS4.igp_s4_byHourBlock;
   const hourSelect = document.getElementById("hourSelectPRS4");
@@ -139,15 +139,24 @@ function hourDropdownAvailability() {
   }
 }
 
+// [I] Clear selection states ===================================
 function clearHourAndMinuteSelections() {
   document.querySelectorAll("#hourButtonsPRS4 .tertiaryBtn.active-button").forEach((btn) => btn.classList.remove("active-button"));
   document.getElementById("hourSelectPRS4").selectedIndex = 0;
   document.getElementById("blockSelectPRS4").selectedIndex = 0;
 }
 
-// [H] Handle date selection ================================================
+// [J] On date change ===========================================
 document.getElementById("dateInputMapsS4").addEventListener("change", async function () {
   const { year, doy } = getSelectedMapDateS4(this.value);
+    console.log(
+    "Selected Date:",
+    this.value,
+    "Year:",
+    year,
+    "Day of Year (DoY):",
+    doy
+  );
   window.dispatchEvent(new Event("cleanMapPRS4"));
   clearHourAndMinuteSelections();
   handlerSpinner(true);

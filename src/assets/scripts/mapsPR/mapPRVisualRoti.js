@@ -40,6 +40,9 @@ function getColor(value) {
   return "#bc0000"; // Dark red
 }
 
+//-----------------------------------VISUAL ELEMENTS -----------------------------------
+//--------------------------------------------------------------------------------------
+
 // [D] Draws coordinate axes on the map ======================================
 function coordinateAxes(projection, svg, step = 10) {
   // [D.1] Draw latitude lines (horizontal)
@@ -161,12 +164,13 @@ function drawColorBar(svg, width, height) {
     .attr("x2", "100%")
     .attr("y2", "0%");
 
-  gradient.append("stop").attr("offset", "0%").attr("stop-color", "#0837d0");
-  gradient.append("stop").attr("offset", "16.6%").attr("stop-color", "#40E0D0");
-  gradient.append("stop").attr("offset", "33.2%").attr("stop-color", "#00FF00");
-  gradient.append("stop").attr("offset", "49.8%").attr("stop-color", "#FFFF00");
-  gradient.append("stop").attr("offset", "66.4%").attr("stop-color", "#FFA500");
-  gradient.append("stop").attr("offset", "100%").attr("stop-color", "#bc0000");
+  gradient.append("stop").attr("offset", "0%").attr("stop-color", "#0837d0"); // Azul oscuro
+  gradient.append("stop").attr("offset", "16.6%").attr("stop-color", "#40E0D0"); // Turquesa
+  gradient.append("stop").attr("offset", "33.2%").attr("stop-color", "#00FF00"); // Verde
+  gradient.append("stop").attr("offset", "49.8%").attr("stop-color", "#FFFF00"); // Amarillo
+  gradient.append("stop").attr("offset", "66.4%").attr("stop-color", "#FFA500"); // Naranja
+  gradient.append("stop").attr("offset", "83%").attr("stop-color", "#bc0000"); // Rojo oscuro
+  gradient.append("stop").attr("offset", "100%").attr("stop-color", "#bc0000"); // Rojo oscuro
 
   // Color bar legend
   barGroup
