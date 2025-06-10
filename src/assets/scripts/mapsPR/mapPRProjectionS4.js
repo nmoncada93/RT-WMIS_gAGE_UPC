@@ -82,7 +82,7 @@ function updateMapForSelection() {
   const selectedBlock = parseInt(blockSelect.value, 10);
 
   const blockData = getS4BlockByHourAndMinute(selectedHour, selectedBlock);
-  svg.selectAll(".grid-cell").remove();
+  svg.selectAll(".gridCellS4").remove();
 
   if (blockData && blockData.data && blockData.data.length > 0) {
     paintGrid(gridData, [blockData], svg);
@@ -144,7 +144,7 @@ function resetMap() {
 }
 
 function cleanMap() {
-  svg.selectAll(".grid-cell").remove();
+  svg.selectAll(".gridCellS4").remove();
 }
 
 // [H] Monitoring buttons logic --------------------------------------------------

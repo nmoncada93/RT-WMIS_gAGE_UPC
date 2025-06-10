@@ -2,7 +2,7 @@ import { getSelectedMapDate } from "./mapsPRCalendar.js";
 
 // [A] Global Variables  ============================================
 let mapsPRData = {
-  igp_roti: null,
+  igp_roti: null, // Save JSON from igp_roti.dat.xz
 };
 
 const rotiMapBtn = document.getElementById("rotiMapPRBtn");
@@ -19,11 +19,13 @@ function handlerSpinner(show) {
   const map = document.getElementById("rotiMapPRContainer");
 
   if (show) {
+    // hide mapa and save the status "visible"
     map.dataset.wasVisible = map.style.display === "block";
     map.style.display = "none";
     spinner.style.display = "flex";
   } else {
     spinner.style.display = "none";
+    // Show the map only if it was visible before
     if (map.dataset.wasVisible === "true") {
       map.style.display = "block";
     }
@@ -49,7 +51,7 @@ async function fetchRawIgpRotiData(year, doy) {
 
     return await response.json();
   } finally {
-    isFetching.igp_roti = false;
+    isFetching.igp_roti = false; // Desactivate the flag
   }
 }
 
@@ -61,7 +63,7 @@ function filterRotiL1Data(rawData) {
       .map((cell) => ({
         Longitude: cell.Longitude ?? null,
         Latitude: cell.Latitude ?? null,
-        rotiL1: cell.rotiL1 ?? null,
+        mean_roti: cell.mean_roti ?? null,
       }))
       .filter((cell) => cell.Longitude !== null && cell.Latitude !== null),
   }));
@@ -69,6 +71,7 @@ function filterRotiL1Data(rawData) {
 
 // [E] Group by hour and block ================================
 function groupByHourAndBlock(filteredData) {
+  // Create result object: keys 0...23, each one an array of 6 positions (null by default)
   const byHourBlock = {};
   for (let h = 0; h < 24; h++) byHourBlock[h] = Array(6).fill(null);
 
@@ -90,6 +93,7 @@ export async function fetchIgpRotiData(year, doy) {
     const hasUsefulData = Array.isArray(rawData) && rawData.some(group => Array.isArray(group.data) && group.data.length > 0);
 
     if (!rawData || !hasUsefulData) {
+      // If there is no data, clear the structure and update buttons
       mapsPRData.igp_roti_byHourBlock = {};
       hourBtnAvailability();
       hourDropdownAvailability();
@@ -114,11 +118,10 @@ export async function fetchIgpRotiData(year, doy) {
       if (!resumen[h]) resumen[h] = 0;
       resumen[h]++;
     });
-
     //console.log("Bloques por hora:", resumen);
-    console.log("Data from igp_sphi.dat.xz filtered and stored.");
-
+    //console.log("Data from igp_sphi.dat.xz filtered and stored.");
     return filteredData;
+
   } catch (error) {
     console.error("Error obtaining or processing ROTI data:", error.message);
     // if there is an error, clear the structure and update buttons
@@ -130,7 +133,7 @@ export async function fetchIgpRotiData(year, doy) {
   }
 }
 
-// [G] Update hour buttons =====================================
+// [G] Update hour buttons availability =====================================
 function hourBtnAvailability() {
   const byHourBlock = mapsPRData.igp_roti_byHourBlock;
   document.querySelectorAll('#hourButtonsPRRoti button.tertiaryBtn').forEach((btn) => {
@@ -146,7 +149,7 @@ function hourBtnAvailability() {
   });
 }
 
-// [H] Update dropdown hours ===================================
+// [H] Update dropdown hours availability===================================
 function hourDropdownAvailability() {
   const byHourBlock = mapsPRData.igp_roti_byHourBlock;
   const hourSelect = document.getElementById("hourSelectPRRoti");
@@ -193,7 +196,7 @@ document.getElementById("dateInputMapsRoti").addEventListener("change", async fu
   handlerSpinner(false);
 });
 
-/*
+
 // [K] Button blur fix ==========================================
 document.getElementById('blockPrevBtnRoti').addEventListener('mousedown', function(e) {
   e.preventDefault();
@@ -205,7 +208,6 @@ document.getElementById('blockNextBtnRoti').addEventListener('mousedown', functi
   e.preventDefault();
   this.blur();
 });
-*/
 
 // [Z] Getter for filtered block by hour and 10-minute block ====
 export function getRotiBlockByHourAndMinute(hour, blockIdx) {
@@ -213,8 +215,6 @@ export function getRotiBlockByHourAndMinute(hour, blockIdx) {
   return mapsPRData.igp_roti_byHourBlock[hour]?.[blockIdx] ?? null;
 }
 
-
-/*
 // [AUTO-PLAY] ==================================================
 
 // [A] Player state variables
@@ -252,7 +252,7 @@ function startAutoPlay() {
 
     activeHourButtons[autoPlayIndex].click();
     autoPlayIndex++;
-  }, 1000);
+  }, 1300);
 }
 
 // [C] Stop auto-play
@@ -276,4 +276,3 @@ function toggleAutoPlay() {
 }
 
 document.getElementById("autoPlayHoursBtnRoti").addEventListener("click", toggleAutoPlay);
-*/

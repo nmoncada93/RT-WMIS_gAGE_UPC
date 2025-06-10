@@ -11,6 +11,9 @@ function paintGrid(gridData, dynamicData, svg) {
     .attr("height", (d) => d.height)
     .style("fill", (d) => {
       const match = findMatchingCell(dynamicData, d);
+
+      console.log("📊 match.mean_sphi:", match?.mean_sphi);
+
       return match ? getColor(match.mean_sphi) : "none";
     })
     .style("stroke", "lightgray") // Grid cell borders

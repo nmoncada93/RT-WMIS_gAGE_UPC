@@ -169,3 +169,66 @@ export function getS4BlockByHourAndMinute(hour, blockIdx) {
   if (!mapsPRDataS4.igp_s4_byHourBlock) return null;
   return mapsPRDataS4.igp_s4_byHourBlock[hour]?.[blockIdx] ?? null;
 }
+
+// [AUTO-PLAY] ================================================================
+
+// [A] Player state variables
+let isAutoPlayingS4 = false;
+let autoPlayIntervalIdS4 = null;
+let autoPlayIndexS4 = 0;
+let activeHourButtonsS4 = [];
+
+// [B] Start auto-play
+function startAutoPlayS4() {
+  const playButton = document.getElementById("autoPlayHoursBtnS4");
+
+  // [B.1] Get active hour buttons
+  activeHourButtonsS4 = Array.from(document.querySelectorAll("#hourButtonsPRS4 .tertiaryBtn"))
+    .filter(btn => !btn.classList.contains("tertiaryBtn--disabled"))
+    .sort((a, b) => parseInt(a.dataset.hour, 10) - parseInt(b.dataset.hour, 10));
+
+  if (activeHourButtonsS4.length === 0) {
+    console.warn("No active hour buttons for S4.");
+    return;
+  }
+
+  // [B.2] Setup state
+  isAutoPlayingS4 = true;
+  autoPlayIndexS4 = 0;
+  playButton.textContent = "⏸️";
+  playButton.classList.add("playing");
+
+  // [B.3] Simulate clicks on buttons
+  autoPlayIntervalIdS4 = setInterval(() => {
+    if (autoPlayIndexS4 >= activeHourButtonsS4.length) {
+      stopAutoPlayS4();
+      return;
+    }
+
+    activeHourButtonsS4[autoPlayIndexS4].click();
+    autoPlayIndexS4++;
+  }, 1300);
+}
+
+// [C] Stop auto-play
+function stopAutoPlayS4() {
+  const playButton = document.getElementById("autoPlayHoursBtnS4");
+  clearInterval(autoPlayIntervalIdS4);
+  autoPlayIntervalIdS4 = null;
+  isAutoPlayingS4 = false;
+  autoPlayIndexS4 = 0;
+  playButton.textContent = "▶️";
+  playButton.classList.remove("playing");
+}
+
+// [D] Toggle auto-play
+function toggleAutoPlayS4() {
+  if (isAutoPlayingS4) {
+    stopAutoPlayS4();
+  } else {
+    startAutoPlayS4();
+  }
+}
+
+// [E] Listener for play/pause button
+document.getElementById("autoPlayHoursBtnS4").addEventListener("click", toggleAutoPlayS4);

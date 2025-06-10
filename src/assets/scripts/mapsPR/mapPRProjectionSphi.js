@@ -91,7 +91,7 @@ function updateMapForSelection() {
   const blockData = getSphiBlockByHourAndMinute(selectedHour, selectedBlock);
 
   // Borra la cuadrícula antes de dibujar
-  svg.selectAll(".grid-cell").remove();
+  svg.selectAll(".gridCellSphi").remove();
 
   // Dibuja el bloque si hay datos
   if (blockData && blockData.data && blockData.data.length > 0) {
@@ -175,7 +175,7 @@ function resetMap() {
 
 // [H] Limpia todo el mapa ---------------------------------------------------
 function cleanMap() {
-  svg.selectAll(".grid-cell").remove();
+  svg.selectAll(".gridCellSphi").remove();
 }
 
 

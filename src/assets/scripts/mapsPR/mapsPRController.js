@@ -106,7 +106,6 @@ export async function fetchIgpSphiData(year, doy) {
 
     // Group and save in new variable
     mapsPRData.igp_sphi_byHourBlock = groupByHourAndBlock(filteredData);
-    console.log("Hour and minutes:", mapsPRData.igp_sphi_byHourBlock);
     hourBtnAvailability();
     hourDropdownAvailability();
 
@@ -119,11 +118,10 @@ export async function fetchIgpSphiData(year, doy) {
       if (!resumen[h]) resumen[h] = 0;
       resumen[h]++;
     });
-
     //console.log("Bloques por hora:", resumen);
-    console.log("Data from igp_sphi.dat.xz filtered and stored.");
-
+    //console.log("Data from igp_sphi.dat.xz filtered and stored.");
     return filteredData;
+
   } catch (error) {
     console.error("Error obtaining or processing SPHI data:", error.message);
     // if there is an error, clear the structure and update buttons
@@ -247,7 +245,7 @@ function startAutoPlay() {
     .sort((a, b) => parseInt(a.dataset.hour, 10) - parseInt(b.dataset.hour, 10)); // Ascending order
 
   if (activeHourButtons.length === 0) {
-    console.warn("No active hour buttons available.");
+    console.warn("No active hour buttons for Sphi.");
     return;
   }
 
@@ -266,7 +264,7 @@ function startAutoPlay() {
 
     activeHourButtons[autoPlayIndex].click();
     autoPlayIndex++;
-  }, 1000);
+  }, 1300);
 }
 
 // [C] Stop auto-play
