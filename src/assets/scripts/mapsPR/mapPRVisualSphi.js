@@ -11,9 +11,6 @@ function paintGrid(gridData, dynamicData, svg) {
     .attr("height", (d) => d.height)
     .style("fill", (d) => {
       const match = findMatchingCell(dynamicData, d);
-
-      console.log("📊 match.mean_sphi:", match?.mean_sphi);
-
       return match ? getColor(match.mean_sphi) : "none";
     })
     .style("stroke", "lightgray") // Grid cell borders
@@ -45,7 +42,6 @@ function getColor(value) {
 
 //-----------------------------------VISUAL ELEMENTS -----------------------------------
 //--------------------------------------------------------------------------------------
-
 
 // [D] Draws coordinate axes on the map ======================================
 function coordinateAxes(projection, svg, step = 10) {
@@ -205,7 +201,7 @@ function drawColorBar(svg, width, height) {
     .attr("fill", "black")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
-    .text("Color Scale (SPHI in TECU/min)");
+    .text("Color Scale (σφ in TECU/min)");
 }
 
 export {

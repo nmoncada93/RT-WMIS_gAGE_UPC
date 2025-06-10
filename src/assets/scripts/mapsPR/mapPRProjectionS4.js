@@ -1,5 +1,3 @@
-//import * as d3 from "d3";
-
 import {
   coordinateAxes,
   drawAxisLabels,
@@ -7,9 +5,9 @@ import {
   paintGrid,
 } from "./mapPRVisualS4.js";
 
-import { fetchIgpS4Data, getS4BlockByHourAndMinute } from "./mapsPRControllerS4.js";
+import { getS4BlockByHourAndMinute } from "./mapsPRControllerS4.js";
 
-// [A] Initial Setup ------------------------------------------------------------
+// [A] Initial Configuration ------------------------------------------------------------
 const width = 1150;
 const height = 600;
 const gridSize = 2; // Size of the grid cells in degrees
@@ -81,9 +79,13 @@ function updateMapForSelection() {
   const selectedHour = parseInt(hourSelect.value, 10);
   const selectedBlock = parseInt(blockSelect.value, 10);
 
+  // Get the corresponding data block
   const blockData = getS4BlockByHourAndMinute(selectedHour, selectedBlock);
+
+  // Clear the grid before drawing
   svg.selectAll(".gridCellS4").remove();
 
+  // Draw the block if there is data
   if (blockData && blockData.data && blockData.data.length > 0) {
     paintGrid(gridData, [blockData], svg);
     console.log(`Plotting S4 @ ${selectedHour}:${selectedBlock * 10}`);
@@ -91,13 +93,17 @@ function updateMapForSelection() {
     console.warn("Data not available.");
   }
 
+  // Show message below the map
   const msgDiv = document.getElementById("s4MapMessagePR");
   const selectedDate = document.getElementById("dateInputMapsS4").value;
   const horaTxt = selectedHour.toString().padStart(2, "0");
   const minTxt = (selectedBlock * 10).toString().padStart(2, "0");
-  msgDiv.textContent = blockData && blockData.data?.length > 0
-    ? `Displaying: ${selectedDate} at ${horaTxt}:${minTxt} UTC`
-    : `Data not available for ${selectedDate} at ${horaTxt}:${minTxt} UTC.`;
+
+  if (blockData && blockData.data && blockData.data.length > 0) {
+    msgDiv.textContent = `Displaying: ${selectedDate} at ${horaTxt}:${minTxt} GPST`;
+  } else {
+    msgDiv.textContent = `Data not available for ${selectedDate} at ${horaTxt}:${minTxt} GPST.`;
+  }
 }
 
 // [F] Initialize map on button click -------------------------------------------
@@ -119,13 +125,16 @@ document.getElementById("s4MapPRBtn").addEventListener("click", async () => {
     drawAxisLabels(svg, width, height);
     drawColorBar(svg, width, height);
 
+    //Draws the current block according to selects
     updateMapForSelection();
 
+    // Listeners
     const hourSelect = document.getElementById("hourSelectPRS4");
     const blockSelect = document.getElementById("blockSelectPRS4");
     hourSelect.addEventListener("change", updateMapForSelection);
     blockSelect.addEventListener("change", updateMapForSelection);
 
+    // Makes the “Reset” button visible
     const resetButton = document.getElementById("closeS4MapPRBtn");
     if (resetButton) resetButton.style.display = "block";
   } catch (error) {
@@ -133,35 +142,42 @@ document.getElementById("s4MapPRBtn").addEventListener("click", async () => {
   }
 });
 
-// [G] Clear entire map ----------------------------------------------------------
+// [G] Cleans the entire map ---------------------------------------------------
 function resetMap() {
+  console.log("Resetting map");
   svg.selectAll("*").remove();
   document.getElementById("hourButtonsPRS4").classList.remove("hourButtonsContainer--visible");
   const mapContainer = document.getElementById("s4MapPRContainer");
   if (mapContainer) {
     mapContainer.style.display = "none";
+  } else {
+    console.error("Map container not found...");
   }
 }
 
+// [H] Cleans the entire map ---------------------------------------------------
 function cleanMap() {
   svg.selectAll(".gridCellS4").remove();
 }
 
-// [H] Monitoring buttons logic --------------------------------------------------
+// [I] Monitoring buttons  --------------------------------------------------
 function markActiveHourButton(hour) {
   document.querySelectorAll('#hourButtonsPRS4 .tertiaryBtn').forEach(btn => {
     btn.classList.toggle('active-button', parseInt(btn.dataset.hour, 10) === hour);
   });
 }
 
+// [J] Stops the historical map when pressing the “Reset” button ------------------
 document.getElementById("closeS4MapPRBtn").addEventListener("click", () => {
   resetMap();
 });
 
+// [K] When another script triggers the custom event
 window.addEventListener("cleanMapPR", () => {
   cleanMap();
 });
 
+// [L]
 document.getElementById("hourButtonsPRS4").addEventListener("click", function (e) {
   if (e.target.classList.contains("tertiaryBtn")) {
     const hour = parseInt(e.target.getAttribute("data-hour"), 10);
@@ -171,13 +187,14 @@ document.getElementById("hourButtonsPRS4").addEventListener("click", function (e
   }
 });
 
+// [M]
 document.getElementById("hourSelectPRS4").addEventListener("change", function () {
   const hour = parseInt(this.value, 10);
   markActiveHourButton(hour);
   updateMapForSelection();
 });
 
-// [J] Minute arrows -------------------------------------------------------------
+// [N] Listener for arrow buttons to change minutes -------------------
 const blockSelect = document.getElementById("blockSelectPRS4");
 const blockPrevBtn = document.getElementById("blockPrevBtnS4");
 const blockNextBtn = document.getElementById("blockNextBtnS4");

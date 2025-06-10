@@ -1,5 +1,3 @@
-//import * as d3 from "d3";
-
 import {
   coordinateAxes,
   drawAxisLabels,
@@ -7,35 +5,32 @@ import {
   paintGrid,
 } from "./mapPRVisualSphi.js";
 
+import { getSphiBlockByHourAndMinute } from "./mapsPRController.js";
 
-
-//import { getSelectedMapDate } from "./mapsPRCalendar.js";
-import { fetchIgpSphiData, getSphiBlockByHourAndMinute } from "./mapsPRController.js";
-
-// [A] Configuración inicial ---------------------------------------------------
+// [A] Initial Configuration ------------------------------------------------------------
 const width = 1150;
 const height = 600;
-const gridSize = 2; // Tamaño de las celdas de la cuadrícula en grados
+const gridSize = 2; // Size of the grid cells in degrees
 
-// [A.1] Configuración de la proyección
+// [A.1] Projection configuration
 const projection = d3
   .geoEquirectangular()
   .scale(150)
-  .translate([width / 2, height / 2]); // Centra la proyección
+  .translate([width / 2, height / 2]); // Centers the projection
 
-// [A.2] Generador de rutas para GeoJSON
+// [A.2] GeoJSON path generator
 const pathGenerator = d3.geoPath().projection(projection);
 
-// [A.3] Contenedor SVG
+// [A.3] SVG container
 const svg = d3
   .select("#sphiMapPRRender")
   .attr("viewBox", `-50 -5 ${width + 100} ${height + 100}`)
   .attr("preserveAspectRatio", "xMidYMid meet");
 
-// [A.4] Cuadrícula mundial (global para poder reutilizarla)
+// [A.4] Global grid data (reusable)
 const gridData = generateGridData(projection, gridSize);
 
-// [B] Genera datos de la cuadrícula -----------------------------------------
+// [B] Generate grid data --------------------------------------------------------
 function generateGridData(projection, gridSize) {
   const gridData = [];
   for (let lon = -180; lon < 180; lon += gridSize) {
@@ -57,7 +52,7 @@ function generateGridData(projection, gridSize) {
   return gridData;
 }
 
-// [C] Carga datos del mapa --------------------------------------------------
+// [C] Load map data -------------------------------------------------------------
 async function loadWorldData() {
   try {
     return await d3.json(
@@ -68,7 +63,7 @@ async function loadWorldData() {
   }
 }
 
-// [D] Dibuja países ---------------------------------------------------------
+// [D] Draw countries ------------------------------------------------------------
 function drawCountries(worldData) {
   svg
     .selectAll("path")
@@ -79,21 +74,20 @@ function drawCountries(worldData) {
     .attr("stroke", "black");
 }
 
-// [E] FUNCION CENTRAL: Actualiza el mapa segun selects ----------------------
+// [E] Core function: update map based on selectors ------------------------------
 function updateMapForSelection() {
-  // Lee valores seleccionados
   const hourSelect = document.getElementById("hourSelectPR");
   const blockSelect = document.getElementById("blockSelectPR");
   const selectedHour = parseInt(hourSelect.value, 10);
   const selectedBlock = parseInt(blockSelect.value, 10);
 
-  // Obtén el bloque de datos correspondiente
+  // Get the corresponding data block
   const blockData = getSphiBlockByHourAndMinute(selectedHour, selectedBlock);
 
-  // Borra la cuadrícula antes de dibujar
+  // Clear the grid before drawing
   svg.selectAll(".gridCellSphi").remove();
 
-  // Dibuja el bloque si hay datos
+  // Draw the block if there is data
   if (blockData && blockData.data && blockData.data.length > 0) {
     paintGrid(gridData, [blockData], svg);
     console.log(`Plotting hour: ${selectedHour}, and minutes: ${selectedBlock} (${String(selectedHour).padStart(2, "0")}:${String(selectedBlock*10).padStart(2, "0")})`);
@@ -101,7 +95,7 @@ function updateMapForSelection() {
     console.warn("Data not available.");
   }
 
-  // [NEW] Mostrar mensaje debajo del mapa
+  // Show message below the map
   const msgDiv = document.getElementById("mapMessagePR");
   const selectedDate = document.getElementById("dateInputMaps").value;
   const horaTxt = selectedHour.toString().padStart(2, "0");
@@ -112,45 +106,38 @@ function updateMapForSelection() {
   } else {
     msgDiv.textContent = `Data not available for ${selectedDate} at ${horaTxt}:${minTxt} UTC.`;
   }
-
 }
 
-// [F] Inicializa mapa con datos y listeners ------------------------------
+// [F] Initialize map on button click -------------------------------------------
 document.getElementById("sphiMapPRBtn").addEventListener("click", async () => {
   try {
     const mapContainer = document.getElementById("sphiMapPRContainer");
     mapContainer.style.display = "block";
     document.getElementById("hourButtonsPR").classList.add("hourButtonsContainer--visible");
 
-
-    // Obtén la fecha seleccionada
+    // Get the selected date
     const dateInput = document.getElementById("dateInputMaps").value;
     if (!dateInput) {
       console.error("Please select a date before starting the map.");
       return;
     }
-    //const { year, doy } = getSelectedMapDate(dateInput);
 
-    // 1. Carga datos SPHI (esto llena el objeto global del controller)
-    //await fetchIgpSphiData(year, doy);
-
-    // 2. Carga y dibuja el fondo del mapa y decoración
     const worldData = await loadWorldData();
     drawCountries(worldData);
     coordinateAxes(projection, svg);
     drawAxisLabels(svg, width, height);
     drawColorBar(svg, width, height);
 
-    // 3. Dibuja el bloque actual según selects
+    //Draws the current block according to selects
     updateMapForSelection();
 
-    // 4. Listeners para selects (pueden ponerse fuera si no quieres duplicar)
+    // Listeners
     const hourSelect = document.getElementById("hourSelectPR");
     const blockSelect = document.getElementById("blockSelectPR");
     hourSelect.addEventListener("change", updateMapForSelection);
     blockSelect.addEventListener("change", updateMapForSelection);
 
-    // 5. Hace visible el botón "Reset"
+    // Makes the “Reset” button visible
     const resetButton = document.getElementById("closeSphiMapPRBtn");
     if (resetButton) resetButton.style.display = "block";
   } catch (error) {
@@ -159,7 +146,7 @@ document.getElementById("sphiMapPRBtn").addEventListener("click", async () => {
 });
 
 
-// [H] Limpia todo el mapa ---------------------------------------------------
+// [G] Cleans the entire map ---------------------------------------------------
 function resetMap() {
   console.log("Resetting map");
   svg.selectAll("*").remove();
@@ -172,13 +159,10 @@ function resetMap() {
   }
 }
 
-
-// [H] Limpia todo el mapa ---------------------------------------------------
+// [H] Cleans the entire map ---------------------------------------------------
 function cleanMap() {
   svg.selectAll(".gridCellSphi").remove();
 }
-
-
 
 // [i] Monitoring Buttons --------------------------------------------------
 function markActiveHourButton(hour) {
@@ -187,39 +171,36 @@ function markActiveHourButton(hour) {
   });
 }
 
-
-// [G] Detiene el mapa histórico al pulsar el botón "Reset" ------------------
+// [J] Stops the historical map when pressing the “Reset” button ------------------
 document
   .getElementById("closeSphiMapPRBtn")
   .addEventListener("click", () => {
     resetMap();
   });
 
-
-// Cuando otro script lanza el evento personalizado
+// [K] When another script triggers the custom event
 window.addEventListener("cleanMapPR", () => {
   cleanMap();
 });
 
+// [L]
 document.getElementById('hourButtonsPR').addEventListener('click', function(e) {
   if (e.target.classList.contains('tertiaryBtn')) {
     const hour = parseInt(e.target.getAttribute('data-hour'), 10);
-    // Cambia el select
     document.getElementById('hourSelectPR').value = hour;
     markActiveHourButton(hour);
-    // Actualiza mapa (tu función)
     updateMapForSelection();
   }
 });
 
+// [M]
 document.getElementById('hourSelectPR').addEventListener('change', function() {
   const hour = parseInt(this.value, 10);
   markActiveHourButton(hour);
   updateMapForSelection();
 });
 
-
-// [J] Listener for arrow buttons to change minutes -------------------
+// [N] Listener for arrow buttons to change minutes -------------------
 const blockSelect = document.getElementById("blockSelectPR");
 const blockPrevBtn = document.getElementById("blockPrevBtn");
 const blockNextBtn = document.getElementById("blockNextBtn");

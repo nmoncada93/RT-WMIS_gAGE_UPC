@@ -1,5 +1,3 @@
-//import * as d3 from "d3";
-
 import {
   coordinateAxes,
   drawAxisLabels,
@@ -7,9 +5,9 @@ import {
   paintGrid,
 } from "./mapPRVisualRoti.js";
 
-import { fetchIgpRotiData, getRotiBlockByHourAndMinute } from "./mapsPRControllerRoti.js";
+import { getRotiBlockByHourAndMinute } from "./mapsPRControllerRoti.js";
 
-// [A] Initial Setup ------------------------------------------------------------
+// [A] Initial Configuration ------------------------------------------------------------
 const width = 1150;
 const height = 600;
 const gridSize = 2; // Size of the grid cells in degrees
@@ -18,7 +16,7 @@ const gridSize = 2; // Size of the grid cells in degrees
 const projection = d3
   .geoEquirectangular()
   .scale(150)
-  .translate([width / 2, height / 2]);
+  .translate([width / 2, height / 2]); // Centers the projection
 
 // [A.2] GeoJSON path generator
 const pathGenerator = d3.geoPath().projection(projection);
@@ -81,9 +79,13 @@ function updateMapForSelection() {
   const selectedHour = parseInt(hourSelect.value, 10);
   const selectedBlock = parseInt(blockSelect.value, 10);
 
+  // Get the corresponding data block
   const blockData = getRotiBlockByHourAndMinute(selectedHour, selectedBlock);
+  
+  // Clear the grid before drawing
   svg.selectAll(".gridCellRoti").remove();
 
+  // Draw the block if there is data
   if (blockData && blockData.data && blockData.data.length > 0) {
     paintGrid(gridData, [blockData], svg);
     console.log(`Plotting ROTI @ ${selectedHour}:${selectedBlock * 10}`);
@@ -91,13 +93,17 @@ function updateMapForSelection() {
     console.warn("Data not available.");
   }
 
+  // Show message below the map
   const msgDiv = document.getElementById("rotiMapMessagePR");
   const selectedDate = document.getElementById("dateInputMapsRoti").value;
   const horaTxt = selectedHour.toString().padStart(2, "0");
   const minTxt = (selectedBlock * 10).toString().padStart(2, "0");
-  msgDiv.textContent = blockData && blockData.data?.length > 0
-    ? `Displaying: ${selectedDate} at ${horaTxt}:${minTxt} UTC`
-    : `Data not available for ${selectedDate} at ${horaTxt}:${minTxt} UTC.`;
+
+  if (blockData && blockData.data && blockData.data.length > 0) {
+    msgDiv.textContent = `Displaying: ${selectedDate} at ${horaTxt}:${minTxt} GPST`;
+  } else {
+    msgDiv.textContent = `Data not available for ${selectedDate} at ${horaTxt}:${minTxt} GPST.`;
+  }
 }
 
 // [F] Initialize map on button click -------------------------------------------
@@ -107,6 +113,7 @@ document.getElementById("rotiMapPRBtn").addEventListener("click", async () => {
     mapContainer.style.display = "block";
     document.getElementById("hourButtonsPRRoti").classList.add("hourButtonsContainer--visible");
 
+    // Get the selected date
     const dateInput = document.getElementById("dateInputMapsRoti").value;
     if (!dateInput) {
       console.error("Please select a date before starting the map.");
@@ -119,13 +126,16 @@ document.getElementById("rotiMapPRBtn").addEventListener("click", async () => {
     drawAxisLabels(svg, width, height);
     drawColorBar(svg, width, height);
 
+    //Draws the current block according to selects
     updateMapForSelection();
 
+    // Listeners
     const hourSelect = document.getElementById("hourSelectPRRoti");
     const blockSelect = document.getElementById("blockSelectPRRoti");
     hourSelect.addEventListener("change", updateMapForSelection);
     blockSelect.addEventListener("change", updateMapForSelection);
 
+    // Makes the “Reset” button visible
     const resetButton = document.getElementById("closeRotiMapPRBtn");
     if (resetButton) resetButton.style.display = "block";
   } catch (error) {
@@ -133,35 +143,42 @@ document.getElementById("rotiMapPRBtn").addEventListener("click", async () => {
   }
 });
 
-// [G] Clear entire map ----------------------------------------------------------
+// [G] Cleans the entire map ---------------------------------------------------
 function resetMap() {
+  console.log("Resetting map");
   svg.selectAll("*").remove();
   document.getElementById("hourButtonsPRRoti").classList.remove("hourButtonsContainer--visible");
   const mapContainer = document.getElementById("rotiMapPRContainer");
   if (mapContainer) {
     mapContainer.style.display = "none";
+  } else {
+    console.error("Map container not found...");
   }
 }
 
+// [H] Cleans the entire map ---------------------------------------------------
 function cleanMap() {
   svg.selectAll(".gridCellRoti").remove();
 }
 
-// [H] Monitoring buttons logic --------------------------------------------------
+// [I] Monitoring buttons  --------------------------------------------------
 function markActiveHourButton(hour) {
   document.querySelectorAll('#hourButtonsPRRoti .tertiaryBtn').forEach(btn => {
     btn.classList.toggle('active-button', parseInt(btn.dataset.hour, 10) === hour);
   });
 }
 
+// [J] Stops the historical map when pressing the “Reset” button ------------------
 document.getElementById("closeRotiMapPRBtn").addEventListener("click", () => {
   resetMap();
 });
 
+// [K] When another script triggers the custom event
 window.addEventListener("cleanMapPR", () => {
   cleanMap();
 });
 
+// [L]
 document.getElementById("hourButtonsPRRoti").addEventListener("click", function (e) {
   if (e.target.classList.contains("tertiaryBtn")) {
     const hour = parseInt(e.target.getAttribute("data-hour"), 10);
@@ -171,13 +188,14 @@ document.getElementById("hourButtonsPRRoti").addEventListener("click", function 
   }
 });
 
+// [M]
 document.getElementById("hourSelectPRRoti").addEventListener("change", function () {
   const hour = parseInt(this.value, 10);
   markActiveHourButton(hour);
   updateMapForSelection();
 });
 
-// [J] Minute arrows -------------------------------------------------------------
+// [N] Listener for arrow buttons to change minutes -------------------
 const blockSelect = document.getElementById("blockSelectPRRoti");
 const blockPrevBtn = document.getElementById("blockPrevBtnRoti");
 const blockNextBtn = document.getElementById("blockNextBtnRoti");

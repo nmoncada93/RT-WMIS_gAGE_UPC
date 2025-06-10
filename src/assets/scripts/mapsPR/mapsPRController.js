@@ -82,7 +82,6 @@ function groupByHourAndBlock(filteredData) {
       byHourBlock[hour][blockIdx] = block;
     }
   });
-
   return byHourBlock;
 }
 
@@ -108,18 +107,6 @@ export async function fetchIgpSphiData(year, doy) {
     mapsPRData.igp_sphi_byHourBlock = groupByHourAndBlock(filteredData);
     hourBtnAvailability();
     hourDropdownAvailability();
-
-    // Count blocks by hour
-    const bloques = mapsPRData.igp_sphi;
-    const resumen = {};
-
-    bloques.forEach(b => {
-      const h = Math.floor(b.TIME / 3600);
-      if (!resumen[h]) resumen[h] = 0;
-      resumen[h]++;
-    });
-    //console.log("Bloques por hora:", resumen);
-    //console.log("Data from igp_sphi.dat.xz filtered and stored.");
     return filteredData;
 
   } catch (error) {
@@ -172,25 +159,17 @@ function hourDropdownAvailability() {
 
 // [I] Clear hour and minute block selections =============================================
 function clearHourAndMinuteSelections() {
-  document.querySelectorAll('.tertiaryBtn.active-button').forEach(btn => {
+  document.querySelectorAll('#hourButtonsPR .tertiaryBtn.active-button').forEach(btn => {
     btn.classList.remove('active-button');
   });
-
-  // [J.2] Reset hour dropdown selector (for mobile view)
-  const hourSelect = document.getElementById("hourSelectPR");
-  hourSelect.selectedIndex = 0;
-
-  // [J.3] Reset 10-minute block selector
-  const blockSelect = document.getElementById("blockSelectPR");
-  blockSelect.selectedIndex = 0;
+  document.getElementById("hourSelectPR").selectedIndex = 0;
+  document.getElementById("blockSelectPR").selectedIndex = 0;
 }
 
-
-// [K] Captura fecha y obtiene datos ==================================
+// [J] On date change ===========================================
 document
   .getElementById("dateInputMaps")
   .addEventListener("change", async function () {
-    //clearSvgMapOnly(); // 🧹 Limpia visualización anterior
     const { year, doy } = getSelectedMapDate(this.value);
     console.log(
       "Serlected Date:",
@@ -202,26 +181,26 @@ document
     );
 
     window.dispatchEvent(new Event("cleanMapPR"));
-    clearHourAndMinuteSelections(); // ← limpia selección de hora y minutos
+    clearHourAndMinuteSelections();
 
     handlerSpinner(true);
     await fetchIgpSphiData(year, doy);
     handlerSpinner(false);
   });
 
-// [L] Update hour button availability ====================================================
+// [K] Update hour button availability ====================================================
 document.getElementById('blockPrevBtn').addEventListener('mousedown', function(e) {
   e.preventDefault(); // Previene que quede enfocado
   this.blur();
 });
 
-// [L.1] Update hour button availability ====================================================
+// [L] Update hour button availability ====================================================
 document.getElementById('blockNextBtn').addEventListener('mousedown', function(e) {
   e.preventDefault();
   this.blur();
 });
 
-// [Z] Getter para obtener el bloque filtrado por hora y bloque de 10 minutos
+// [Z] Getter to get the filtered block by hour and 10-minute block ============
 export function getSphiBlockByHourAndMinute(hour, blockIdx) {
   if (!mapsPRData.igp_sphi_byHourBlock) return null;
   return mapsPRData.igp_sphi_byHourBlock[hour]?.[blockIdx] ?? null;

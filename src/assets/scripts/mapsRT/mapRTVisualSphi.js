@@ -214,7 +214,7 @@ function drawColorBar(svg, width, height) {
     .attr("fill", "black")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
-    .text("Color Scale (SPHI in Radian)");
+    .text("Color Scale (σφ in Radian)");
 }
 
 export {

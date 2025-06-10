@@ -19,11 +19,13 @@ function handlerSpinner(show) {
   const map = document.getElementById("s4MapPRContainer");
 
   if (show) {
+    // hide mapa and save the status "visible"
     map.dataset.wasVisible = map.style.display === "block";
     map.style.display = "none";
     spinner.style.display = "flex";
   } else {
     spinner.style.display = "none";
+    // Show the map only if it was visible before
     if (map.dataset.wasVisible === "true") {
       map.style.display = "block";
     }
@@ -31,23 +33,25 @@ function handlerSpinner(show) {
   }
 }
 
-// [C] Fetch igp_roti.dat.xz ============================================
+// [C] Fetch igp_roti.dat.xz (same file for S4 & roti) ============================================
 async function fetchRawIgpRotiData(year, doy) {
   if (isFetching.igp_roti) {
     console.warn("S4 application in process. Avoiding overlapping.");
     return null;
   }
 
-  isFetching.igp_roti = true;
+  isFetching.igp_roti = true; // Activate the flag
   try {
     const url = `http://127.0.0.1:5000/api/mapsPR/read-igp-roti/${year}/${doy}`;
     const response = await fetch(url);
+
     if (!response.ok) {
       throw new Error(`HTTP error for S4: ${response.status}`);
     }
+
     return await response.json();
   } finally {
-    isFetching.igp_roti = false;
+    isFetching.igp_roti = false; // Desactivate the flag
   }
 }
 
@@ -67,6 +71,7 @@ function filterS4Data(rawData) {
 
 // [E] Group by hour and 10-min block =======================================
 function groupByHourAndBlock(filteredData) {
+  // Create result object: keys 0...23, each one an array of 6 positions (null by default)
   const byHourBlock = {};
   for (let h = 0; h < 24; h++) byHourBlock[h] = Array(6).fill(null);
 
@@ -77,7 +82,6 @@ function groupByHourAndBlock(filteredData) {
       byHourBlock[hour][blockIdx] = block;
     }
   });
-
   return byHourBlock;
 }
 
@@ -88,6 +92,7 @@ export async function fetchIgpS4Data(year, doy) {
     const hasUsefulData = Array.isArray(rawData) && rawData.some(group => Array.isArray(group.data) && group.data.length > 0);
 
     if (!rawData || !hasUsefulData) {
+      // If there is no data, clear the structure and update buttons
       mapsPRDataS4.igp_s4_byHourBlock = {};
       hourBtnAvailability();
       hourDropdownAvailability();
@@ -97,13 +102,16 @@ export async function fetchIgpS4Data(year, doy) {
     const filteredData = filterS4Data(rawData);
     mapsPRDataS4.igp_s4 = filteredData;
     s4MapBtn.classList.remove("boxContainer__titleH3--disabled");
-    mapsPRDataS4.igp_s4_byHourBlock = groupByHourAndBlock(filteredData);
 
+    // Group and save in new variable
+    mapsPRDataS4.igp_s4_byHourBlock = groupByHourAndBlock(filteredData);
     hourBtnAvailability();
     hourDropdownAvailability();
     return filteredData;
+
   } catch (error) {
     console.error("Error obtaining or processing S4 data:", error.message);
+    // if there is an error, clear the structure and update buttons
     mapsPRDataS4.igp_s4_byHourBlock = {};
     hourBtnAvailability();
     hourDropdownAvailability();
@@ -118,8 +126,14 @@ function hourBtnAvailability() {
   document.querySelectorAll('#hourButtonsPRS4 button.tertiaryBtn').forEach((btn) => {
     const hour = parseInt(btn.getAttribute('data-hour'), 10);
     const hasData = (byHourBlock[hour] || []).some(b => b && b.data && b.data.length > 0);
-    btn.classList.toggle('tertiaryBtn--disabled', !hasData);
-    btn.disabled = !hasData;
+    
+    if (!hasData) {
+      btn.classList.add('tertiaryBtn--disabled');
+      btn.disabled = true;
+    } else {
+      btn.classList.remove('tertiaryBtn--disabled');
+      btn.disabled = false;
+    }
   });
 }
 
@@ -127,17 +141,24 @@ function hourBtnAvailability() {
 function hourDropdownAvailability() {
   const byHourBlock = mapsPRDataS4.igp_s4_byHourBlock;
   const hourSelect = document.getElementById("hourSelectPRS4");
+  // Clear the hour select dropdown
   hourSelect.innerHTML = "";
   for (let h = 0; h < 24; h++) {
     const option = document.createElement("option");
     option.value = h;
     option.textContent = `${h}h`;
+    // Check if there is data in that hour
     const hasData = (byHourBlock[h] || []).some(b => b && b.data && b.data.length > 0);
-    option.disabled = !hasData;
-    if (!hasData) option.classList.add("selectOption--disabled");
+    if (!hasData) {
+      option.disabled = true;
+      option.classList.add("selectOption--disabled");
+    } else {
+      option.disabled = false;
+    }
     hourSelect.appendChild(option);
   }
 }
+
 
 // [I] Clear selection states ===================================
 function clearHourAndMinuteSelections() {
@@ -162,6 +183,18 @@ document.getElementById("dateInputMapsS4").addEventListener("change", async func
   handlerSpinner(true);
   await fetchIgpS4Data(year, doy);
   handlerSpinner(false);
+});
+
+// [K] Prevent focus highlight on block buttons ==========================================
+document.getElementById('blockPrevBtnS4').addEventListener('mousedown', function(e) {
+  e.preventDefault();
+  this.blur();
+});
+
+// [L] Update hour button availability ====================================================
+document.getElementById('blockNextBtnS4').addEventListener('mousedown', function(e) {
+  e.preventDefault();
+  this.blur();
 });
 
 // [Z] Getter to access specific block ======================================

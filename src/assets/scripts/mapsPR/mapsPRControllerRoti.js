@@ -40,7 +40,7 @@ async function fetchRawIgpRotiData(year, doy) {
     return null;
   }
 
-  isFetching.igp_roti = true;
+  isFetching.igp_roti = true; // Activate the flag
   try {
     const url = `http://127.0.0.1:5000/api/mapsPR/read-igp-roti/${year}/${doy}`;
     const response = await fetch(url);
@@ -69,7 +69,7 @@ function filterRotiL1Data(rawData) {
   }));
 }
 
-// [E] Group by hour and block ================================
+// [E] Group blocks by hour and 10-minute block ================================
 function groupByHourAndBlock(filteredData) {
   // Create result object: keys 0...23, each one an array of 6 positions (null by default)
   const byHourBlock = {};
@@ -82,7 +82,6 @@ function groupByHourAndBlock(filteredData) {
       byHourBlock[hour][blockIdx] = block;
     }
   });
-
   return byHourBlock;
 }
 
@@ -108,18 +107,6 @@ export async function fetchIgpRotiData(year, doy) {
     mapsPRData.igp_roti_byHourBlock = groupByHourAndBlock(filteredData);
     hourBtnAvailability();
     hourDropdownAvailability();
-
-        // Count blocks by hour
-    const bloques = mapsPRData.igp_roti;
-    const resumen = {};
-
-    bloques.forEach(b => {
-      const h = Math.floor(b.TIME / 3600);
-      if (!resumen[h]) resumen[h] = 0;
-      resumen[h]++;
-    });
-    //console.log("Bloques por hora:", resumen);
-    //console.log("Data from igp_sphi.dat.xz filtered and stored.");
     return filteredData;
 
   } catch (error) {
@@ -139,9 +126,10 @@ function hourBtnAvailability() {
   document.querySelectorAll('#hourButtonsPRRoti button.tertiaryBtn').forEach((btn) => {
     const hour = parseInt(btn.getAttribute('data-hour'), 10);
     const hasData = (byHourBlock[hour] || []).some(b => b && b.data && b.data.length > 0);
+    
     if (!hasData) {
       btn.classList.add('tertiaryBtn--disabled');
-      btn.disabled = true; // Opcional, útil para accesibilidad
+      btn.disabled = true; 
     } else {
       btn.classList.remove('tertiaryBtn--disabled');
       btn.disabled = false;
@@ -153,11 +141,11 @@ function hourBtnAvailability() {
 function hourDropdownAvailability() {
   const byHourBlock = mapsPRData.igp_roti_byHourBlock;
   const hourSelect = document.getElementById("hourSelectPRRoti");
+  // Clear the hour select dropdown
   hourSelect.innerHTML = "";
   for (let h = 0; h < 24; h++) {
     const option = document.createElement("option");
     option.value = h;
-    //option.textContent = h.toString().padStart(2, "0") + ":00";
     option.textContent = `${h}h`;
     // Check if there is data in that hour
     const hasData = (byHourBlock[h] || []).some(b => b && b.data && b.data.length > 0);
@@ -169,7 +157,7 @@ function hourDropdownAvailability() {
   }
 }
 
-// [I] Clear selection states ===================================
+// [I] Clear hour and minute block selections =============================================
 function clearHourAndMinuteSelections() {
   document.querySelectorAll('#hourButtonsPRRoti .tertiaryBtn.active-button').forEach(btn => {
     btn.classList.remove('active-button');
@@ -197,19 +185,19 @@ document.getElementById("dateInputMapsRoti").addEventListener("change", async fu
 });
 
 
-// [K] Button blur fix ==========================================
+// [K] Update hour button availability ====================================================
 document.getElementById('blockPrevBtnRoti').addEventListener('mousedown', function(e) {
   e.preventDefault();
   this.blur();
 });
 
-// [L.1] Update hour button availability ====================================================
+// [L] Update hour button availability ====================================================
 document.getElementById('blockNextBtnRoti').addEventListener('mousedown', function(e) {
   e.preventDefault();
   this.blur();
 });
 
-// [Z] Getter for filtered block by hour and 10-minute block ====
+// [Z] Getter to get the filtered block by hour and 10-minute block ============
 export function getRotiBlockByHourAndMinute(hour, blockIdx) {
   if (!mapsPRData.igp_roti_byHourBlock) return null;
   return mapsPRData.igp_roti_byHourBlock[hour]?.[blockIdx] ?? null;
@@ -275,4 +263,5 @@ function toggleAutoPlay() {
   }
 }
 
+// [E] Listener for play/pause button
 document.getElementById("autoPlayHoursBtnRoti").addEventListener("click", toggleAutoPlay);
