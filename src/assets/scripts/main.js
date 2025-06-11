@@ -111,3 +111,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+/***************************************************
+ *
+ * CALENDAR FUTURE DATES
+ **************************************************/
+
+// [GENERIC] Block future dates on all <input type="date">
+document.addEventListener("DOMContentLoaded", () => {
+  const today = new Date().toISOString().split("T")[0]; // formato: yyyy-mm-dd
+  document.querySelectorAll('input[type="date"]').forEach(input => {
+    input.setAttribute("max", today);
+  });
+});

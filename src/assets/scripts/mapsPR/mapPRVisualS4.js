@@ -15,6 +15,35 @@ function paintGrid(gridData, dynamicData, svg) {
     })
     .style("stroke", "lightgray") // Grid cell borders
     .style("stroke-width", 0.3);
+
+
+  // When hovering the mouse over a map cell, a tooltip is displayed with: **************************
+  const tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip-s4")
+  .style("position", "absolute")
+  .style("visibility", "hidden")
+  .style("background", "#fff")
+  .style("border", "1px solid #ccc")
+  .style("padding", "5px")
+  .style("font-size", "12px")
+  .style("border-radius", "4px");
+
+  svg.selectAll(".grid-cell")
+    .on("mouseover", function (event, d) {
+      const match = findMatchingCell(dynamicData, d);
+      if (match) {
+        tooltip.html(`S4: ${match.mean_s4.toFixed(2)}<br>Lat: ${d.Latitude}°<br>Lon: ${d.Longitude}°`)
+          .style("visibility", "visible");
+      }
+    })
+    .on("mousemove", function (event) {
+      tooltip.style("top", (event.pageY + 10) + "px")
+            .style("left", (event.pageX + 10) + "px");
+    })
+    .on("mouseout", function () {
+      tooltip.style("visibility", "hidden");
+  });
+  //****************************************************************************
 }
 
 // [B] Finds matching data for a grid cell ===================================
@@ -125,7 +154,7 @@ function drawAxisLabels(svg, width, height) {
     .attr("y", 50)
     .attr("transform", "rotate(-90)")
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
     .text("Latitude");
 
@@ -133,9 +162,9 @@ function drawAxisLabels(svg, width, height) {
   svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", height + 1)
+    .attr("y", height -5 )
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
     .text("Longitude");
 }
@@ -144,7 +173,7 @@ function drawAxisLabels(svg, width, height) {
 function drawColorBar(svg, width, height) {
   const barWidth = width - 200; // Width of the color bar
   const barHeight = 15; // Height of the color bar
-  const barPadding = 15; // Space between the map and the bar
+  const barPadding = 1; // Space between the map and the bar
 
   // Container for the color bar
   const barGroup = svg
@@ -199,7 +228,7 @@ function drawColorBar(svg, width, height) {
     .attr("x", barWidth / 2) // Horizontally centered
     .attr("y", barHeight + 35) // Space below the bar
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
     .text("Color Scale (S4 Index, unitless)");
 

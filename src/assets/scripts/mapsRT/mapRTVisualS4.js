@@ -150,7 +150,7 @@ function drawAxisLabels(svg, width, height) {
   // Label for X-axis (Longitude)
   svg.append("text")
     .attr("x", width / 2)
-    .attr("y", height + -5)
+    .attr("y", height -5)
     .attr("fill", "black")
     .attr("font-size", "16px")
     .attr("text-anchor", "middle")

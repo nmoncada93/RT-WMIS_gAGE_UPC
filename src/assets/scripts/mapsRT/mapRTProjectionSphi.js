@@ -17,6 +17,7 @@ const pathGenerator = d3.geoPath().projection(projection);
 // [A.3] Contenedor SVG
 const svg = d3.select("#sphiMapRender")
     .attr("viewBox", `-50 -5 ${width + 100} ${height + 100}`)
+    //.attr("viewBox", `0 0 ${width} ${height}`)
     .attr("preserveAspectRatio", "xMidYMid meet");
 
 // [A.4] Variable global para el ID del intervalo

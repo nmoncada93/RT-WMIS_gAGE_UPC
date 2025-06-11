@@ -102,9 +102,11 @@ function updateMapForSelection() {
   const minTxt = (selectedBlock * 10).toString().padStart(2, "0");
 
   if (blockData && blockData.data && blockData.data.length > 0) {
-    msgDiv.textContent = `Displaying: ${selectedDate} at ${horaTxt}:${minTxt} UTC`;
+    msgDiv.textContent = `Displaying: ${selectedDate} at ${horaTxt}:${minTxt} GPST`;
+    msgDiv.style.color = "inherit";
   } else {
-    msgDiv.textContent = `Data not available for ${selectedDate} at ${horaTxt}:${minTxt} UTC.`;
+    msgDiv.textContent = `Data not available for ${selectedDate} at ${horaTxt}:${minTxt} GPST.`;
+    msgDiv.style.color = "#ff6600";
   }
 }
 

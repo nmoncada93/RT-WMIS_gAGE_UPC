@@ -1,8 +1,18 @@
+//.mapRTContainer {
+//  display: none;
+//  margin: 20px auto;
+//  border-radius: 5px;
+//  aspect-ratio: 2 / 1;
+//}
+
 .mapRTContainer {
   display: none;
-  margin: 20px auto;
+  margin: 0 auto;
+  margin-left: -5%;
+  width: 85vw;        /* ocupa el 90 % del viewport */
+  max-width:1300px;  /* nunca excede 1 400 px */
   border-radius: 5px;
-  aspect-ratio: 2 / 1;
+  /* aspect-ratio: 2/1;  ⬅️  comenta o elimina si limita demasiado */
 }
 
 #sphiMapRender {

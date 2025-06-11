@@ -32,7 +32,7 @@ function paintGrid(gridData, dynamicData, svg) {
         .on("mouseover", function (event, d) {
           const match = findMatchingCell(dynamicData, d);
           if (match) {
-            tooltip.html(`S4: ${match.mean_sphi.toFixed(2)}<br>Lat: ${d.Latitude}°<br>Lon: ${d.Longitude}°`)
+            tooltip.html(`Sphi: ${match.mean_sphi.toFixed(2)}<br>Lat: ${d.Latitude}°<br>Lon: ${d.Longitude}°`)
               .style("visibility", "visible");
           }
         })

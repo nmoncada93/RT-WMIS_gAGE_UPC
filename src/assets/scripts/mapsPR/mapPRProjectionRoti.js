@@ -101,8 +101,10 @@ function updateMapForSelection() {
 
   if (blockData && blockData.data && blockData.data.length > 0) {
     msgDiv.textContent = `Displaying: ${selectedDate} at ${horaTxt}:${minTxt} GPST`;
+    msgDiv.style.color = "inherit";
   } else {
     msgDiv.textContent = `Data not available for ${selectedDate} at ${horaTxt}:${minTxt} GPST.`;
+    msgDiv.style.color = "#ff6600";
   }
 }
 
