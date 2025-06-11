@@ -55,6 +55,8 @@ async function initMap(fetchDataFunction) {
       // Pinta la cuadricula con datos dinamicos
       paintGrid(gridData, dynamicData, svg);
 
+      updateLastTimeLabel(dynamicData[0].TIME);
+
       // Inicia actualizacion en tiempo real
       startRealTimeUpdates(gridData, fetchDataFunction);
 
@@ -115,6 +117,10 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
           const dynamicData = await fetchDataFunction();
           if (dynamicData) {
               paintGrid(gridData, dynamicData, svg);
+
+updateLastTimeLabel(dynamicData[0].TIME);
+
+
           }
       } catch (error) {
           console.error("Error durante el Real-Time", error);
@@ -156,4 +162,17 @@ document.getElementById("sphiMapBtn").addEventListener("click", async () => {
 document.getElementById("closeSphiMapBtn").addEventListener("click", () => {
     resetMap();
 });
+
+function updateLastTimeLabel(timeCode) {
+  const p = document.getElementById("sphiMapLastUpdate");
+  if (!p) return;
+
+  const hours = Math.floor(timeCode / 3600);
+  const minutes = Math.floor((timeCode % 3600) / 60);
+
+  const hh = hours.toString().padStart(2, "0");
+  const mm = minutes.toString().padStart(2, "0");
+
+  p.textContent = `Displaying: ${hh}:${mm} GPST`;
+}
 
