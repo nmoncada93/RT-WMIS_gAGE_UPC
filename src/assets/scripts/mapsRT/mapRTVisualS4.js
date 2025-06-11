@@ -1,4 +1,4 @@
-// [A] Pinta cuadricula =========================================================
+// [A] Paints grid cells on the map ===========================================
 function paintGrid(gridData, dynamicData, svg) {
   svg.selectAll(".grid-cell")
       .data(gridData)
@@ -12,11 +12,40 @@ function paintGrid(gridData, dynamicData, svg) {
           const match = findMatchingCell(dynamicData, d);
           return match ? getColor(match.mean_s4) : "none";
       })
-      .style("stroke", "lightgray") // Bordes cuadricula
+      .style("stroke", "lightgray") // Grid cell borders
       .style("stroke-width", 0.3);
+
+
+  // When hovering the mouse over a map cell, a tooltip is displayed with: **************************
+  const tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip-s4")
+  .style("position", "absolute")
+  .style("visibility", "hidden")
+  .style("background", "#fff")
+  .style("border", "1px solid #ccc")
+  .style("padding", "5px")
+  .style("font-size", "12px")
+  .style("border-radius", "4px");
+
+  svg.selectAll(".grid-cell")
+    .on("mouseover", function (event, d) {
+      const match = findMatchingCell(dynamicData, d);
+      if (match) {
+        tooltip.html(`S4: ${match.mean_s4.toFixed(2)}<br>Lat: ${d.Latitude}°<br>Lon: ${d.Longitude}°`)
+          .style("visibility", "visible");
+      }
+    })
+    .on("mousemove", function (event) {
+      tooltip.style("top", (event.pageY + 10) + "px")
+            .style("left", (event.pageX + 10) + "px");
+    })
+    .on("mouseout", function () {
+      tooltip.style("visibility", "hidden");
+  });
+  //**************************************************************************************************
 }
 
-// [B] Busca coincidencia de datos ================================================
+// [B] Finds matching data for a grid cell ===================================
 function findMatchingCell(dynamicData, gridCell) {
   const tolerance = 0.01; // Tolerancia
   return dynamicData.flatMap(group => group.data).find(cell =>
@@ -25,23 +54,23 @@ function findMatchingCell(dynamicData, gridCell) {
   );
 }
 
-// [C] Genera colores según los valores ============================================
+// [C] Generates color based on S4 values ====================================
 function getColor(value) {
   if (value === null || value === 0) return "transparent"; // No pinta
   if (value < 0.2) return "#0837d0"; // Azul oscuro
   if (value < 0.4) return "#40E0D0"; // Turquesa
   if (value < 0.6) return "#00FF00"; // Verde
   if (value < 0.8) return "#FFFF00"; // Amarillo
-  if (value < 1) return "#FFA500"; // Naranja
+  if (value < 1.0) return "#FFA500"; // Naranja
   return "#bc0000"; // Rojo oscuro
 }
 
 //-----------------------------------VISUAL ELEMENTS -----------------------------------
 //--------------------------------------------------------------------------------------
 
-// [D] Dibuja reglas de coordenadas =================================================
+// [D] Draws coordinate axes on the map ======================================
 function coordinateAxes(projection, svg, step = 10) {
-  // [D.1] Dibuja lineas de latitud (horizontales)
+  // [D.1] Draw latitude lines (horizontal)
   for (let lat = -90; lat <= 90; lat += step) {
     const startPoint = projection([-180, lat]);
     const endPoint = projection([180, lat]);
@@ -73,8 +102,8 @@ function coordinateAxes(projection, svg, step = 10) {
     }
   }
 
-  // [D.2] Dibujar líneas de longitud (verticales)
-  for (let lon = -180; lon <= 180; lon += 20) { // Cambiado step a 20 grados
+  // [D.2] Draw longitude lines (vertical)
+  for (let lon = -180; lon <= 180; lon += 20) { // step  20 degrees
     const startPoint = projection([lon, 90]);
     const endPoint = projection([lon, -90]);
 
@@ -86,7 +115,7 @@ function coordinateAxes(projection, svg, step = 10) {
         .attr("stroke-width", 0.5)
         .attr("fill", "none");
 
-      // Etiquetas en la parte superior
+      // Add labels at the top and bottom
       svg.append("text")
         .attr("x", startPoint[0])
         .attr("y", startPoint[1] - 15)
@@ -95,7 +124,6 @@ function coordinateAxes(projection, svg, step = 10) {
         .attr("text-anchor", "middle")
         .text(`${lon}°`);
 
-      // Etiquetas en la parte inferior
       svg.append("text")
         .attr("x", endPoint[0])
         .attr("y", endPoint[1] + 15)
@@ -107,82 +135,91 @@ function coordinateAxes(projection, svg, step = 10) {
   }
 }
 
-// [E] Dibuja etiquetas de ejes ================================================
+// [E] Draws axis labels ====================================================
 function drawAxisLabels(svg, width, height) {
-  // Etiqueta para el eje Y (Latitude)
+  // Label for Y-axis (Latitude)
   svg.append("text")
     .attr("x", -height / 2)
     .attr("y", 50)
     .attr("transform", "rotate(-90)")
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
     .text("Latitude");
 
-  // Etiqueta para el eje X (Longitude)
+  // Label for X-axis (Longitude)
   svg.append("text")
     .attr("x", width / 2)
-    .attr("y", height + 1)
+    .attr("y", height + -5)
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
     .text("Longitude");
 }
 
-// [F] Dibuja barra de colores -==================================================
+// [F] Draws a color bar ====================================================
 function drawColorBar(svg, width, height) {
-  const barWidth = width - 200; // Ancho de la barra de colores
-  const barHeight = 15; // Altura de la barra de colores
-  const barPadding = 15; // Separación entre el mapa y la barra
+  const barWidth = width - 200; // Width of the color bar
+  const barHeight = 15; // Height of the color bar
+  const barPadding = 1; // Space between the map and the bar
 
-  // Contenedor para la barra
-  const barGroup = svg.append("g")
-    .attr("transform", `translate(${(width - barWidth) / 2}, ${height + barPadding})`);
-
-  // Gradiente de colores
-  const gradient = svg.append("defs")
+  // Container for the color bar
+  const barGroup = svg
+    .append("g")
+    .attr(
+      "transform",
+      `translate(${(width - barWidth) / 2}, ${height + barPadding})`
+    );
+    
+  // Color gradient
+  const gradient = svg
+    .append("defs")
     .append("linearGradient")
     .attr("id", "colorBarGradientS4")
-    .attr("x1", "0%").attr("y1", "0%")
-    .attr("x2", "100%").attr("y2", "0%");
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "100%")
+    .attr("y2", "0%");
 
-  gradient.append("stop").attr("offset", "0%").attr("stop-color", "#0837d0"); // Azul oscuro
-  gradient.append("stop").attr("offset", "16.6%").attr("stop-color", "#40E0D0"); // Turquesa
-  gradient.append("stop").attr("offset", "33.2%").attr("stop-color", "#00FF00"); // Verde
-  gradient.append("stop").attr("offset", "49.8%").attr("stop-color", "#FFFF00"); // Amarillo
-  gradient.append("stop").attr("offset", "66.4%").attr("stop-color", "#FFA500"); // Naranja
-  gradient.append("stop").attr("offset", "83%").attr("stop-color", "#bc0000"); // Rojo oscuro
-  gradient.append("stop").attr("offset", "100%").attr("stop-color", "#bc0000"); // Rojo oscuro
-
+  gradient.append("stop").attr("offset", "0%").attr("stop-color", "#0837d0");
+  gradient.append("stop").attr("offset", "20%").attr("stop-color", "#40E0D0");
+  gradient.append("stop").attr("offset", "40%").attr("stop-color", "#00FF00");
+  gradient.append("stop").attr("offset", "60%").attr("stop-color", "#FFFF00");
+  gradient.append("stop").attr("offset", "80%").attr("stop-color", "#FFA500");
+  gradient.append("stop").attr("offset", "100%").attr("stop-color", "#bc0000");
   // Leyenda
   barGroup.append("rect")
     .attr("width", barWidth)
     .attr("height", barHeight)
     .style("fill", "url(#colorBarGradientS4)");
 
-  // Etiquetas numericas debajo de la barra
-  const axisScale = d3.scaleLinear()
-    .domain([0, 3])
-    .range([0, barWidth]);
+  // Numerical labels below the bar
+  const axisScale = d3.scaleLinear().domain([0, 1]).range([0, barWidth]);
 
   const axis = d3.axisBottom(axisScale)
-    .ticks(6) // Incrementos de 0.5
-    .tickFormat(d3.format(".1f")); // Formato con un decimal
+    .ticks(6) // Increments of 0.2
+    .tickFormat(d3.format(".1f")); // One decimal format
 
   barGroup.append("g")
     .attr("transform", `translate(0, ${barHeight})`)
     .call(axis);
 
-  // Texto informativo debajo de la barra
-  barGroup.append("text")
-    .attr("x", barWidth / 2) // Centrado horizontalmente
-    .attr("y", barHeight + 35) // Espaciado debajo de la barra
+  // Informational text below the bar
+  barGroup
+    .append("text")
+    .attr("x", barWidth / 2) // Horizontally centered
+    .attr("y", barHeight + 35) // Space below the bar
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
-    .text("Color Scale (S4 Index)");
+    .text("Color Scale (S4 Index, unitless)");
 }
 
-export { coordinateAxes, drawAxisLabels, drawColorBar, findMatchingCell, getColor, paintGrid };
-
-
+export {
+  coordinateAxes,
+  drawAxisLabels,
+  drawColorBar,
+  findMatchingCell,
+  getColor,
+  paintGrid,
+};

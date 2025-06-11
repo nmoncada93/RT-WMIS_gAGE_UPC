@@ -1,4 +1,4 @@
-// [A] Pinta cuadricula ======================================================
+// [A] Paints grid cells on the map ===========================================
 function paintGrid(gridData, dynamicData, svg) {
   svg
     .selectAll(".grid-cell")
@@ -15,9 +15,38 @@ function paintGrid(gridData, dynamicData, svg) {
     })
     .style("stroke", "lightgray") // Bordes cuadrcula
     .style("stroke-width", 0.3);
+
+
+      // When hovering the mouse over a map cell, a tooltip is displayed with: **************************
+      const tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip-sphi")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("background", "#fff")
+      .style("border", "1px solid #ccc")
+      .style("padding", "5px")
+      .style("font-size", "12px")
+      .style("border-radius", "4px");
+    
+      svg.selectAll(".grid-cell")
+        .on("mouseover", function (event, d) {
+          const match = findMatchingCell(dynamicData, d);
+          if (match) {
+            tooltip.html(`S4: ${match.mean_sphi.toFixed(2)}<br>Lat: ${d.Latitude}°<br>Lon: ${d.Longitude}°`)
+              .style("visibility", "visible");
+          }
+        })
+        .on("mousemove", function (event) {
+          tooltip.style("top", (event.pageY + 10) + "px")
+                .style("left", (event.pageX + 10) + "px");
+        })
+        .on("mouseout", function () {
+          tooltip.style("visibility", "hidden");
+      });
+      //**************************************************************************************************
 }
 
-// [B] Busca coincidencia de datos ============================================
+// [B] Finds matching data for a grid cell ===================================
 function findMatchingCell(dynamicData, gridCell) {
   const tolerance = 0.01; // Tolerancia
   return dynamicData
@@ -40,6 +69,7 @@ function findMatchingCell(dynamicData, gridCell) {
   return "#bc0000"; // Rojo oscuro
 }*/
 
+// [C] Generates color based on SPHI values ==================================
 function getColor(value) {
   if (value === null || value === 0) return "transparent"; // No pinta
   if (value < 0.04) return "#0837d0"; // Dark blue
@@ -53,9 +83,9 @@ function getColor(value) {
 //-----------------------------------VISUAL ELEMENTS -----------------------------------
 //--------------------------------------------------------------------------------------
 
-// [D] Dibuja reglas de coordenadas ====================================================
+// [D] Draws coordinate axes on the map ======================================
 function coordinateAxes(projection, svg, step = 10) {
-  // [D.1] Dibuja lineas de latitud (horizontales)
+  // [D.1] Draw latitude lines (horizontal)
   for (let lat = -90; lat <= 90; lat += step) {
     const startPoint = projection([-180, lat]);
     const endPoint = projection([180, lat]);
@@ -90,9 +120,9 @@ function coordinateAxes(projection, svg, step = 10) {
     }
   }
 
-  // [D.2] Lineas de longitud (verticales)
+  // [D.2] Draw longitude lines (vertical)
   for (let lon = -180; lon <= 180; lon += 20) {
-    // Cambiado step a 20 grados
+    // step 20 degrees for longitude lines
     const startPoint = projection([lon, 90]);
     const endPoint = projection([lon, -90]);
 
@@ -105,7 +135,7 @@ function coordinateAxes(projection, svg, step = 10) {
         .attr("stroke-width", 0.5)
         .attr("fill", "none");
 
-      // Etiquetas en la parte superior
+      // Add labels at the top and bottom
       svg
         .append("text")
         .attr("x", startPoint[0])
@@ -115,7 +145,6 @@ function coordinateAxes(projection, svg, step = 10) {
         .attr("text-anchor", "middle")
         .text(`${lon}°`);
 
-      // Etiquetas en la parte inferior
       svg
         .append("text")
         .attr("x", endPoint[0])
@@ -128,37 +157,37 @@ function coordinateAxes(projection, svg, step = 10) {
   }
 }
 
-// [E] Dibuja etiquetas de ejes ====================================================
+// [E] Draws axis labels =====================================================
 function drawAxisLabels(svg, width, height) {
-  // Etiqueta para el eje Y (Latitude)
+  // Label for Y-axis (Latitude)
   svg
     .append("text")
     .attr("x", -height / 2)
     .attr("y", 50)
     .attr("transform", "rotate(-90)")
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
     .text("Latitude");
 
-  // Etiqueta para el eje X (Longitude)
+  // Label for X-axis (Longitude)
   svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", height + 1)
+    .attr("y", height - 5)
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
     .text("Longitude");
 }
 
-// [F] Dibuja barra de colores =======================================================
+// [F] Draws a color bar ======================================================
 function drawColorBar(svg, width, height) {
-  const barWidth = width - 200; // Ancho de la barra de colores
-  const barHeight = 15; // Altura de la barra de colores
-  const barPadding = 15; // Separacion entre el mapa y la barra
+  const barWidth = width - 200; // Width of the color bar
+  const barHeight = 15; // Height of the color bar
+  const barPadding = 1; // Space between the map and the bar
 
-  // Contenedor para la barra
+  // Container for the color bar
   const barGroup = svg
     .append("g")
     .attr(
@@ -166,7 +195,7 @@ function drawColorBar(svg, width, height) {
       `translate(${(width - barWidth) / 2}, ${height + barPadding})`
     );
 
-  // Gradiente de colores
+  // Color gradient
   const gradient = svg
     .append("defs")
     .append("linearGradient")
@@ -184,14 +213,14 @@ function drawColorBar(svg, width, height) {
   gradient.append("stop").attr("offset", "83%").attr("stop-color", "#bc0000"); // Rojo oscuro
   gradient.append("stop").attr("offset", "100%").attr("stop-color", "#bc0000"); // Rojo oscuro
 
-  // Leyenda
+  // Color bar legend
   barGroup
     .append("rect")
     .attr("width", barWidth)
     .attr("height", barHeight)
     .style("fill", "url(#colorBarGradient)");
 
-  // Etiquetas numericas debajo de la barra
+  // Numerical labels below the bar
   //const axisScale = d3.scaleLinear().domain([0, 3]).range([0, barWidth]);
   const axisScale = d3.scaleLinear().domain([0, 0.2]).range([0, barWidth]);
 
@@ -212,7 +241,7 @@ function drawColorBar(svg, width, height) {
     .attr("x", barWidth / 2) // Centrado horizontal
     .attr("y", barHeight + 35) // Espaciado debajo de la barra
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
     .text("Color Scale (σφ in Radian)");
 }

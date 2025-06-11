@@ -82,6 +82,7 @@ function coordinateAxes(projection, svg, step = 10) {
 
   // [D.2] Draw longitude lines (vertical)
   for (let lon = -180; lon <= 180; lon += 20) {
+    // step 20 degrees for longitude lines
     const startPoint = projection([lon, 90]);
     const endPoint = projection([lon, -90]);
 
@@ -201,7 +202,7 @@ function drawColorBar(svg, width, height) {
     .attr("fill", "black")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
-    .text("Color Scale (σφ in TECU/min)");
+    .text("Color Scale (σφ in Radian)");
 }
 
 export {

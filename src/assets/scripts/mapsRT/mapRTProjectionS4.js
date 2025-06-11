@@ -81,6 +81,8 @@ function drawCountries(worldData) {
         .attr("d", pathGenerator)
         .attr("fill", "#dcdcdc") // Color gris para los paises
         .attr("stroke", "black"); // Bordes paises
+
+    
 }
 
 // [E] Genera datos de la cuadricula -----------------------------------------

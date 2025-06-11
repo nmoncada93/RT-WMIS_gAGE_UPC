@@ -81,7 +81,7 @@ function coordinateAxes(projection, svg, step = 10) {
   }
 
   // [D.2] Draw longitude lines (vertical)
-  for (let lon = -180; lon <= 180; lon += 20) {
+  for (let lon = -180; lon <= 180; lon += 20) { // step  20 degrees
     const startPoint = projection([lon, 90]);
     const endPoint = projection([lon, -90]);
 
@@ -133,7 +133,7 @@ function drawAxisLabels(svg, width, height) {
   svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", height + 30)
+    .attr("y", height + 1)
     .attr("fill", "black")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
@@ -180,12 +180,13 @@ function drawColorBar(svg, width, height) {
 
   // Numerical labels below the bar
   //const axisScale = d3.scaleLinear().domain([0, 3]).range([0, barWidth]);
-  const axisScale = d3.scaleLinear().domain([0, 0.2]).range([0, barWidth]);
+  const axisScale = d3.scaleLinear().domain([0, 1]).range([0, barWidth]);
+
 
   const axis = d3
     .axisBottom(axisScale)
-    .ticks(5) // Increments of 0.5
-    .tickFormat(d3.format(".2f")); // One decimal format
+    .ticks(6) // Increments of 0.5
+    .tickFormat(d3.format(".1f")); // One decimal format
 
   barGroup
     .append("g")
@@ -200,7 +201,8 @@ function drawColorBar(svg, width, height) {
     .attr("fill", "black")
     .attr("font-size", "14px")
     .attr("text-anchor", "middle")
-    .text("Color Scale (SPHI in TECU/min)");
+    .text("Color Scale (S4 Index, unitless)");
+
 }
 
 export {
