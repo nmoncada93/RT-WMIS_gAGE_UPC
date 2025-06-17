@@ -163,7 +163,7 @@ function drawAxisLabels(svg, width, height) {
   svg
     .append("text")
     .attr("x", -height / 2)
-    .attr("y", 50)
+    .attr("y", 30)
     .attr("transform", "rotate(-90)")
     .attr("fill", "black")
     .attr("font-size", "16px")
@@ -174,7 +174,7 @@ function drawAxisLabels(svg, width, height) {
   svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", height - 5)
+    .attr("y", height - 15)
     .attr("fill", "black")
     .attr("font-size", "16px")
     .attr("text-anchor", "middle")

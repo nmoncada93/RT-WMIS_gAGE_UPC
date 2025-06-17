@@ -1,31 +1,22 @@
-//.mapRTContainer {
-//  display: none;
-//  margin: 20px auto;
-//  border-radius: 5px;
-//  aspect-ratio: 2 / 1;
-//}
-
 .mapRTContainer {
   display: none;
   margin: 0 auto;
-  margin-left: -5%;
-  width: 85vw;        /* ocupa el 90 % del viewport */
-  max-width:1300px;  /* nunca excede 1 400 px */
+  margin-bottom: 20px;
+  //margin-left: -5%;
+  //width: fit-content;
+  width: 100%; 
+  max-width:2000px;
   border-radius: 5px;
-  /* aspect-ratio: 2/1;  ⬅️  comenta o elimina si limita demasiado */
 }
 
 #sphiMapRender {
-  width: 100%;
+  width: 100%; 
   height: auto;
-  display: block;
-  //margin-left: -50px;
 }
 
 #rotiMapRender {
   width: 100%;
   height: auto;
-  display: block;
 }
 
 .grid-cell {

@@ -8,8 +8,8 @@ import {
 import { getSphiBlockByHourAndMinute } from "./mapsPRController.js";
 
 // [A] Initial Configuration ------------------------------------------------------------
-const width = 1150;
-const height = 600;
+const width = 1100;
+const height = 580;
 const gridSize = 2; // Size of the grid cells in degrees
 
 // [A.1] Projection configuration
@@ -24,7 +24,8 @@ const pathGenerator = d3.geoPath().projection(projection);
 // [A.3] SVG container
 const svg = d3
   .select("#sphiMapPRRender")
-  .attr("viewBox", `-50 -5 ${width + 100} ${height + 100}`)
+  //.attr("viewBox", `-50 -5 ${width + 100} ${height + 100}`)
+  .attr("viewBox", `0 0 ${width} ${height+80}`)
   .attr("preserveAspectRatio", "xMidYMid meet");
 
 // [A.4] Global grid data (reusable)

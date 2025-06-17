@@ -2,8 +2,8 @@ import { fetchIgpRotiData } from './mapRTController.js';
 import { coordinateAxes, drawAxisLabels, drawColorBar, paintGrid } from './mapRTVisualRoti.js';
 
 // [A] Configuración inicial ---------------------------------------------------
-const width = 1150;
-const height = 600;
+const width = 1100;
+const height = 580;
 const gridSize = 2; // Tamaño de las celdas de la cuadricula en grados
 
 // [A.1] Configura la proyección
@@ -16,7 +16,8 @@ const pathGenerator = d3.geoPath().projection(projection);
 
 // [A.3] Contenedor SVG
 const svg = d3.select("#rotiMapRender")
-    .attr("viewBox", `-50 -5 ${width + 100} ${height + 100}`)
+    //.attr("viewBox", `-50 -5 ${width + 100} ${height + 100}`)
+    .attr("viewBox", `0 0 ${width} ${height+80}`)
     .attr("preserveAspectRatio", "xMidYMid meet");
 
 // [A.4] Variable global para el ID del intervalo
@@ -52,6 +53,8 @@ async function initMap(fetchDataFunction) {
       }
       // Pinta la cuadrícula con datos dinámicos
       paintGrid(gridData, dynamicData, svg, 'mean_roti');
+
+      updateLastTimeLabelROTI(dynamicData[0].TIME);
 
       // Inicia actualización en tiempo real
       startRealTimeUpdates(gridData, fetchDataFunction);
@@ -113,6 +116,7 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
           const dynamicData = await fetchDataFunction();
           if (dynamicData) {
               paintGrid(gridData, dynamicData, svg);
+              updateLastTimeLabelROTI(dynamicData[0].TIME);
           }
       } catch (error) {
           console.error("Error durante el Real-Time", error);
@@ -158,4 +162,10 @@ document.getElementById("closeRotiMapBtn").addEventListener("click", () => {
   resetMap();
 });
 
-
+function updateLastTimeLabelROTI(timeCode) {
+  const p = document.getElementById("rotiMapLastUpdate");
+  if (!p) return;
+  const hours = Math.floor(timeCode / 3600);
+  const minutes = Math.floor((timeCode % 3600) / 60);
+  p.textContent = `Displaying: ${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")} GPST`;
+}

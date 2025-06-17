@@ -152,7 +152,7 @@ function drawAxisLabels(svg, width, height) {
   svg
     .append("text")
     .attr("x", -height / 2)
-    .attr("y", 50)
+    .attr("y", 30)
     .attr("transform", "rotate(-90)")
     .attr("fill", "black")
     .attr("font-size", "16px")
@@ -163,7 +163,7 @@ function drawAxisLabels(svg, width, height) {
   svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", height - 5)
+    .attr("y", height - 15)
     .attr("fill", "black")
     .attr("font-size", "16px")
     .attr("text-anchor", "middle")
@@ -229,7 +229,7 @@ function drawColorBar(svg, width, height) {
     .attr("x", barWidth / 2) // Horizontally centered
     .attr("y", barHeight + 35) // Space below the bar
     .attr("fill", "black")
-    .attr("font-size", "14px")
+    .attr("font-size", "16px")
     .attr("text-anchor", "middle")
     .text("Color Scale (σφ in Radian)");
 }

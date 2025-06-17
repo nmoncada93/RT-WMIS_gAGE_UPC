@@ -2,8 +2,8 @@ import { fetchIgpSphiData } from './mapRTController.js';
 import { coordinateAxes, drawAxisLabels, drawColorBar, paintGrid } from './mapRTVisualSphi.js';
 
 // [A] Configuracion inicial ---------------------------------------------------
-const width = 1150;
-const height = 600;
+const width = 1100;
+const height = 580;
 const gridSize = 2; // Tamaño de las celdas de la cuadricula en grados
 
 // [A.1] Configuracion de la proyeccion
@@ -16,8 +16,8 @@ const pathGenerator = d3.geoPath().projection(projection);
 
 // [A.3] Contenedor SVG
 const svg = d3.select("#sphiMapRender")
-    .attr("viewBox", `-50 -5 ${width + 100} ${height + 100}`)
-    //.attr("viewBox", `0 0 ${width} ${height}`)
+    //.attr("viewBox", `-50 -5 ${width + 100} ${height + 100}`)
+    .attr("viewBox", `0 0 ${width} ${height+80}`)
     .attr("preserveAspectRatio", "xMidYMid meet");
 
 // [A.4] Variable global para el ID del intervalo
@@ -117,10 +117,7 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
           const dynamicData = await fetchDataFunction();
           if (dynamicData) {
               paintGrid(gridData, dynamicData, svg);
-
-updateLastTimeLabel(dynamicData[0].TIME);
-
-
+              updateLastTimeLabel(dynamicData[0].TIME);
           }
       } catch (error) {
           console.error("Error durante el Real-Time", error);
