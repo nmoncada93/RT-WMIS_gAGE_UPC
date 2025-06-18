@@ -30,3 +30,42 @@
   stroke: black;
   stroke-width: 0.5;
 }
+
+// Container for status text and LED indicator
+.statusBoxRealTime {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Base style for the LED circle
+.statusLed {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: gray;
+  display: inline-block;
+  border: 1px solid #444;
+  vertical-align: middle; 
+  margin-bottom: 20px; 
+  margin-left: 8px;
+}
+
+// LED status: OK 
+.statusLed--ok {
+  background-color: #2bf132;
+}
+
+// LED status: Error 
+.statusLed--error {
+  background-color: #f44336; 
+}
+
+.spanStatus {
+  font-weight: bold;
+  color: $spaceBlue;
+}

@@ -58,9 +58,14 @@
                 <div class="boxContainer">
                     <h2 class="titleH2">REAL-TIME INDEX</h2>
 
-                    <label class="selectLabel" for="stationSelector"
+                    <label class="boxContainer__p" for="stationSelector"
                         >Select station and index:</label
                     >
+                    <div class="statusBoxRTMaps">
+                        <span class="boxContainer__p spanStatus">Real-Time Status:</span>
+                        <span id="indexRTStatusLed" class="statusLed"></span>
+                    </div>
+
                     <div class="selectorsContainer">
                         <select
                             id="stationSelector"
@@ -337,9 +342,9 @@
                 <!------------------------ REAL-TIME MAPS ------------------------------------>
 
                 <div class="boxContainer mapBox">
-                    <h2 class="titleH2">REAL TIME MAP</h2>
+                    <h2 class="titleH2">REAL-TIME MAP</h2>
                     <p class="boxContainer__p">
-                        Please select a map from the dropdown to view the chart.
+                        Select a map from the dropdown to view the chart.
                     </p>
 
                     <div class="selectorsContainer"></div>
@@ -353,6 +358,10 @@
 
                     <div id="sphiMapContainer" class="mapRTContainer">
                         <p id="sphiMapLastUpdate" class="mapLastUpdateText"></p> 
+                        <div class="statusBoxRealTime">
+                            <span class="boxContainer__p spanStatus">Real-Time Status:</span>
+                            <span id="sphiStatusLed" class="statusLed"></span>
+                        </div>
                         <svg id="sphiMapRender"></svg>
                         <button class="secondaryBtn" id="closeSphiMapBtn">
                             RESET
@@ -368,6 +377,10 @@
 
                     <div id="rotiMapContainer" class="mapRTContainer">
                         <p id="rotiMapLastUpdate" class="mapLastUpdateText"></p>
+                        <div class="statusBoxRealTime">
+                            <span class="boxContainer__p spanStatus">Real-Time Status:</span>
+                            <span id="rotiStatusLed" class="statusLed"></span>
+                        </div>
                         <svg id="rotiMapRender"></svg>
                         <button class="secondaryBtn" id="closeRotiMapBtn">
                             RESET
@@ -383,6 +396,10 @@
 
                     <div id="s4MapContainer" class="mapRTContainer">
                         <p id="s4MapLastUpdate" class="mapLastUpdateText"></p>
+                        <div class="statusBoxRealTime">
+                            <span class="boxContainer__p spanStatus">Real-Time Status:</span>
+                            <span id="s4StatusLed" class="statusLed"></span>
+                        </div>
                         <svg id="s4MapRender"></svg>
                         <button class="secondaryBtn" id="closeS4MapBtn">
                             RESET
@@ -571,8 +588,8 @@
                     </div>
 
                     <div id="hourButtonsPR" class="hourButtonsContainer">
-                        <label class="selectLabel" for="hourSelectPR"
-                            >To display data please select a time</label
+                        <label class="boxContainer__p" for="hourSelectPR"
+                            >To display data select a time</label
                         >
                         <button
                             id="autoPlayHoursBtn"
@@ -747,7 +764,7 @@
 
                     <div id="hourButtonsPRRoti" class="hourButtonsContainer">
                         <label class="selectLabel" for="hourSelectPRRoti"
-                            >To display data please select a time</label
+                            >To display data select a time</label
                         >
                         <button
                             id="autoPlayHoursBtnRoti"
@@ -924,7 +941,7 @@
 
                     <div id="hourButtonsPRS4" class="hourButtonsContainer">
                         <label class="selectLabel" for="hourSelectPRS4"
-                            >To display data please select a time</label
+                            >To display data select a time</label
                         >
                         <button
                             id="autoPlayHoursBtnS4"

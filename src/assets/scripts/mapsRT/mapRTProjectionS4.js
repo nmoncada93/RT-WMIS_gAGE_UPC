@@ -48,6 +48,7 @@ async function initMap(fetchDataFunction) {
         const dynamicData = await fetchDataFunction();
 
         if (!dynamicData) {
+            updateStatusLedS4(false); // ❌
             console.error("No se pudieron cargar los datos...");
             return;
         }
@@ -55,6 +56,7 @@ async function initMap(fetchDataFunction) {
         paintGrid(gridData, dynamicData, svg, 'mean_s4');
 
         updateLastTimeLabelS4(dynamicData[0].TIME);
+        updateStatusLedS4(true);  // ✅
 
         // Inicia actualización en tiempo real
         startRealTimeUpdates(gridData, fetchDataFunction);
@@ -119,9 +121,13 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
             if (dynamicData) {
                 paintGrid(gridData, dynamicData, svg);
                 updateLastTimeLabelS4(dynamicData[0].TIME);
+                updateStatusLedS4(true);  // ✅ LED
+            } else {
+                updateStatusLedS4(false); // ❌ LED
             }
         } catch (error) {
             console.error("Error durante el Real-Time", error);
+            updateStatusLedS4(false); // ❌ LED
         }
     }, 10000);
 
@@ -147,6 +153,21 @@ function resetMap() {
       mapContainer.style.display = "none";
   } else {
       console.error("No se encontro el contenedor del mapa.");
+  }
+}
+
+function updateStatusLedS4(isOk) {
+  const led = document.getElementById("s4StatusLed");
+  if (!led) return;
+
+  led.classList.remove("statusLed--ok", "statusLed--error");
+
+  if (isOk) {
+    led.classList.add("statusLed--ok");
+    led.title = "Receiving data";
+  } else {
+    led.classList.add("statusLed--error");
+    led.title = "Connection error or no data";
   }
 }
 

@@ -48,6 +48,7 @@ async function initMap(fetchDataFunction) {
       const dynamicData = await fetchDataFunction();
 
       if (!dynamicData) {
+          updateStatusLedRoti(false); // ❌
           console.error("No se pudieron cargar los datos...");
           return;
       }
@@ -55,6 +56,7 @@ async function initMap(fetchDataFunction) {
       paintGrid(gridData, dynamicData, svg, 'mean_roti');
 
       updateLastTimeLabelROTI(dynamicData[0].TIME);
+      updateStatusLedRoti(true);  // ✅
 
       // Inicia actualización en tiempo real
       startRealTimeUpdates(gridData, fetchDataFunction);
@@ -117,9 +119,13 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
           if (dynamicData) {
               paintGrid(gridData, dynamicData, svg);
               updateLastTimeLabelROTI(dynamicData[0].TIME);
+              updateStatusLedRoti(true);  // ✅ LED
+          } else {
+              updateStatusLedRoti(false); // ❌ LED
           }
       } catch (error) {
           console.error("Error durante el Real-Time", error);
+          updateStatusLedRoti(false); // ❌ LED
       }
   }, 10000);
 
@@ -146,6 +152,21 @@ function resetMap() {
       console.log("Contenedor del mapa ocultado.");
   } else {
       console.error("No se encontró el contenedor del mapa.");
+  }
+}
+
+function updateStatusLedRoti(isOk) {
+  const led = document.getElementById("rotiStatusLed");
+  if (!led) return;
+
+  led.classList.remove("statusLed--ok", "statusLed--error");
+
+  if (isOk) {
+    led.classList.add("statusLed--ok");
+    led.title = "Receiving data";
+  } else {
+    led.classList.add("statusLed--error");
+    led.title = "Connection error or no data";
   }
 }
 

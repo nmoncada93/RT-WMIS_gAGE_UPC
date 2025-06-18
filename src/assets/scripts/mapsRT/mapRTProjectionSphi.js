@@ -48,6 +48,7 @@ async function initMap(fetchDataFunction) {
       const dynamicData = await fetchDataFunction();
 
       if (!dynamicData) {
+          updateStatusLed(false); // ❌ LED
           console.error("No se pudieron cargar los datos...");
           return;
       }
@@ -56,6 +57,7 @@ async function initMap(fetchDataFunction) {
       paintGrid(gridData, dynamicData, svg);
 
       updateLastTimeLabel(dynamicData[0].TIME);
+      updateStatusLed(true);  // ✅ LED 
 
       // Inicia actualizacion en tiempo real
       startRealTimeUpdates(gridData, fetchDataFunction);
@@ -118,9 +120,13 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
           if (dynamicData) {
               paintGrid(gridData, dynamicData, svg);
               updateLastTimeLabel(dynamicData[0].TIME);
-          }
+              updateStatusLed(true);  // ✅ LED 
+          } else {
+              updateStatusLed(false); // ❌ LED 
+          }                
       } catch (error) {
           console.error("Error durante el Real-Time", error);
+          updateStatusLed(false);  // ❌ LED 
       }
   }, 10000);
 
@@ -147,6 +153,25 @@ function resetMap() {
     console.error("No se encontro el contenedor del mapa...");
   }
 }
+
+function updateStatusLed(isOk) {
+  const led = document.getElementById("sphiStatusLed");
+  if (!led) return;
+
+  // Limpia primero
+  led.classList.remove("statusLed--ok", "statusLed--error");
+
+  // Aplica el estado correspondiente
+  if (isOk) {
+    led.classList.add("statusLed--ok");
+    led.title = "Receiving data";
+  } else {
+    led.classList.add("statusLed--error");
+    led.title = "Connection error or no data";
+  }
+}
+
+
 
 // [Y] Inicia mapa al pulsar el boton ----------------------------------------
 document.getElementById("sphiMapBtn").addEventListener("click", async () => {
