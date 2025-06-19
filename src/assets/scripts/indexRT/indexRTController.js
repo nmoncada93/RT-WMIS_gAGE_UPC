@@ -11,53 +11,82 @@ let isFetching = false;
 let lastDataHash = null;
 let fetchInterval = null;
 
-// [B] Obtiene datos de sphi.tmp ==================================================
+// [B] Fetch SPHI data from backend =============================================
 async function fetchSphiData() {
   const url = `http://127.0.0.1:5000/api/indexRT/read-sphi`;
-  console.log("Fetch Request Enviada a Sphi");
+  console.log("[SPHI] Fetch request sent...");
+
   toggleLoadingText(true);
 
   try {
     const response = await fetch(url);
+    handlerSpinner(true);
+
     if (!response.ok) {
-      throw new Error("Error obtaining sphi.tmp for selected date");
+      updateIndexLed("sphi",  false);
+      toggleConnectionAlert(true); 
+      handlerSpinner(false);
+      console.error(`[SPHI] ❌ Backend responded with status ${response.status}`);
+      throw new Error("Non-OK response");
     }
 
     const data = await response.json();
+    updateIndexLed("sphi",  true);
+    toggleConnectionAlert(false);
+    toggleStatusBoxRT(true);
+    console.log("[SPHI] ✅ Data received successfully");
+
     realTimeData.sphi = data;
-    console.log("Data from sphi.tmp obtained and stored");
     updateStationSelector(data);
-    console.log("Actualizando selector de estaciones desde Fetch de SPHI");
     toggleLoadingText(false);
-    return data;
+    handlerSpinner(false);
+
+    return true;
+
   } catch (error) {
-    console.error("Error during sphi.tmp request:", error);
-    handleNoData(
-      "No data available for the selected date. Please try again later or choose another date!"
-    );
+    updateIndexLed("sphi",  false);
+    toggleConnectionAlert(true); 
+    handlerSpinner(false);
+
+    // [X.1] Reset station selector if fetch fails
+    const stationSelector = document.getElementById("stationSelector");
+    if (stationSelector) {
+      stationSelector.selectedIndex = 0; // Resetea a opción inicial
+    }
+
+
+    console.error("[SPHI] 🚨 Connection failed or RAW data missing:", error.message);
+    return false;
   }
 }
 
-// [C] Obtiene datos de roti.tmp ===================================================
+// [C] Fetch ROTI data from backend =============================================
 async function fetchRotiData() {
   const url = `http://127.0.0.1:5000/api/indexRT/read-roti`;
+  console.log("[ROTI] Fetch request sent...");
+
   try {
     const response = await fetch(url);
+
     if (!response.ok) {
-      throw new Error("Error obtaining roti.tmp for selected date");
+      updateIndexLed("roti",  false);
+      updateIndexLed("s4",  false);
+      console.error(`[ROTI] ❌ Backend responded with status ${response.status}`);
+      throw new Error("Non-OK response");
     }
 
     const data = await response.json();
-    realTimeData.roti = data;
-    console.log("Data from roti.tmp obtained and stored");
+    updateIndexLed("roti",  true);
+    updateIndexLed("s4",  true);
+    console.log("[ROTI] ✅ Data received successfully");
 
+    realTimeData.roti = data;
     showIndexButtons();
-    return data;
+
+    return true;
   } catch (error) {
-    console.error("Error during roti.tmp request:", error);
-    handleNoData(
-      "No data available for the selected date. Please try again later or choose another date!"
-    );
+    console.error("[ROTI] 🚨 Connection failed or roti.tmp missing:", error.message);
+    return false;
   }
 }
 
@@ -123,6 +152,10 @@ async function checkAndUpdateData() {
     newData = await fetchRotiData();
   } else {
     console.log("No active index to fetch data.");
+    //updateIndexLed("sphi", false);
+    //updateIndexLed("roti", false);
+    //updateIndexLed("s4", false);
+
     isFetching = false;
     return;
   }
@@ -148,6 +181,9 @@ async function checkAndUpdateData() {
         renderChart(newData, selectedStation, activeIndex);
       }
     } else {
+      //updateIndexLed("roti", false);
+      //updateIndexLed("sphi", false);
+      //updateIndexLed("s4", false);
       console.log("Data is up to date.");
     }
   }
@@ -157,7 +193,7 @@ async function checkAndUpdateData() {
 // [I] Iniciar el fetch automático REAL-TIME ================================================
 function startAutoFetch() {
   if (!fetchInterval) {
-    fetchInterval = setInterval(checkAndUpdateData, 10000);
+    fetchInterval = setInterval(checkAndUpdateData, 8000);
     console.log("Auto fetch started...");
   }
 }
@@ -214,6 +250,76 @@ function resetChart() {
   });
 }
 
+// [N] LED Real-Time Status ========================================================
+function updateIndexLed(index, isOk) {
+  const ledMap = {
+    sphi: document.getElementById("ledSphi"),
+    roti: document.getElementById("ledRoti"),
+    s4: document.getElementById("ledS4"),
+  };
+
+  const led = ledMap[index];
+  if (!led) return;
+
+  led.classList.remove("statusLed--ok", "statusLed--error");
+
+  if (isOk) {
+    led.classList.add("statusLed--ok");
+    led.title = `${index.toUpperCase()} receiving data`;
+  } else {
+    led.classList.add("statusLed--error");
+    led.title = `${index.toUpperCase()} no data`;
+  }
+}
+
+/*
+// [I] Show/hide spinner in Real-Time section ========================================
+function handlerSpinner(show) {
+  const spinner = document.getElementById("loadingMessageRTindex");
+  if (spinner) {
+    spinner.style.display = show ? "flex" : "none";
+    console.log(show ? "[RT] Spinner ON" : "[RT] Spinner OFF");
+  }
+}*/
+
+// [I] Show/hide spinner in Real-Time section ========================================
+function handlerSpinner(show) {
+  const spinner = document.getElementById("loadingMessageRTindex");
+  const chartContainer = document.getElementById("indexRTContainer");
+
+  // Usa getComputedStyle para obtener el valor real del display
+  const chartVisible = chartContainer && window.getComputedStyle(chartContainer).display !== "none";
+
+  if (show && chartVisible) {
+    console.log("[RT] Spinner skipped because chart is visible");
+    return;
+  }
+
+  if (spinner) {
+    spinner.style.display = show ? "flex" : "none";
+    console.log(show ? "[RT] Spinner ON" : "[RT] Spinner OFF");
+  }
+}
+
+
+
+
+// [Z] Show Real-Time LED container only if SPHI is loaded ==========================
+function toggleStatusBoxRT(show) {
+  const box = document.querySelector(".statusBoxRTIndex");
+  if (box) {
+    box.style.display = show ? "flex" : "none";
+  }
+}
+
+// [X] Show or hide connection error message =======================================
+function toggleConnectionAlert(show) {
+  const alertBox = document.getElementById("alertConnectionLost");
+  if (!alertBox) return;
+
+  alertBox.style.display = show ? "block" : "none";
+}
+
 //=======================================================================================
 //==============================  LISTENERS =============================================
 //=======================================================================================
@@ -245,8 +351,11 @@ document.getElementById("sphiButton").addEventListener("click", function () {
     renderChart(realTimeData.sphi, selectedStation, "sphi");
     setActiveButton(this);
     startAutoFetch();
+    updateIndexLed("sphi", true);
     document.getElementById("closeChartButton").style.display = "inline-block";
+
   } else {
+    updateIndexLed("sphi", false);
     console.log("Selecciona una estación antes de generar el gráfico.");
   }
 });
@@ -260,8 +369,11 @@ document.getElementById("rotiButton").addEventListener("click", function () {
     renderChart(realTimeData.roti, selectedStation, "roti");
     setActiveButton(this);
     startAutoFetch();
+    updateIndexLed("roti", true);
     document.getElementById("closeChartButton").style.display = "inline-block";
+
   } else {
+    updateIndexLed("roti", false);
     console.log("Selecciona una estación antes de generar el gráfico.");
   }
 });
@@ -275,8 +387,11 @@ document.getElementById("s4Button").addEventListener("click", function () {
     renderChart(realTimeData.roti, selectedStation, "s4");
     setActiveButton(this);
     startAutoFetch();
+    updateIndexLed("s4", true);
     document.getElementById("closeChartButton").style.display = "inline-block";
+
   } else {
+    updateIndexLed("s4", false);
     console.log("Selecciona una estación antes de generar el gráfico.");
   }
 });

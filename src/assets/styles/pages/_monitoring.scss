@@ -35,6 +35,52 @@
 //border: 1px solid #ccc;
 //}
 
+
+.mapLastUpdateText {
+  margin-top: 0.5em;
+  font-size: 2rem;
+  font-weight: 500;
+  color: $spaceBlue;
+  text-align: center;
+}
+
+/*.alertConnection {
+  color: #b00020;
+  background-color: #ffecec;
+  padding: 8px 12px;
+  border: 1px solid #f5c2c7;
+  border-radius: 6px;
+  margin-top: 12px;
+  font-size: 0.95rem;
+}*/
+
+.indexMessageAlert {
+  margin-top: 0.5em;
+  font-size: 2rem;
+  font-weight: 500;
+  color: $energicOrange;
+  text-align: center;
+}
+
+.statusBoxRTIndex {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; // <-- Esto empuja todo el contenido a la derecha
+  gap: 12px;
+  margin: 8px 0;
+  gap: 35px; 
+}
+
+.statusPair {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; // espacio entre texto y LED
+}
+
+
+
+
+
 /********************************************************
 *                                                       *
 *                 ESTILOS DEL CALENDARIO                 *
@@ -86,13 +132,4 @@
   .recordsBox__date {
     font-size: 1.2rem;
   }
-}
-
-
-.mapLastUpdateText {
-  margin-top: 0.5em;
-  font-size: 2rem;
-  font-weight: 500;
-  color: $spaceBlue;
-  text-align: center;
 }

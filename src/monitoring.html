@@ -61,10 +61,6 @@
                     <label class="boxContainer__p" for="stationSelector"
                         >Select station and index:</label
                     >
-                    <div class="statusBoxRTMaps">
-                        <span class="boxContainer__p spanStatus">Real-Time Status:</span>
-                        <span id="indexRTStatusLed" class="statusLed"></span>
-                    </div>
 
                     <div class="selectorsContainer">
                         <select
@@ -298,29 +294,52 @@
 
                         <div class="btnsContainer">
                             <button
-                                id="s4Button"
+                                id="sphiButton"
                                 class="primaryBtn primaryRTBtn"
                             >
-                                S4
+                                σφ
                             </button>
+
                             <button
                                 id="rotiButton"
                                 class="primaryBtn primaryRTBtn"
                             >
                                 ROTI L1
                             </button>
+
                             <button
-                                id="sphiButton"
+                                id="s4Button"
                                 class="primaryBtn primaryRTBtn"
                             >
-                                σφ
+                                S4
                             </button>
+                        </div>
+                    </div>
+                    <div id="alertConnectionLost" class="indexMessageAlert" style="display: none;">
+                        ⚠️ No data available. Connection lost or backend unavailable.
+                    </div>
+
+                    <div class="statusBoxRTIndex" style="display: none;">
+                        <span class="boxContainer__p spanStatus">Real-Time Status:</span>
+                        <div class="statusPair">
+                            <span class="boxContainer__p spanStatus">σφ:</span>
+                            <span id="ledSphi" class="statusLed" title="SPHI status"></span>
+                        </div>
+
+                        <div class="statusPair">
+                            <span class="boxContainer__p spanStatus">ROTI:</span>
+                            <span id="ledRoti" class="statusLed" title="ROTI status"></span>
+                        </div>
+
+                        <div class="statusPair">
+                            <span class="boxContainer__p spanStatus">S4:</span>
+                            <span id="ledS4" class="statusLed" title="S4 status"></span>
                         </div>
                     </div>
 
                     <div id="loadingMessageRTindex" style="display: none">
                         <div class="loading-message">
-                            <span>Loading chart...</span>
+                            <span>Please wait, loading stations...</span>
                             <div class="spinner"></div>
                         </div>
                     </div>
