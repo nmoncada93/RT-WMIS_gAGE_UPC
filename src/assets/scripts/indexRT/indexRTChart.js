@@ -8,7 +8,7 @@ export function resetChart() {
   if (activeChart) {
     activeChart.dispose(); // Elimina el grafico de Echarts
     activeChart = null; // Resetea la referencia global
-    console.log("Gráfico reseteado correctamente.");
+    console.log("Chart reseted correctly");
   }
 }
 
@@ -16,14 +16,18 @@ export function resetChart() {
 function getIndexColumn(item, index) {
   switch (index) {
     case "sphi":
-      return item[5]; // SPHI L1 (columna 6)
+      //return item[5]; // SPHI L1 (columna 6) ************************* IMPORTANT, uncomment for read RAW data directly from BACKEND (ALL COLUMNS RAW) ==============================
+      return item[2]; // SPHI L1
     case "roti":
-      return item[6]; // ROTI L1 (columna 7)
+      //return item[6]; // ROTI L1 (columna 7) ************************* IMPORTANT, uncomment for read RAW data directly from BACKEND (ALL COLUMNS RAW) ==============================
+      return item[2]; // ROTI L1
     case "s4":
-      return item[10]; // S4 (columna 11)
+      //return item[10]; // S4 (columna 11) ************************* IMPORTANT, uncomment for read RAW data directly from BACKEND (ALL COLUMNS RAW) ==============================
+      return item[3]; // S4
     default:
       console.warn(`Índice desconocido: ${index}. Se usa SPHI por defecto.`);
-      return item[5]; // Por defecto SPHI
+      //return item[5]; // Por defecto SPHI  ************************* IMPORTANT, uncomment for read RAW data directly from BACKEND (ALL COLUMNS RAW) ==============================
+      return item[2]; // SPHI L1
   }
 }
 

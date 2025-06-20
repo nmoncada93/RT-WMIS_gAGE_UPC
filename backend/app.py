@@ -8,7 +8,7 @@ import os
 from indexPR import indexPR_blueprint
 from mapsRT import mapsRT_blueprint
 from indexRT import indexRT_blueprint
-from mapsPR import mapsPR_blueprint  # <-- AÑADIDO
+from mapsPR import mapsPR_blueprint 
 
 # [A] Inicializa la aplicación + configuracion de CORS
 app = Flask(__name__)
@@ -18,7 +18,7 @@ CORS(app)
 app.register_blueprint(indexPR_blueprint, url_prefix='/api/indexPR')
 app.register_blueprint(mapsRT_blueprint, url_prefix='/api/mapsRT')
 app.register_blueprint(indexRT_blueprint, url_prefix='/api/indexRT')
-app.register_blueprint(mapsPR_blueprint, url_prefix='/api/mapsPR')  # <-- AÑADIDO
+app.register_blueprint(mapsPR_blueprint, url_prefix='/api/mapsPR') 
 
 # [B] Define rutas de archivo como variables
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

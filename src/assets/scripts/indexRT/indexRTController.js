@@ -54,7 +54,6 @@ async function fetchSphiData() {
       stationSelector.selectedIndex = 0; // Resetea a opción inicial
     }
 
-
     console.error("[SPHI] 🚨 Connection failed or RAW data missing:", error.message);
     return false;
   }
@@ -94,7 +93,7 @@ async function fetchRotiData() {
 function detectSelectedStation() {
   const stationSelector = document.getElementById("stationSelector");
   selectedStation = stationSelector.value;
-  console.log("Estación seleccionada:", selectedStation);
+  //console.log("Estación seleccionada:", selectedStation);
 }
 
 // [E] Actualiza estaciones en el selector ===========================================
@@ -290,14 +289,13 @@ function handlerSpinner(show) {
   // Usa getComputedStyle para obtener el valor real del display
   const chartVisible = chartContainer && window.getComputedStyle(chartContainer).display !== "none";
 
-  if (show && chartVisible) {
+  /*if (show && chartVisible) {
     console.log("[RT] Spinner skipped because chart is visible");
     return;
-  }
+  }*/
 
   if (spinner) {
     spinner.style.display = show ? "flex" : "none";
-    console.log(show ? "[RT] Spinner ON" : "[RT] Spinner OFF");
   }
 }
 
