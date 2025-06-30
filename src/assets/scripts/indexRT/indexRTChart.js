@@ -80,7 +80,17 @@ export function renderChart(data, station, index) {
 
   // Configuracion del grafico
   const option = {
-    title: { text: `Index: ${index.toUpperCase()} for station: ${station}` },
+    title: {
+      text: `Index: ${index.toUpperCase()} for station ${station}`,
+      left: 'center',           // Centrado horizontal
+      top: 10,                  // Ajusta la distancia desde arriba (px o %)
+      textStyle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#002366'        // El mismo azul que usas en botones
+      }
+    },
+
     tooltip: {
       //Al pasar cursor por encima da informacion extra
       trigger: "item",
@@ -92,6 +102,8 @@ export function renderChart(data, station, index) {
     grid: {
       top: "15%",
       bottom: "20%", // Añade espacio debajo del grafico
+      left: "4%",
+      right: "4%",
     },
 
     xAxis: {
@@ -102,14 +114,33 @@ export function renderChart(data, station, index) {
       min: 0,
       max: 90000,
       interval: 10000,
+      
+      nameTextStyle: {
+        fontSize: 14,
+        color: "#002366",
+        fontFamily: "Arial",
+      },
+
       axisLabel: {
-        hideOverlap: true, // Oculta etiquetas superpuestas al reducir tamaño del chart
+        hideOverlap: true, // Hide overlapping labels when reducing chart size
       },
     },
+
     yAxis: {
       type: "value",
       name: getYAxisLabel(index) /*name: `${index.toUpperCase()} (units)`*/,
+          nameGap: 40,
+          nameTextStyle: {
+            fontSize: 14,
+            color: "#002366",
+            fontFamily: "Arial",
+            padding: [0, 0, 0, 55]      // Mueve el texto 20px a la izquierda
+          },
+      axisLabel: {
+        fontSize: 12
+      }
     },
+
     series: [
       {
         type: "scatter",
