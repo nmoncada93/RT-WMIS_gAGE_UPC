@@ -25,6 +25,7 @@ let intervalId;
 
 // [B] Inicializa mapa ------------------------------------------------
 async function initMap(fetchDataFunction) {
+  handlerSpinnerSphiMap(true);
   try {
       // Carga datos del mundo en formato GeoJSON
       const worldData = await loadWorldData();
@@ -50,7 +51,9 @@ async function initMap(fetchDataFunction) {
       if (!dynamicData) {
           updateStatusLed(false); // ❌ LED
           console.error("No se pudieron cargar los datos...");
+          handlerSpinnerSphiMap(false); 
           return;
+        
       }
 
       // Pinta la cuadricula con datos dinamicos
@@ -65,8 +68,11 @@ async function initMap(fetchDataFunction) {
       // Hace visible el botón "Reset" al cargar el mapa
       const resetButton = document.getElementById("closeSphiMapBtn");
       resetButton.style.display = "block";
+      handlerSpinnerSphiMap(false); //
+            
   } catch (error) {
       console.error("Error al inicializar el mapa:", error);
+      handlerSpinnerSphiMap(false); 
   }
 }
 
@@ -171,8 +177,6 @@ function updateStatusLed(isOk) {
   }
 }
 
-
-
 // [Y] Inicia mapa al pulsar el boton ----------------------------------------
 document.getElementById("sphiMapBtn").addEventListener("click", async () => {
     const mapContainer = document.getElementById("sphiMapContainer");
@@ -197,4 +201,13 @@ function updateLastTimeLabel(timeCode) {
 
   p.textContent = `Displaying: ${hh}:${mm} GPST`;
 }
+
+function handlerSpinnerSphiMap(show) {
+  const spinner = document.getElementById("spinnerSphiMapRT");
+  if (spinner) {
+    spinner.style.display = show ? "flex" : "none";
+    console.log(show ? "[SPHI Map] Spinner ON" : "[SPHI Map] Spinner OFF");
+  }
+}
+
 

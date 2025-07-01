@@ -25,6 +25,7 @@ let intervalId;
 
 // [B] Inicializa mapa ------------------------------------------------
 async function initMap(fetchDataFunction) {
+    handlerSpinnerS4Map(true);
     try {
         // Carga datos del mundo en formato GeoJSON
         const worldData = await loadWorldData();
@@ -50,6 +51,7 @@ async function initMap(fetchDataFunction) {
         if (!dynamicData) {
             updateStatusLedS4(false); // ❌
             console.error("No se pudieron cargar los datos...");
+            handlerSpinnerS4Map(false);
             return;
         }
         // Pinta la cuadrícula con datos dinámicos
@@ -64,8 +66,11 @@ async function initMap(fetchDataFunction) {
         // Hace visible el botón "Reset" al cargar el mapa
         const resetButton = document.getElementById("closeS4MapBtn");
         resetButton.style.display = "block";
+        handlerSpinnerS4Map(false);
+
     } catch (error) {
         console.error("Error al inicializar el mapa:", error);
+        handlerSpinnerS4Map(false);
     }
 }
 
@@ -189,4 +194,12 @@ function updateLastTimeLabelS4(timeCode) {
   const hours = Math.floor(timeCode / 3600);
   const minutes = Math.floor((timeCode % 3600) / 60);
   p.textContent = `Displaying: ${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")} GPST`;
+}
+
+function handlerSpinnerS4Map(show) {
+  const spinner = document.getElementById("spinnerS4MapRT");
+  if (spinner) {
+    spinner.style.display = show ? "flex" : "none";
+    console.log(show ? "[S4 Map] Spinner ON" : "[S4 Map] Spinner OFF");
+  }
 }

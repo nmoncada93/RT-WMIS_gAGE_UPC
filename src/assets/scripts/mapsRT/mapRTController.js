@@ -6,11 +6,18 @@ async function fetchRawSphiData() {
     return null; // Evita solicitudes simultáneas
   }
 
+
+
+
+
   isFetching.sphi = true; // Activa el flag
   try {
     const response = await fetch(
       `http://127.0.0.1:5000/api/mapsRT/read-igp-sphi`
     );
+
+await new Promise(r => setTimeout(r, 4000)); // simula 2 segundos de delay
+
     if (!response.ok) {
       throw new Error(`Error HTTP para SPHI: ${response.status}`);
     }

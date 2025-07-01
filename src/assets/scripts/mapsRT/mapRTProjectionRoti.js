@@ -25,6 +25,7 @@ let intervalId;
 
 // [B] Inicializa mapa ------------------------------------------------
 async function initMap(fetchDataFunction) {
+  handlerSpinnerRotiMap(true);
   try {
       // Carga datos del mundo en formato GeoJSON
       const worldData = await loadWorldData();
@@ -50,6 +51,7 @@ async function initMap(fetchDataFunction) {
       if (!dynamicData) {
           updateStatusLedRoti(false); // ❌
           console.error("No se pudieron cargar los datos...");
+          handlerSpinnerRotiMap(false);
           return;
       }
       // Pinta la cuadrícula con datos dinámicos
@@ -64,8 +66,11 @@ async function initMap(fetchDataFunction) {
       // Hace visible el botón "Reset" al cargar el mapa
       const resetButton = document.getElementById("closeRotiMapBtn");
       resetButton.style.display = "block";
+      handlerSpinnerRotiMap(false);
+
   } catch (error) {
       console.error("Error al inicializar el mapa:", error);
+      handlerSpinnerRotiMap(false);
   }
 }
 
@@ -189,4 +194,12 @@ function updateLastTimeLabelROTI(timeCode) {
   const hours = Math.floor(timeCode / 3600);
   const minutes = Math.floor((timeCode % 3600) / 60);
   p.textContent = `Displaying: ${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")} GPST`;
+}
+
+function handlerSpinnerRotiMap(show) {
+  const spinner = document.getElementById("spinnerRotiMapRT");
+  if (spinner) {
+    spinner.style.display = show ? "flex" : "none";
+    console.log(show ? "[ROTI Map] Spinner ON" : "[ROTI Map] Spinner OFF");
+  }
 }
