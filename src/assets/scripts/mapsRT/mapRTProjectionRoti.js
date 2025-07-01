@@ -26,7 +26,9 @@ let intervalId;
 // [B] Inicializa mapa ------------------------------------------------
 async function initMap(fetchDataFunction) {
   handlerSpinnerRotiMap(true);
+  toggleConnectionAlert(false);
   try {
+      toggleConnectionAlert(false);
       // Carga datos del mundo en formato GeoJSON
       const worldData = await loadWorldData();
 
@@ -52,6 +54,7 @@ async function initMap(fetchDataFunction) {
           updateStatusLedRoti(false); // ❌
           console.error("No se pudieron cargar los datos...");
           handlerSpinnerRotiMap(false);
+          toggleConnectionAlert(true); 
           return;
       }
       // Pinta la cuadrícula con datos dinámicos
@@ -71,6 +74,7 @@ async function initMap(fetchDataFunction) {
   } catch (error) {
       console.error("Error al inicializar el mapa:", error);
       handlerSpinnerRotiMap(false);
+      toggleConnectionAlert(true); 
   }
 }
 
@@ -125,12 +129,15 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
               paintGrid(gridData, dynamicData, svg);
               updateLastTimeLabelROTI(dynamicData[0].TIME);
               updateStatusLedRoti(true);  // ✅ LED
+              toggleConnectionAlert(false); 
           } else {
               updateStatusLedRoti(false); // ❌ LED
+              toggleConnectionAlert(true);
           }
       } catch (error) {
           console.error("Error durante el Real-Time", error);
           updateStatusLedRoti(false); // ❌ LED
+          toggleConnectionAlert(true);
       }
   }, 10000);
 
@@ -202,4 +209,11 @@ function handlerSpinnerRotiMap(show) {
     spinner.style.display = show ? "flex" : "none";
     console.log(show ? "[ROTI Map] Spinner ON" : "[ROTI Map] Spinner OFF");
   }
+}
+
+// [X] Show or hide connection error message =======================================
+function toggleConnectionAlert(show) {
+  const alertBox = document.getElementById("alertConnectionLostMapsRoti");
+  if (!alertBox) return;
+  alertBox.style.display = show ? "block" : "none";
 }

@@ -26,6 +26,7 @@ let intervalId;
 // [B] Inicializa mapa ------------------------------------------------
 async function initMap(fetchDataFunction) {
     handlerSpinnerS4Map(true);
+    toggleConnectionAlert(false);
     try {
         // Carga datos del mundo en formato GeoJSON
         const worldData = await loadWorldData();
@@ -52,6 +53,7 @@ async function initMap(fetchDataFunction) {
             updateStatusLedS4(false); // ❌
             console.error("No se pudieron cargar los datos...");
             handlerSpinnerS4Map(false);
+            toggleConnectionAlert(true);
             return;
         }
         // Pinta la cuadrícula con datos dinámicos
@@ -71,6 +73,7 @@ async function initMap(fetchDataFunction) {
     } catch (error) {
         console.error("Error al inicializar el mapa:", error);
         handlerSpinnerS4Map(false);
+        toggleConnectionAlert(true);
     }
 }
 
@@ -127,12 +130,15 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
                 paintGrid(gridData, dynamicData, svg);
                 updateLastTimeLabelS4(dynamicData[0].TIME);
                 updateStatusLedS4(true);  // ✅ LED
+                toggleConnectionAlert(false);
             } else {
                 updateStatusLedS4(false); // ❌ LED
+                toggleConnectionAlert(true);
             }
         } catch (error) {
             console.error("Error durante el Real-Time", error);
             updateStatusLedS4(false); // ❌ LED
+            toggleConnectionAlert(true);
         }
     }, 10000);
 
@@ -202,4 +208,11 @@ function handlerSpinnerS4Map(show) {
     spinner.style.display = show ? "flex" : "none";
     console.log(show ? "[S4 Map] Spinner ON" : "[S4 Map] Spinner OFF");
   }
+}
+
+// [X] Show or hide connection error message =======================================
+function toggleConnectionAlert(show) {
+  const alertBox = document.getElementById("alertConnectionLostMapsS4");
+  if (!alertBox) return;
+  alertBox.style.display = show ? "block" : "none";
 }

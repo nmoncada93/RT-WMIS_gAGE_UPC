@@ -26,7 +26,9 @@ let intervalId;
 // [B] Inicializa mapa ------------------------------------------------
 async function initMap(fetchDataFunction) {
   handlerSpinnerSphiMap(true);
+  toggleConnectionAlert(false);
   try {
+      toggleConnectionAlert(false);
       // Carga datos del mundo en formato GeoJSON
       const worldData = await loadWorldData();
 
@@ -50,10 +52,10 @@ async function initMap(fetchDataFunction) {
 
       if (!dynamicData) {
           updateStatusLed(false); // ❌ LED
-          console.error("No se pudieron cargar los datos...");
+          console.error("[SPHI] ❌ Backend not available..");
           handlerSpinnerSphiMap(false); 
+          toggleConnectionAlert(true); 
           return;
-        
       }
 
       // Pinta la cuadricula con datos dinamicos
@@ -73,6 +75,7 @@ async function initMap(fetchDataFunction) {
   } catch (error) {
       console.error("Error al inicializar el mapa:", error);
       handlerSpinnerSphiMap(false); 
+      toggleConnectionAlert(true);
   }
 }
 
@@ -127,12 +130,16 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
               paintGrid(gridData, dynamicData, svg);
               updateLastTimeLabel(dynamicData[0].TIME);
               updateStatusLed(true);  // ✅ LED 
+              toggleConnectionAlert(false); 
+
           } else {
               updateStatusLed(false); // ❌ LED 
+              toggleConnectionAlert(true);
           }                
       } catch (error) {
           console.error("Error durante el Real-Time", error);
           updateStatusLed(false);  // ❌ LED 
+          toggleConnectionAlert(true);
       }
   }, 10000);
 
@@ -210,4 +217,9 @@ function handlerSpinnerSphiMap(show) {
   }
 }
 
-
+// [X] Show or hide connection error message =======================================
+function toggleConnectionAlert(show) {
+  const alertBox = document.getElementById("alertConnectionLostMapsSphi");
+  if (!alertBox) return;
+  alertBox.style.display = show ? "block" : "none";
+}
