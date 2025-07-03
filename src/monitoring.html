@@ -387,11 +387,27 @@
                     </div>
 
                     <div id="sphiMapContainer" class="mapRTContainer">
-                        <p id="sphiMapLastUpdate" class="mapLastUpdateText"></p> 
-                        <div class="statusBoxRealTime">
-                            <span class="boxContainer__p spanStatus">Real-Time Status:</span>
-                            <span id="sphiStatusLed" class="statusLed"></span>
+
+                        <div class="gridStatusMaps">
+                            <div class="grid1fr1">
+                                <div class="statusBoxRealTime">
+                                    <span class="boxContainer__p spanStatus">Real-Time Status:</span>
+                                    <span id="sphiStatusLed" class="statusLed"></span>
+                                </div>
+                            </div>
+
+                            <div class="grid1fr2">
+                                <p id="sphiMapLastUpdate" class="mapLastUpdateText"></p> 
+                            </div>
+
+                            <div class="grid1fr3">
+                                <div class="unitToggleBox">
+                                    <P class="normalText">Units: </P>
+                                    <button id="toggleUnitBtn" class="unitsBtn">Radian</button>
+                                </div>
+                            </div>
                         </div>
+
                         <svg id="sphiMapRender"></svg>
                         <button class="secondaryBtn" id="closeSphiMapBtn">
                             RESET

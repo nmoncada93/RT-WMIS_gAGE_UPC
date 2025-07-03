@@ -10,7 +10,8 @@
 @media screen and (max-width: 620px) {
   .primaryBtn,
   .secondaryBtn,
-  .tertiaryBtn {
+  .tertiaryBtn,
+  .unitsBtn {
     font-size: 1.2rem;
   }
 }
@@ -42,7 +43,8 @@
 }
 
 @media screen and (max-width: 620px) {
-  .primaryBtn {
+  .primaryBtn,
+  .unitsBtn {
     min-width: auto;
   }
 }
@@ -185,3 +187,53 @@
     font-size: 1.2rem;
   }
 }
+
+.unitToggleBox {
+  display: inline-flex;       
+  align-items: center;      
+  gap: 8px;                   
+  justify-self: end;           
+  margin-bottom: 10px;
+
+
+  //margin: 0;       
+  padding: 0;
+  align-self: center;
+
+  p {
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+  }
+}
+
+#toggleUnitBtn {
+  padding: 4px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid gray;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.unitsBtn {
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 5px 20px;
+  font-size: 1.8rem;
+
+  border: 2px solid $spaceBlue;
+  min-width: 100px;
+  color: $spaceBlue;
+  white-space: nowrap;
+
+  &:hover,
+  &:active,
+  &:focus,
+  &.active-button {
+    background-color: $spaceBlue;
+    color: $pureWhite;
+  }
+
+}
+

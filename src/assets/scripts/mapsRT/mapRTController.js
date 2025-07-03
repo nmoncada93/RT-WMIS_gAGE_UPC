@@ -65,6 +65,7 @@ async function fetchRawS4Data() {
 
 // [B] Funcion para filtrar y estructurar los datos ========================================
 // [B.1] Filtro para SPHI
+/*
 function filterSphiData(rawData) {
   const latestTime = Math.max(...rawData.map((group) => group.TIME));
   const latestGroup = rawData.find((group) => group.TIME === latestTime);
@@ -87,6 +88,37 @@ function filterSphiData(rawData) {
     },
   ];
 }
+  */
+
+function filterSphiData(rawData) {
+  const latestTime = Math.max(...rawData.map((group) => group.TIME));
+  const latestGroup = rawData.find((group) => group.TIME === latestTime);
+
+  if (!latestGroup) {
+    console.error("No se encontró bloque de datos TIME para SPHI...");
+    return [];
+  }
+
+  return [
+    {
+      TIME: latestGroup.TIME,
+      data: latestGroup.data
+        .map((cell) => {
+          const rad = cell.mean_sphi ?? null;
+          return {
+            Longitude: cell.Longitude ?? null,
+            Latitude: cell.Latitude ?? null,
+            mean_sphi: rad,
+            mean_sphi_tecu: rad !== null ? rad * 0.185 : null,
+          };
+        })
+        .filter((cell) => cell.Longitude !== null && cell.Latitude !== null),
+    },
+  ];
+}
+
+
+
 
 // [B.2] Filtro para ROTI
 function filterRotiData(rawData) {

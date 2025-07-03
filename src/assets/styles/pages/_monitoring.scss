@@ -37,11 +37,16 @@
 
 
 .mapLastUpdateText {
-  margin-top: 0.5em;
-  font-size: 2rem;
-  font-weight: 500;
+  //margin-top: 0.5em;
+  font-size: 2.2rem;
+  font-weight: 600;
   color: $spaceBlue;
-  text-align: center;
+  margin-top: -15px;
+
+  @media screen and (max-width: 680px) {
+    font-size: 1.2rem;
+  }
+
 }
 
 /*.alertConnection {
