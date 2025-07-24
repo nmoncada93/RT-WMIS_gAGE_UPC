@@ -391,7 +391,7 @@
                         <div class="gridStatusMaps">
                             <div class="grid1fr1">
                                 <div class="statusBoxRealTime">
-                                    <span class="boxContainer__p spanStatus">Real-Time Status:</span>
+                                    <span class="boxContainer__p">Real-Time Status:</span>
                                     <span id="sphiStatusLed" class="statusLed"></span>
                                 </div>
                             </div>
@@ -432,12 +432,24 @@
                         ⚠️ No data available. Connection lost or backend unavailable.
                     </div>
 
+
                     <div id="rotiMapContainer" class="mapRTContainer">
-                        <p id="rotiMapLastUpdate" class="mapLastUpdateText"></p>
-                        <div class="statusBoxRealTime">
-                            <span class="boxContainer__p spanStatus">Real-Time Status:</span>
-                            <span id="rotiStatusLed" class="statusLed"></span>
+
+                        <div class="gridStatusMaps">
+                            <div class="grid1fr1">
+                                <div class="statusBoxRealTime">
+                                    <span class="boxContainer__p spanStatus">Real-Time Status:</span>
+                                    <span id="rotiStatusLed" class="statusLed"></span>
+                                </div>
+                            </div>
+
+                            <div class="grid1fr2">
+                                <p id="rotiMapLastUpdate" class="mapLastUpdateText"></p>
+                            </div>
                         </div>
+                        
+                        <div class="grid1fr3"></div>
+
                         <svg id="rotiMapRender"></svg>
                         <button class="secondaryBtn" id="closeRotiMapBtn">
                             RESET
@@ -463,11 +475,22 @@
                     </div>
 
                     <div id="s4MapContainer" class="mapRTContainer">
-                        <p id="s4MapLastUpdate" class="mapLastUpdateText"></p>
-                        <div class="statusBoxRealTime">
-                            <span class="boxContainer__p spanStatus">Real-Time Status:</span>
-                            <span id="s4StatusLed" class="statusLed"></span>
+
+                        <div class="gridStatusMaps">
+                            <div class="grid1fr1">
+                                <div class="statusBoxRealTime">
+                                    <span class="boxContainer__p spanStatus">Real-Time Status:</span>
+                                    <span id="s4StatusLed" class="statusLed"></span>
+                                </div>
+                            </div>
+
+                            <div class="grid1fr2">
+                                <p id="s4MapLastUpdate" class="mapLastUpdateText"></p>
+                            </div>
+
+                        <div class="grid1fr3"></div>
                         </div>
+
                         <svg id="s4MapRender"></svg>
                         <button class="secondaryBtn" id="closeS4MapBtn">
                             RESET
