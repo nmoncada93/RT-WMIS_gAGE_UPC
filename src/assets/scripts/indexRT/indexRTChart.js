@@ -184,6 +184,12 @@ export function renderChart(data, station, index) {
   // Renderiza el gráfico
   // Configura el grafico con las opciones y fuerza el ajuste inicial
   myChart.setOption(option);
+
+  console.log("Tipo de gráfico:", option.series[0].type);
+console.log("Primeros datos:", option.series[0].data.slice(0, 5));
+
+
+
   myChart.resize(); // Fuerza el tamaño adecuado en la carga inicial
 
   // Asegura que el grafico se redimensione en el evento de cambio de tamaño (RESPONSIVE)
