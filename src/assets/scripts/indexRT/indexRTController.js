@@ -14,6 +14,7 @@ let fetchInterval = null;
 // [B] Fetch SPHI data from backend =============================================
 async function fetchSphiData() {
   const url = `http://127.0.0.1:5000/api/indexRT/read-sphi`;
+  //const url = `https://gage1.upc.edu/api/indexRT/read-sphi`;
   console.log("[SPHI] Fetch request sent...");
 
   toggleLoadingText(true);
@@ -62,6 +63,7 @@ async function fetchSphiData() {
 // [C] Fetch ROTI data from backend =============================================
 async function fetchRotiData() {
   const url = `http://127.0.0.1:5000/api/indexRT/read-roti`;
+  //const url = `https://gage1.upc.edu/api/indexRT/read-roti`;
   console.log("[ROTI] Fetch request sent...");
 
   try {
@@ -298,9 +300,6 @@ function handlerSpinner(show) {
     spinner.style.display = show ? "flex" : "none";
   }
 }
-
-
-
 
 // [Z] Show Real-Time LED container only if SPHI is loaded ==========================
 function toggleStatusBoxRT(show) {

@@ -13,6 +13,7 @@ let activeChart = null;
 // [B] Obtiene datos de sphi.tmp =====================================
 async function fetchSphiData(year, doy) {
   const url = `http://127.0.0.1:5000/api/indexPR/read-sphi/${year}/${doy}`;
+  //const url = `https://gage1.upc.edu/api/indexPR/read-sphi/${year}/${doy}`;
 
   try {
     const response = await fetch(url);
@@ -36,6 +37,8 @@ async function fetchSphiData(year, doy) {
 // [C] Obtiene datos de roti.tmp =====================================
 async function fetchRotiData(year, doy) {
   const url = `http://127.0.0.1:5000/api/indexPR/read-roti/${year}/${doy}`;
+  //const url = `https://gage1.upc.edu/api/indexPR/read-roti/${year}/${doy}`;
+  
   try {
     const response = await fetch(url);
     if (!response.ok) {

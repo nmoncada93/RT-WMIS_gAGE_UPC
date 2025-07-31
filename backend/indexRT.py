@@ -10,6 +10,8 @@ indexRT_blueprint = Blueprint('indexRT', __name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SPHI_FILE_PATH = os.path.join(BASE_DIR, 'upc_tmp', 'sphi.tmp')
 ROTI_FILE_PATH = os.path.join(BASE_DIR, 'upc_tmp', 'roti.tmp')
+# SPHI_FILE_PATH = "/home/yuyin/rtwmis/sphi.tmp"
+# ROTI_FILE_PATH = "/home/yuyin/rtwmis/roti.tmp"
 
 """
 # [C] Endpoint para leer sphi.tmp en RAW  y devolver JSON (ALL COLUMNS RAW) ==============================

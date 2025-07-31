@@ -168,7 +168,7 @@ function startRealTimeUpdates(gridData, fetchDataFunction) {
           updateStatusLed(false);  // ❌ LED 
           toggleConnectionAlert(true);
       }
-  }, 3000);
+  }, 300000); // 5 minutes
 
   // [Z.1] Detiene actualizaciones cuando se cambia o cierra la pagina
   window.addEventListener("beforeunload", () => {

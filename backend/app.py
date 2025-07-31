@@ -29,6 +29,8 @@ NETWORK_STATIONS_PATH = os.path.join(BASE_DIR, 'static', 'networkStations.json')
 # [C] Endpoint para obtener estaciones de la red
 @app.route('/api/network-stations', methods=['GET'])
 @cross_origin(origins="http://localhost:8123")
+# @cross_origin(origins="https://gage1.upc.edu")
+
 def get_network_stations():
     with open(NETWORK_STATIONS_PATH, 'r') as file:
         data = json.load(file)
