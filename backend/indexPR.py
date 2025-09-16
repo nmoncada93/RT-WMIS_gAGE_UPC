@@ -1,18 +1,21 @@
-
 from flask import Blueprint, jsonify
 import os
 import pandas as pd
 import json
+import gzip
 
 # [A] Inicialización Blueprints ----------------------------------------------
 indexPR_blueprint = Blueprint('indexPR', __name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# RTWMIS_DIR = "/home/yuyin/rtwmis"  # Nueva ruta basada en indexRT.py
 
 # [B] Función para obtener la ruta de los archivos comprimidos ----------------
 def get_tmp_file_path(doy_folder, filename):
     folder_path = os.path.join(BASE_DIR, 'upc_tmp', doy_folder)
     return os.path.join(folder_path, filename + ".xz")
+    #folder_path = os.path.join(RTWMIS_DIR, doy_folder)  # Usa la nueva ruta correcta
+    #return os.path.join(folder_path, filename + ".gz")  # Cambio de .xz a .gz
 
 
 # [C] Endpoint para leer el archivo sphi.tmp.xz de una fecha específica ------------ (ALL COLUMNS RAW) ==============================

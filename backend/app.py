@@ -24,6 +24,9 @@ app.register_blueprint(mapsPR_blueprint, url_prefix='/api/mapsPR')
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SPHI_FILE_PATH = os.path.join(BASE_DIR, 'upc_tmp', 'sphi.tmp')
 ROTI_FILE_PATH = os.path.join(BASE_DIR, 'upc_tmp', 'roti.tmp')
+# SPHI_FILE_PATH = "/home/yuyin/rtwmis/sphi.tmp"
+# ROTI_FILE_PATH = "/home/yuyin/rtwmis/roti.tmp"
+
 NETWORK_STATIONS_PATH = os.path.join(BASE_DIR, 'static', 'networkStations.json')
 
 # [C] Endpoint para obtener estaciones de la red

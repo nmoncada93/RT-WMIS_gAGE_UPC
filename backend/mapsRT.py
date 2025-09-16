@@ -140,6 +140,7 @@ def get_json():
     # [D.4] Define ruta base relativa al archivo actual -----------------
     base_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_dir, "upc_tmp", "igp_sphi.dat")
+    # file_path = "/home/yuyin/rtwmis/igp_sphi.dat"
 
     # [D.6] Convierte archivo a JSON -------------------------------------
     result = convert_dat_to_json(file_path)
@@ -157,6 +158,7 @@ def get_roti_json():
     # [E.1] Define ruta base relativa al archivo igp_roti.dat
     base_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_dir, "upc_tmp", "igp_roti.dat")
+    # file_path = "/home/yuyin/rtwmis/igp_roti.dat"
 
     # [E.2] Convierte archivo a JSON utilizando la función convert_roti_to_json
     result = convert_roti_to_json(file_path)
